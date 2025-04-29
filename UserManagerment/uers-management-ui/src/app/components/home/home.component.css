@@ -1,0 +1,58 @@
+.home-body{
+    background-color: #fff4dc;
+    margin-top: 0em;
+    padding-top: 0em;
+}
+
+.home-card {
+    margin: 5px;
+    border-radius: 5px;
+    min-height: 100px;
+    background-color: #2e6802;
+    min-width: 120px;
+    color: #ffffff;
+}
+
+.home-card:hover{
+    background-color: #4f8724;
+}
+
+    @media (min-width: 700px) {
+    .services-container{
+        display: flex; 
+        justify-content: center; 
+        text-align: center;
+        padding-left: 50px; 
+    }
+    .portfolio-container{
+        background-image: url('../../../assets/imgages/portfolio-image.png');
+        min-height: 700px;
+        margin: 0;
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+@media (max-width: 700px) {
+    #portfolio-text {
+        display: none;
+    }
+    .services-container {
+        display: flex;
+        justify-content: center; 
+        text-align: center;
+        width: 100%;
+        padding-left: 0rem !important;
+        padding-right: 0rem !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    .portfolio-container{
+        background-image: url('../../../assets/imgages/portfolio-image.png');
+        margin: 0;
+        min-height: 160px;
+        background-size: cover;
+        background-position: center;
+    }
+    
+}

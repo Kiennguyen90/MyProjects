@@ -1,0 +1,48 @@
+<header class="p-3 mb-3 border-bottom main-menu" style="margin-bottom: 0em !important;">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <img id="main-logo" title="logo">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#home" class="nav-link px-2 link-secondary white-text">Home</a></li>
+                
+                <li class="dropdown">
+                    <a href="#"class="nav-link px-2 link-dark dropdown-toggle white-text" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+                    <ul class="dropdown-menu text-small" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#">Service 1</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Service 2</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#about" class="nav-link px-2 link-dark white-text">About Me</a>
+                </li>
+            </ul>
+            <div *ngIf="isLogin" class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" class="rounded-circle" width="32" height="32">
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                    <li>
+                        <a class="dropdown-item" href="#">Settings</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">{{userModel?.fullName}}</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" (click)="onLogout()">Sign out</a>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="!isLogin" class="dropdown text-end">
+                <button [routerLink]="['/login']" class="common-button">Login</button>
+                <button [routerLink]="['/register']" class="common-button">Register</button>
+            </div>
+        </div>
+    </div>
+</header>

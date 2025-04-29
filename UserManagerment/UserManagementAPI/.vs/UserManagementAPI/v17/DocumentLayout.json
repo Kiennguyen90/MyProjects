@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F5F4474F-C746-4E1D-8AA4-A8439DE1CD2B}|UserManagementAPI\\UserManagementAPI.csproj|d:\\microservicesprojects\\usermanagerment\\usermanagementapi\\usermanagementapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5F4474F-C746-4E1D-8AA4-A8439DE1CD2B}|UserManagementAPI\\UserManagementAPI.csproj|solutionrelative:usermanagementapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|d:\\microservicesprojects\\usermanagerment\\usermanagementapi\\infrastructure\\model\\applicationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\model\\applicationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|d:\\microservicesprojects\\usermanagerment\\usermanagementapi\\infrastructure\\model\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\model\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|d:\\microservicesprojects\\usermanagerment\\usermanagementapi\\infrastructure\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DDCFC02-2B6B-4988-996B-6B09932CB19A}|UserCore\\UserCore.csproj|d:\\microservicesprojects\\usermanagerment\\usermanagementapi\\usercore\\services\\implements\\applicationservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DDCFC02-2B6B-4988-996B-6B09932CB19A}|UserCore\\UserCore.csproj|solutionrelative:usercore\\services\\implements\\applicationservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|d:\\microservicesprojects\\usermanagerment\\usermanagementapi\\infrastructure\\model\\applicationuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\model\\applicationuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\UserManagementAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "UserManagementAPI\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\UserManagementAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "UserManagementAPI\\Controllers\\UserController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAkwD8AAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:20:10.439Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\Model\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\Model\\ApplicationUser.cs",
+              "ToolTip": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\Model\\ApplicationUser.cs",
+              "RelativeToolTip": "Infrastructure\\Model\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:17:06.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationService.cs",
+              "DocumentMoniker": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\Model\\ApplicationService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\Model\\ApplicationService.cs",
+              "ToolTip": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\Model\\ApplicationService.cs",
+              "RelativeToolTip": "Infrastructure\\Model\\ApplicationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:15:07.204Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserDbContext.cs",
+              "DocumentMoniker": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\UserDbContext.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\UserDbContext.cs",
+              "ToolTip": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\UserDbContext.cs",
+              "RelativeToolTip": "Infrastructure\\UserDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:14:41.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationServices.cs",
+              "DocumentMoniker": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\UserCore\\Services\\Implements\\ApplicationServices.cs",
+              "RelativeDocumentMoniker": "UserCore\\Services\\Implements\\ApplicationServices.cs",
+              "ToolTip": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\UserCore\\Services\\Implements\\ApplicationServices.cs",
+              "RelativeToolTip": "UserCore\\Services\\Implements\\ApplicationServices.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABcAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:12:18.65Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ApplicationUserService.cs",
+              "DocumentMoniker": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\Model\\ApplicationUserService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\Model\\ApplicationUserService.cs",
+              "ToolTip": "D:\\MicroservicesProjects\\UserManagerment\\UserManagementAPI\\Infrastructure\\Model\\ApplicationUserService.cs",
+              "RelativeToolTip": "Infrastructure\\Model\\ApplicationUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:11:34.158Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

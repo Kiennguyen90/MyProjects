@@ -1,0 +1,20 @@
+{
+    "users": [
+        {
+            "id": "nguyentrongkienit1@gmail.com",
+            "userId": "fc0b3cf5-bea8-4364-aa13-e20d0a87d1a2",
+            "userRole": "admin",
+            "fullname": "Nguyen Trong Kien",
+            "avatar": "",
+            "email": "nguyentrongkienit1@gmail.com",
+            "services": ["shophouse, cryptoinvester"]
+        }
+    ],
+    "accounts": [
+        {
+            "id": "nguyentrongkienit1@gmail.com",
+            "email": "nguyentrongkienit1@gmail.com",
+            "password": "123456"
+        }
+    ]
+}
