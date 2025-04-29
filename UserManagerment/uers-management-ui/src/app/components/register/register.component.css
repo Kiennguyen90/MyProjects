@@ -1,0 +1,36 @@
+@media (min-width: 700px) {
+    .register-container {
+        padding-top: 100px;
+        height: 100vh !important;
+    }
+
+    #register-form {
+        width: 80%;
+        background-color: #fff;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 700px) {
+    .register-container {
+        padding-top: 10px;
+        height: 100vh !important;
+    }
+}
+
+.register-field {
+    border: 1px solid #2e6802;
+    border-radius: 5px;
+}
+
+.register-field:focus {
+    border: 2px solid #2e6802;
+}
+
+.form-label {
+    background-color: #fff;
+    margin-top: 1px;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
