@@ -19,7 +19,6 @@ export class UserService {
     await this.http.get<UserModel>(this.baseUrl + '/User/' + id, { headers: baseHeaders.set('Authorization', `Bearer ${this.authService.getAccessToken()}`) })
       .subscribe(response => {
         this.userComonInformation = response;
-        debugger
           this.getUserSucceed = true;
       });
     if (this.getUserSucceed) {
