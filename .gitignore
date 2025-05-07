@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CryptoInvestmentWeb/CryptoInvestmentServices/CryptoInvestmentServices/bin/Debug/net9.0
+/CryptoInvestmentWeb/CryptoInvestmentServices/CryptoServiceCore/bin/Debug/net9.0
+/CryptoInvestmentWeb/CryptoInvestmentServices/Infrastructure/bin/Debug/net9.0
+/CryptoInvestmentWeb/CryptoInvestmentServices/CryptoInvestmentServices/obj/Debug/net9.0
+/CryptoInvestmentWeb/CryptoInvestmentServices/CryptoInvestmentServices/obj
+/CryptoInvestmentWeb/CryptoInvestmentServices/CryptoServiceCore/obj
+/CryptoInvestmentWeb/CryptoInvestmentServices/Infrastructure/obj
+/CryptoInvestmentWeb/CryptoInvestmentServices/obj
+/CryptoInvestmentWeb/CryptoInvestmentServices/.vs
+
+/UserManagerment/UserManagementAPI/UserManagementAPI/bin
+/UserManagerment/UserManagementAPI/UserManagementAPI/obj
+/UserManagerment/UserManagementAPI/UserCore/bin
+/UserManagerment/UserManagementAPI/UserCore/obj
+/UserManagerment/UserManagementAPI/Infrastructure/obj
+/UserManagerment/UserManagementAPI/Infrastructure/bin
