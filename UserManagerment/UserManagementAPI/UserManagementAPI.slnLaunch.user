@@ -3,7 +3,7 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "UserManagementAPI\\UserManagementAPI.csproj",
+        "Path": "UserManagementAPI\\UserManagementAPIs.csproj",
         "Action": "Start",
         "DebugTarget": "https"
       }
