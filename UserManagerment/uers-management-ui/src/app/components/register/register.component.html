@@ -11,36 +11,48 @@
                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
     
                     <form [formGroup]="registerForm" class="mx-1 mx-md-4" (submit)="submitRegister()">
-    
+                      <div class="d-flex flex-row mb-4" style="text-align: end;" *ngIf="registerForm.controls.userName.errors && isPressRegister" class="text-danger">
+                        <div *ngIf="registerForm.controls.userName">Full Name is required</div>
+                      </div>
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                          <input id="user-name" type="text" id="form3Example1c" class="form-control register-field" formControlName="userName"/>
-                          <label class="form-label" for="form3Example1c">Your Name</label>
+                        <div data-mdb-input-init class="flex-fill mb-0">
+                          <input id="user-name" type="text" class="form-control register-field" placeholder="Enter Your Full Name" formControlName="userName" required/>
                         </div>
                       </div>
-    
+
+                      <div class="d-flex flex-row mb-4" style="text-align: end;" *ngIf="registerForm.controls.email.errors && isPressRegister" class="text-danger">
+                        <div *ngIf="registerForm.controls.email.errors?.['required']">Email is required</div>
+                        <div *ngIf="registerForm.controls.email.errors?.['email']">Please enter a valid email address.</div>
+                      </div>
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                          <input id="email" type="email" id="form3Example3c" class="form-control register-field"  formControlName="email"/>
-                          <label class="form-label" for="form3Example3c">Your Email</label>
+                        <div data-mdb-input-init class="flex-fill mb-0">
+                          <input id="email" type="email" class="form-control register-field" placeholder="Enter Your Email"  formControlName="email" required>
+                          <div class="invalid-feedback">
+                            Please provide a valid email address.
+                          </div>
                         </div>
                       </div>
-    
+                      <div class="d-flex flex-row mb-4" style="text-align: end;" *ngIf="registerForm.controls.password.errors && isPressRegister" class="text-danger">
+                        <div *ngIf="registerForm.controls.password.errors?.['required']">Password is required</div>
+                        <div *ngIf="registerForm.controls.password.errors?.['email']">Password is invalided.</div>
+                      </div>
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                          <input id="password" type="password" id="form3Example4c" class="form-control register-field" formControlName="password"/>
-                          <label class="form-label" for="form3Example4c">Password</label>
+                        <div data-mdb-input-init class="flex-fill mb-0">
+                          <input id="password" type="password" class="form-control register-field" placeholder="Enter Your Password" formControlName="password"/>
                         </div>
                       </div>
     
+                      <div class="d-flex flex-row mb-4" style="text-align: end;" *ngIf="registerForm.controls.repeatPassword.errors && isPressRegister" class="text-danger">
+                        <div *ngIf="registerForm.controls.repeatPassword.errors?.['required']">Repeat password is required</div>
+                        <div *ngIf="registerForm.controls.repeatPassword.errors?.['marching']">Repeat password is not match.</div>
+                      </div>
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                          <input id="repeat-password" type="password" id="form3Example4cd" class="form-control register-field" formControlName="repeatPassword" />
-                          <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                        <div data-mdb-input-init class="flex-fill mb-0">
+                          <input id="repeat-password" type="password" class="form-control register-field" placeholder="Repeat your password" formControlName="repeatPassword" />
                         </div>
                       </div>
     

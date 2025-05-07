@@ -1,10 +1,8 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet, RouterModule } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
-import { UserService } from '../../services/user.service';
 import { AccountService } from '../../services/account.service';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -13,30 +11,15 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
+
 export class HeaderComponent {
   isLogin: boolean = true;
-  userModel: UserModel | undefined;
+  @Input() userModel!: UserModel;
 
   accountService = inject(AccountService);
   authService = inject(AuthService);
 
-  constructor(private router: Router, private userService: UserService) {
-    this.onLoadUserInfo();
-  }
-
-  async onLoadUserInfo() {
-    try {
-      if (this.authService.getUserId() !== null) {
-        let userId: string = this.authService.getUserId() ?? "";
-        await this.userService.getUserById(userId).then((response) => {
-          this.userModel = response
-        });
-        debugger
-      }
-    }
-    catch (error) {
-      console.error('Error get user:', error);
-    }
+  constructor(private router: Router) {
   }
 
   async onLogout() {
