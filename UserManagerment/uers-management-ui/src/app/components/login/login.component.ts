@@ -38,10 +38,7 @@ export class LoginComponent {
   async submitLogin() {
     this.isPressLogin = true;
     if (this.loginForm.invalid) {
-      if(this.loginForm.get('email')?.invalid) {
-        this.loginForm.get('email')?.setErrors({required: true});
       return;
-      }
     }
     await this.accountService.Login (
       this.loginForm.value.email ?? '',
