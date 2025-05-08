@@ -91,6 +91,7 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<ITokenServices, TokenServices>();
+builder.Services.AddScoped<IAccountServices, AccountServices>();
 builder.Services.AddScoped<IAplicationServices, ApplicationServices>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 

@@ -4,8 +4,9 @@ import { AuthModel } from '../interfaces/auth-model';
 import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../interfaces/register-model';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,62 +24,71 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  async Register(registerPayload: RegisterModel): Promise<boolean | undefined> {
-    this.http.post<AuthModel>(this.baseUrl + '/Account/register', registerPayload)
-      .subscribe(response => {
-        this.userId = response.userId,
-        this.accessToken = response.accessToken,
-        this.refreshToken = response.refreshToken,
-        this.isRegisterSucceed = true
-      });
-    if (this.isRegisterSucceed) {
-      this.authService.setAccessToken(this.accessToken);
-      this.authService.setRefreshToken(this.refreshToken);
-      this.authService.setUserId(this.userId);
-      console.log('Account Register Succeed');
-      return true;
+  async Register(registerPayload: RegisterModel): Promise<boolean> {
+    try {
+      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/register`, registerPayload));
+      if (response) {
+        this.userId = response.userId;
+        this.accessToken = response.accessToken;
+        this.refreshToken = response.refreshToken;
+        this.isRegisterSucceed = true;
+
+        this.authService.setAccessToken(this.accessToken);
+        this.authService.setRefreshToken(this.refreshToken);
+        this.authService.setUserId(this.userId);
+        console.log('Account Register Succeed');
+        return true;
+      }
+    } catch (error) {
+      console.error('Register error:', error);
     }
-    else {
-      console.log('Register Failed');
-      return false;
-    }
+    console.log('Register Failed');
+    return false;
   }
 
-  async Login(email: string, password: string): Promise <string | ""> {
-    const body = { Email: email, Password: password };
-    this.http.post<AuthModel>(this.baseUrl + '/Account/login', body)
-      .subscribe(response => {
-        this.userId = response.userId,
-        this.accessToken = response.accessToken,
-        this.refreshToken = response.refreshToken,
-        this.isLoginSucceed = true
-      });
-    if (this.isLoginSucceed) {
-      this.authService.setAccessToken(this.accessToken);
-      this.authService.setRefreshToken(this.refreshToken);
-      this.authService.setUserId(this.userId);
-      console.log('Account Login Succeed');
-      return this.userId;
+  async Login(email: string, password: string): Promise<string | ""> {
+    try {
+      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/login`, { Email: email, Password: password }));
+      if (response) {
+        this.userId = response.userId;
+        this.accessToken = response.accessToken;
+        this.refreshToken = response.refreshToken;
+        this.isLoginSucceed = true;
+
+        this.authService.setAccessToken(this.accessToken);
+        this.authService.setRefreshToken(this.refreshToken);
+        this.authService.setUserId(this.userId);
+        console.log('Account Login Succeed');
+        return this.userId;
+      }
+    } catch (error) {
+      console.error('Login error:', error);
     }
-    else {
-      return "error";
-    }
+    return "error";
   }
 
-  async SignOut(): Promise<boolean | undefined> {
-    this.http.post<any>(this.baseUrl + '/Account/logout', {})
-      .subscribe(response => {
-        this.isLogOutSucceed = true
-      });
+  async SignOut() : Promise <boolean> {
+    try {
+      var response = await lastValueFrom (this.http.post<boolean>(`${this.baseUrl}/Account/logout`, {}));
+      if (response === true) {
+        this.isLogOutSucceed = true;
+      }
+      else {
+        this.isLogOutSucceed = false;
+      }
+      console.log("Logout response: ", response);
+    } catch (error) {
+      console.error('Logout error:', error);
+      this.isLogOutSucceed = false;
+    }
+
     if (this.isLogOutSucceed) {
       this.authService.removeAccessToken();
       this.authService.removeRefreshToken();
-      this.authService.removeUserId()
-      console.log('Account SignOut Succeed:');
+      this.authService.removeUserId();
+      console.log('Account SignOut Succeed');
       return true;
     }
-    else {
-      return false;
-    }
+    return false;
   }
 }

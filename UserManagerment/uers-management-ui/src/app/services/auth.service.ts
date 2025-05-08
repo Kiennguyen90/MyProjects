@@ -5,7 +5,6 @@ import {jwtDecode} from 'jwt-decode';
   providedIn: 'root'
 })
 export class AuthService {
-
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
   private userId: string | null = null;
@@ -16,7 +15,7 @@ export class AuthService {
   }
 
   getUserId(): string | null {
-    if (!this.userId) {
+    if (!this.userId && typeof window !== 'undefined' && window.localStorage) {
       this.userId = localStorage.getItem('user_Id');
     }
     return this.userId;
@@ -51,7 +50,7 @@ export class AuthService {
 
   getRefreshToken(): string | null {
     if (!this.refreshToken) {
-      return localStorage.getItem('refresh_token');
+      this.refreshToken = localStorage.getItem('refresh_token');
     }
     return this.refreshToken;
   }
@@ -61,10 +60,15 @@ export class AuthService {
     localStorage.removeItem('refresh_token');
   }
 
-  decodeAccessToken(): any {
+  decodeAccessToken(): object | null {
     const token = this.getAccessToken();
     if (token) {
-      return jwtDecode(token);
+      try {
+        return jwtDecode<object>(token);
+      } catch (error) {
+        console.error('Invalid token', error);
+        return null;
+      }
     }
     return null;
   }

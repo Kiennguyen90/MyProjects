@@ -12,7 +12,13 @@ namespace Infrastructure.Model
         public string Id { get; set; }
         public string UserId { get; set; }
         public string ServiceId { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public bool IsActive { get; set; }
+
+        [ForeignKey("UserId")]
         public ApplicationUser User{ get; set; }
+        [ForeignKey("ServiceId")]
         public ApplicationService Service { get; set; }
     }
 }

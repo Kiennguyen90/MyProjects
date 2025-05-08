@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
 import { AccountService } from '../../services/account.service';
@@ -7,23 +7,25 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 
 export class HeaderComponent {
-  isLogin: boolean = true;
-  @Input() userModel!: UserModel;
+  @Input() userModel!: UserModel|undefined;
+  @Input() isLogin!: boolean|undefined;
 
   accountService = inject(AccountService);
   authService = inject(AuthService);
 
   constructor(private router: Router) {
   }
-
+  
   async onLogout() {
-    await this.accountService.SignOut();
+    await this.accountService.SignOut().then((response) => {
+       this.isLogin = !response
+    });
     this.router.navigate(['/login']);
   }
 }

@@ -32,12 +32,13 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       userName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required], Validators.minLength(6)],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       repeatPassword: ['', [Validators.required]]
     });
   }
 
-  async submitRegister(){
+  async submitRegister()
+  {
     this.isPressRegister = true;
     this.registerPayload.fullName = this.registerForm.value.userName ?? '';
     this.registerPayload.email = this.registerForm.value.email ?? '';
@@ -47,14 +48,14 @@ export class RegisterComponent {
       this.registerForm.get('repeatPassword')?.setErrors({marching: true});
       return;
     }
-
     await this.accountService.Register(this.registerPayload)
     .then((response) => {this.isSucceed = response});
     if(this.isSucceed){
+      debugger
       this.router.navigate(['/']);
     }
     else{
-      console.log("register error")
+      console.log("register component error")
     }
   }
 }

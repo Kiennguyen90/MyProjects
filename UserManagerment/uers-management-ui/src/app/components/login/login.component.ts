@@ -2,15 +2,15 @@ import { Component, inject } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, FormBuilder, Validators} from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
 import { AccountService } from '../../services/account.service';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
 import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
+import { RouterLink,  Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, HeaderComponent, NgIf],
+  imports: [ReactiveFormsModule, HeaderComponent, NgIf, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: '../register/register.component.css'
 })
