@@ -12,7 +12,6 @@ namespace Infrastructure.Model
         public string UserId { get; set; }
         public string ServiceId { get; set; }
 
-        public ApplicationUser Users { get; set; }
-        public ApplicationUserService Services { get; set; }
+        public ICollection<ApplicationUserService> ApplicationUserServices { get; set; }
     }
 }

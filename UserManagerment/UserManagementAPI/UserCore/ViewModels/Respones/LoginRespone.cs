@@ -8,6 +8,7 @@ namespace UserCore.ViewModels.Respones
 {
     public class LoginRespone
     {
+        public string Error { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
         public string AccessToken { get; set; } = string.Empty;
         public string RefreshToken { get; set; } = string.Empty;

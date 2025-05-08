@@ -22,9 +22,12 @@ namespace UserCore.Constants
         public const int TooManyRequests = 429;
 
         public const string UserNotFound = "User not found";
+        public const string WrongPassWord = "Wrong Password";
         public const string RefreshTokenNotFound = "RefreshToken not found";
         public const string RefreshTokenExpired = "RefreshToken expired";
         public const string InvalidCredentials = "Invalid credentials";
         public const string RegisterFailed = "Register Failed";
+        public const string RegisterServiceFailed = "Register Service Failed";
+        public const string RegisterRoleFailed = "Register Role Failed";
     }
 }

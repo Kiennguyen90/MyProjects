@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Requests;
 using UserCore.ViewModels.Respones;
@@ -23,10 +19,9 @@ namespace UserManagementAPI.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAccountServices _accountServices;
         private readonly ITokenServices _tokenServices;
-        private readonly ILogger<AccountController> _logger;
         private readonly IAplicationServices _aplicationServices;
-        private readonly IConfiguration _configuration;
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -34,15 +29,15 @@ namespace UserManagementAPI.Controllers
             IConfiguration configuration,
             ILogger<AccountController> logger,
             ITokenServices tokenServices,
-            IAplicationServices aplicationServices)
+            IAplicationServices aplicationServices,
+            IAccountServices accountServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            _configuration = configuration;
-            _logger = logger;
             _tokenServices = tokenServices;
             _aplicationServices = aplicationServices;
+            _accountServices = accountServices;
         }
 
         [HttpPost("register")]
@@ -52,35 +47,8 @@ namespace UserManagementAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser
-                    {
-                        FullName = model.FullName,
-                        UserName = model.Email,
-                        Email = model.Email
-                    };
-
-                    var result = await _userManager.CreateAsync(user, model.Password);
-
-                    if (result.Succeeded)
-                    {
-                        var registerService = await _aplicationServices.RegisterServiceAsync(Constants.Services.CRYPTO, user.Id);
-                        var registerRole = await _userManager.AddToRoleAsync(user, Constants.UserRoles.USER);
-                        var respone = new LoginRespone();
-                        var signIn = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
-                        if (signIn.Succeeded && registerRole.Succeeded && registerService)
-                        {
-                            respone.UserId = user.Id;
-                            respone.AccessToken = await _tokenServices.GenerateAccessToken(user);
-                            respone.RefreshToken = await _tokenServices.GenerateRefreshToken(user);
-                            return Ok(respone);
-                        }
-                        return Problem("Register Error");
-                    }
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    var result = await _accountServices.RegisterAsync(model);
+                    return Ok(result);
                 }
                 return BadRequest(ModelState);
             }
@@ -98,21 +66,19 @@ namespace UserManagementAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.Email);
-                    var respone = new LoginRespone();
-                    if (user == null)
+                    var respone = await _accountServices.LoginAsync(model.Email, model.Password);
+                    if (respone.Error == Constants.StatusCode.UserNotFound)
                     {
-                        return BadRequest(Constants.StatusCode.InvalidCredentials);
+                        return BadRequest(Constants.StatusCode.UserNotFound);
                     }
-
-                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-                    if (!result.Succeeded)
+                    else if (respone.Error == Constants.StatusCode.WrongPassWord)
                     {
-                        return Unauthorized();
+                        return BadRequest(Constants.StatusCode.WrongPassWord);
                     }
-                    respone.UserId = user.Id;
-                    respone.AccessToken = await _tokenServices.GenerateAccessToken(user);
-                    respone.RefreshToken = await _tokenServices.GenerateRefreshToken(user);
+                    else if (respone.Error != string.Empty)
+                    {
+                        return BadRequest("Login failed: " + respone.Error);
+                    }
                     return Ok(respone);
                 }
                 return BadRequest(ModelState);
@@ -158,7 +124,7 @@ namespace UserManagementAPI.Controllers
             try
             {
                 await _signInManager.SignOutAsync();
-                return Ok("Logout successful");
+                return Ok(true);
             }
             catch (Exception ex)
             {
@@ -166,13 +132,13 @@ namespace UserManagementAPI.Controllers
             }
         }
 
-        [HttpPost("logoutall")]
+        [HttpPost("logoutalldevice")]
         public async Task<IActionResult> LogoutAllAsync([FromBody] string userId)
         {
             try
             {
-                await _signInManager.SignOutAsync();
-                var result = await _tokenServices.RemoveTokens(userId ?? "");
+                var result = await _accountServices.LogoutAllDeviceAsync(userId);
+
                 if (result)
                 {
                     return Ok("Logout successful");
