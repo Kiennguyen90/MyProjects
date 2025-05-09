@@ -5,17 +5,6 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="#home" class="nav-link px-2 link-secondary white-text">Home</a></li>
                 
-                <li class="dropdown">
-                    <a href="#"class="nav-link px-2 link-dark dropdown-toggle white-text" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
-                    <ul class="dropdown-menu text-small" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="#">Service 1</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Service 2</a>
-                        </li>
-                    </ul>
-                </li>
                 <li>
                     <a href="#about" class="nav-link px-2 link-dark white-text">About Me</a>
                 </li>
@@ -41,7 +30,7 @@
             </div>
             <div *ngIf="!isLogin" class="dropdown text-end">
                 <button [routerLink]="['/login']" class="common-button">Login</button>
-                <button [routerLink]="['/register']" class="common-button">Register</button>
+                <button *ngIf="!isRegister" [routerLink]="['/register']" class="common-button">Register</button>
             </div>
         </div>
     </div>
