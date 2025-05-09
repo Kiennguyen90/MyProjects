@@ -1,6 +1,7 @@
 @media (min-width: 700px) {
     .register-container {
-        padding-top: 100px;
+        justify-content: center;
+        align-items: center;
         height: 100vh !important;
     }
 

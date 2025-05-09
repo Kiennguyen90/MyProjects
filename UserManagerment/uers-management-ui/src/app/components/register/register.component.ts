@@ -19,6 +19,7 @@ export class RegisterComponent {
   registerPayload : RegisterModel = {fullName : '', email: '' , password: '', confirmPassword: ''};
   isSucceed: boolean | undefined;
   isPressRegister: boolean = false;
+  isRegister: boolean = true;
 
 
   registerForm = new FormGroup({
@@ -49,9 +50,10 @@ export class RegisterComponent {
       return;
     }
     await this.accountService.Register(this.registerPayload)
-    .then((response) => {this.isSucceed = response});
+    .then((response) => {
+      this.isSucceed = response
+    });
     if(this.isSucceed){
-      debugger
       this.router.navigate(['/']);
     }
     else{

@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
+import e from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class AccountService {
   async Register(registerPayload: RegisterModel): Promise<boolean> {
     try {
       const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/register`, registerPayload));
-      if (response) {
+      if (response.error === "") {
         this.userId = response.userId;
         this.accessToken = response.accessToken;
         this.refreshToken = response.refreshToken;
@@ -38,6 +39,11 @@ export class AccountService {
         this.authService.setUserId(this.userId);
         console.log('Account Register Succeed');
         return true;
+      }
+      else 
+      {
+        this.isRegisterSucceed = false;
+        console.log('Account Register Failed');
       }
     } catch (error) {
       console.error('Register error:', error);

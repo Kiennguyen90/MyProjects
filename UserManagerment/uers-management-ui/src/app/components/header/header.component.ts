@@ -15,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent {
   @Input() userModel!: UserModel|undefined;
   @Input() isLogin!: boolean|undefined;
+  @Input() isRegister!: boolean|undefined;
 
   accountService = inject(AccountService);
   authService = inject(AuthService);
