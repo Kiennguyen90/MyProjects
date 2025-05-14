@@ -111,6 +111,33 @@ namespace UserCore.Services.Implements
             }
         }
 
+        public async Task<LoginRespone> LoginByGoogleAsync(string email)
+        {
+            try
+            {
+                var respone = new LoginRespone();
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    respone.Error = Constants.StatusCode.UserNotFound;
+                    return respone;
+                }
+                respone.UserId = user.Id;
+                respone.AccessToken = await _tokenServices.GenerateAccessToken(user);
+                respone.RefreshToken = await _tokenServices.GenerateRefreshToken(user);
+                return respone;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error logging in user {Email}", email);
+                return new LoginRespone
+                {
+                    Error = e.Message
+                };
+            }
+            
+        }
+
         //public async Task<LoginRespone> LoginByRefreshToken(string refreshToken, string email)
         //{
         //    try

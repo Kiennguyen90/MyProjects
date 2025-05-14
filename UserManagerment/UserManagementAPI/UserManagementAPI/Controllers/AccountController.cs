@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Google.Apis.Auth;
 using Infrastructure.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -148,6 +149,38 @@ namespace UserManagementAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Error logging out: " + ex.Message);
+            }
+        }
+
+        [HttpPost("auth/google")]
+        public async Task<IActionResult> GoogleAuth([FromBody] GoogleTokenModel model)
+        {
+            try
+            {
+                var payload = await GoogleJsonWebSignature.ValidateAsync(model.Token);
+                var email = payload.Email;
+                var name = payload.Name;
+
+                var respone = await _accountServices.LoginByGoogleAsync(email);
+                if (respone.Error == Constants.StatusCode.UserNotFound)
+                {
+                    RegisterRequest registerRequest = new RegisterRequest { Email = email, FullName = name, Password = "LoginByGoogle.240790", ConfirmPassword = "LoginByGoogle.240790" };
+                    respone = await _accountServices.RegisterAsync(registerRequest);
+                    return Ok(respone);
+                }
+                else if (respone.Error == Constants.StatusCode.WrongPassWord)
+                {
+                    return BadRequest(Constants.StatusCode.WrongPassWord);
+                }
+                else if (respone.Error != string.Empty)
+                {
+                    return BadRequest("Login failed: " + respone.Error);
+                }
+                return Ok(respone);
+            }
+            catch (InvalidJwtException)
+            {
+                return Unauthorized();
             }
         }
     }

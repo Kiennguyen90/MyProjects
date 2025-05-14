@@ -70,7 +70,10 @@ namespace UserManagementAPI.Controllers
                 var userServices = await _aplicationServices.GetSevicesByUserIdAsync(id);
                 var userInformationRespone = _mapper.Map<UserComonInfoRespone>(user);
                 userInformationRespone.Role = userRoles.FirstOrDefault() ?? "";
-                userInformationRespone.Services = userServices.Select(x => x.Id).ToList();
+                if(userServices != null)
+                {
+                    userInformationRespone.Services = userServices.Select(x => x.Id).ToList();
+                }
                 return Ok(userInformationRespone);
             }
             catch (Exception e)

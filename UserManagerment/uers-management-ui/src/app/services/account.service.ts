@@ -4,7 +4,7 @@ import { AuthModel } from '../interfaces/auth-model';
 import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RegisterModel } from '../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
 import e from 'express';
@@ -40,8 +40,7 @@ export class AccountService {
         console.log('Account Register Succeed');
         return true;
       }
-      else 
-      {
+      else {
         this.isRegisterSucceed = false;
         console.log('Account Register Failed');
       }
@@ -73,9 +72,32 @@ export class AccountService {
     return "error";
   }
 
-  async SignOut() : Promise <boolean> {
+  async LoginByGoogle(token: string): Promise<string | ""> {
+    try {      
+      const data = { token: token };
+      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/auth/google`, data));
+
+      if (response) {
+        this.userId = response.userId;
+        this.accessToken = response.accessToken;
+        this.refreshToken = response.refreshToken;
+        this.isLoginSucceed = true;
+
+        this.authService.setAccessToken(this.accessToken);
+        this.authService.setRefreshToken(this.refreshToken);
+        this.authService.setUserId(this.userId);
+        console.log('Account Login Succeed');
+        return this.userId;
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+    return "error";
+  }
+
+  async SignOut(): Promise<boolean> {
     try {
-      var response = await lastValueFrom (this.http.post<boolean>(`${this.baseUrl}/Account/logout`, {}));
+      var response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/Account/logout`, {}));
       if (response === true) {
         this.isLogOutSucceed = true;
       }

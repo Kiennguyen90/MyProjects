@@ -7,6 +7,7 @@ namespace UserCore.Services.Interfaces
     {
         Task<LoginRespone> RegisterAsync(RegisterRequest model);
         Task<LoginRespone> LoginAsync(string email, string password);
+        Task<LoginRespone> LoginByGoogleAsync(string email);
         Task<bool> LogoutAllDeviceAsync(string userId);
 
     }

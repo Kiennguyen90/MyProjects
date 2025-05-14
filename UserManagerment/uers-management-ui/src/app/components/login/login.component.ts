@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor( private router: Router, private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private router: Router, private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -41,23 +41,26 @@ export class LoginComponent implements OnInit {
           client_id: "333413287567-mmh71anmggqo2dbg4nqopk38n8s1g9j7.apps.googleusercontent.com",
           callback: this.handleGoogleCallback.bind(this),
         });
-  
+
         google.accounts.id.renderButton(
           document.getElementById("g_id_signin"),
-          { theme: "outline", size: "large" }
+          { theme: "outline", size: "large", text: "continue_with", shape: "rectangular", logo_alignment: "right" }
         );
-  
-        // google.accounts.id.prompt();
       }).catch(error => {
         console.error("Google API failed to load", error);
       });
     }
   }
 
-  handleGoogleCallback(response: any): void {
-    // Implement your logic with response
-    console.log('Google login response', response);
-    // Process the JWT token, etc.
+  async handleGoogleCallback(response: any){
+    const token = response.credential;
+    const result = await this.accountService.LoginByGoogle(token);
+    this.userId = result;
+      if (this.userId !== "error") {
+        this.router.navigate(['/']);
+      } else {
+        console.error("Login error");
+      }
   }
 
   private loadGoogleApi(): Promise<void> {
@@ -66,7 +69,7 @@ export class LoginComponent implements OnInit {
       if (document.getElementById(scriptId)) {
         return resolve();
       }
-      
+
       const script = document.createElement('script');
       script.id = scriptId;
       script.src = 'https://accounts.google.com/gsi/client';
@@ -83,7 +86,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-    
+
     const { email, password } = this.loginForm.value;
     try {
       const response = await this.accountService.Login(email ?? '', password ?? '');
