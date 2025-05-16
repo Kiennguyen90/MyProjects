@@ -69,7 +69,7 @@ namespace UserManagementAPI.Controllers
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var userServices = await _aplicationServices.GetSevicesByUserIdAsync(id);
                 var userInformationRespone = _mapper.Map<UserComonInfoRespone>(user);
-                userInformationRespone.Role = userRoles.FirstOrDefault() ?? "";
+                userInformationRespone.userRole = userRoles.FirstOrDefault() ?? "";
                 if(userServices != null)
                 {
                     userInformationRespone.Services = userServices.Select(x => x.Id).ToList();

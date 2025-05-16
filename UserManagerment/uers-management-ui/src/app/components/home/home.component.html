@@ -19,7 +19,7 @@
             </div>
             <div class="row services-container container" style="padding-top: 50px; padding-bottom: 50px;">
                 <div *ngIf="servicesModel.isShopHouse" class="col home-card"> Shop House Online</div>
-                <div *ngIf="servicesModel.isCrypto" class="col home-card">Crypto Investor</div>
+                <div *ngIf="servicesModel.isCrypto" class="col home-card" (click)="onDivClick()">Crypto Investor</div>
                 <div class="col home-card">Other Services</div>
                 <!-- <div class="col home-card">Profile</div> -->
               </div>
