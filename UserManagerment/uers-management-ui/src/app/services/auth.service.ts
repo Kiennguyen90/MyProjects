@@ -9,12 +9,12 @@ export class AuthService {
   private refreshToken: string | null = null;
   private userId: string | null = null;
 
-  setUserId(userId: string) {
+  setCurrentUserId(userId: string) {
     this.userId = userId;
     localStorage.setItem('user_Id', userId);
   }
 
-  getUserId(): string | null {
+  getCurrentUserId(): string | null {
     if (!this.userId && typeof window !== 'undefined' && window.localStorage) {
       this.userId = localStorage.getItem('user_Id');
     }

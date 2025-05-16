@@ -36,7 +36,7 @@ export class AccountService {
 
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
-        this.authService.setUserId(this.userId);
+        this.authService.setCurrentUserId(this.userId);
         console.log('Account Register Succeed');
         return true;
       }
@@ -62,7 +62,7 @@ export class AccountService {
 
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
-        this.authService.setUserId(this.userId);
+        this.authService.setCurrentUserId(this.userId);
         console.log('Account Login Succeed');
         return this.userId;
       }
@@ -85,7 +85,7 @@ export class AccountService {
 
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
-        this.authService.setUserId(this.userId);
+        this.authService.setCurrentUserId(this.userId);
         console.log('Account Login Succeed');
         return this.userId;
       }

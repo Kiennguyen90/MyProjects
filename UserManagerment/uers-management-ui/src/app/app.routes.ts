@@ -16,5 +16,15 @@ export const routes: Routes = [
         loadComponent: () => import('./components/login/login.component').then(c => c.LoginComponent),
         title: 'Login',
     },
+    {
+        path: 'cryptoadmin',
+        loadComponent: () => import('./components/cryptoadmin/cryptoadmin.component').then(c => c.CryptoadminComponent),
+        title: 'CryptoAdmin',
+    },
+    {
+        path: 'cryptouser/:userid',
+        loadComponent: () => import('./components/cryptouser/cryptouser.component').then(c => c.CryptouserComponent),
+        title: 'CryptoAdmin',
+    },
 ];
 export default routes;

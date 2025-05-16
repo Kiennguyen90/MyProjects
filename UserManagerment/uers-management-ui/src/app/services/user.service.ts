@@ -11,7 +11,7 @@ import { lastValueFrom } from 'rxjs';
 export class UserService {
   private baseUrl = environment.apiUrl;
   private authService = inject(AuthService);
-  userComonInformation: UserModel = { userId: '', email: '', fullName: '', phoneNumber: '', avatar: '', userRole: '', services: [] };
+  userComonInformation: UserModel = { id: '', email: '', fullName: '', phoneNumber: '', avatar: '', userRole: '', services: [] };
   getUserSucceed: boolean | undefined;
 
   constructor(private http: HttpClient) { }

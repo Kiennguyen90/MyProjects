@@ -1,0 +1,49 @@
+
+.status-active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.profit-positive {
+    color: #16a34a;
+}
+
+.profit-negative {
+    color: #dc2626;
+}
+
+.modal {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.modal-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modal-backdrop {
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop-enter {
+    opacity: 0;
+}
+
+.modal-backdrop-enter-active {
+    opacity: 0.5;
+}
