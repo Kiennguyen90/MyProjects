@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "XwPpCkD8Y0I=",
+  "success": true,
+  "projectFilePath": "D:\\MyProjects\\BE-NetCore-code\\UserManagementAPI\\CryptoInvestmentAPI\\CryptoInvestmentAPI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kien\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.3\\microsoft.aspnetcore.openapi.9.0.3.nupkg.sha512",
+    "C:\\Users\\Kien\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512",
+    "C:\\Users\\Kien\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512"
+  ],
+  "logs": []
+}
