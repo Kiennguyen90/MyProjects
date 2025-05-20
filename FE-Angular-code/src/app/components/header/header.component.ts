@@ -17,7 +17,7 @@ export class HeaderComponent {
   @Input() isLogin!: boolean|undefined;
   @Input() isRegister!: boolean|undefined;
   
-  imagePath: string = '../../../assets/icons/mylogo.jpg';
+  imagePath: string = '../../../assets/icons/mylogo.png';
 
   accountService = inject(AccountService);
   authService = inject(AuthService);
