@@ -1,6 +1,0 @@
-@CryptoInvestmentServices_HostAddress = http://localhost:5029
-
-GET {{CryptoInvestmentServices_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
