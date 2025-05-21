@@ -4,12 +4,22 @@
 
 BE-NetCore-code/App-api/CryptoInvestmentAPI/obj
 BE-NetCore-code/App-api/CryptoInvestmentAPI/bin
+BE-NetCore-code/App-api/CryptoInfrastructure/obj
+BE-NetCore-code/App-api/CryptoInfrastructure/bin
+BE-NetCore-code/App-api/CryptoCore/obj
+BE-NetCore-code/App-api/CryptoCore/bin
+
 BE-NetCore-code/App-api/UserManagementAPI/obj
 BE-NetCore-code/App-api/UserManagementAPI/bin
+
 BE-NetCore-code/App-api/UserCore/obj
 BE-NetCore-code/App-api/UserCore/bin
+
 BE-NetCore-code/App-api/Infrastructure/obj
+BE-NetCore-code/App-api/Infrastructure/obj/Debug/net9.0
 BE-NetCore-code/App-api/Infrastructure/bin
+BE-NetCore-code/App-api/Infrastructure/bin/Debug/net9.0
+
 BE-NetCore-code/App-api/.vs
 
 *.bin
