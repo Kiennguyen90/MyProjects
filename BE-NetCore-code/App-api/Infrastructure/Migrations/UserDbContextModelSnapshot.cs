@@ -22,24 +22,6 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.Model.ApplicationService", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationServices");
-                });
-
             modelBuilder.Entity("Infrastructure.Model.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -63,6 +45,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Gender")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -111,10 +96,34 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Model.ApplicationUserService", b =>
+            modelBuilder.Entity("Infrastructure.Model.Service", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ServiceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Infrastructure.Model.UserService", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ServiceId")
                         .IsRequired()
@@ -130,7 +139,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUserServices");
+                    b.ToTable("UserServices");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -292,16 +301,16 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUserToken");
                 });
 
-            modelBuilder.Entity("Infrastructure.Model.ApplicationUserService", b =>
+            modelBuilder.Entity("Infrastructure.Model.UserService", b =>
                 {
-                    b.HasOne("Infrastructure.Model.ApplicationService", "Service")
-                        .WithMany("ApplicationUserServices")
+                    b.HasOne("Infrastructure.Model.Service", "Service")
+                        .WithMany("UserServices")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Infrastructure.Model.ApplicationUser", "User")
-                        .WithMany("ApplicationUserServices")
+                        .WithMany("UserServices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -362,14 +371,14 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Infrastructure.Model.ApplicationService", b =>
-                {
-                    b.Navigation("ApplicationUserServices");
-                });
-
             modelBuilder.Entity("Infrastructure.Model.ApplicationUser", b =>
                 {
-                    b.Navigation("ApplicationUserServices");
+                    b.Navigation("UserServices");
+                });
+
+            modelBuilder.Entity("Infrastructure.Model.Service", b =>
+                {
+                    b.Navigation("UserServices");
                 });
 #pragma warning restore 612, 618
         }
