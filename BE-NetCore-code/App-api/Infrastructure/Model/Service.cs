@@ -11,10 +11,10 @@ namespace Infrastructure.Model
     {
         [Required]
         public string Id { get; set; }
+
         [Required]
-        public string UserId { get; set; }
-        [Required]
-        public string ServiceId { get; set; }
+        public string Description { get; set; }
+
 
         public ICollection<UserService> UserServices { get; set; }
     }

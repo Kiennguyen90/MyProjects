@@ -49,7 +49,7 @@ namespace UserCore.Services.Implements
                             Error = Constants.StatusCode.RegisterServiceFailed
                         };
                     }
-                    var registerRole = await _userManager.AddToRoleAsync(user, Constants.UserRoles.USER);
+                    var registerRole = await _userManager.AddToRoleAsync(user, Constants.UserRoles.USERROLEID);
                     if (!registerRole.Succeeded)
                     {
                         return new LoginRespone
