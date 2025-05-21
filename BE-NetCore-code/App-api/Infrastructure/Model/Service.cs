@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Model
 {
-    public class ApplicationService
+    public class Service
     {
+        [Required]
         public string Id { get; set; }
+        [Required]
         public string UserId { get; set; }
+        [Required]
         public string ServiceId { get; set; }
 
-        public ICollection<ApplicationUserService> ApplicationUserServices { get; set; }
+        public ICollection<UserService> UserServices { get; set; }
     }
 }

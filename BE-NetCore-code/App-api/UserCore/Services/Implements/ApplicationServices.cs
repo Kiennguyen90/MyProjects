@@ -21,11 +21,11 @@ namespace UserCore.Services.Implements
             _logger = logger;
         }
 
-        public async Task<List<ApplicationService>> GetAllSevicesAsync()
+        public async Task<List<Service>> GetAllSevicesAsync()
         {
             try
             {
-               return await _userDbContext.ApplicationServices.AsNoTracking().ToListAsync();
+               return await _userDbContext.Services.AsNoTracking().ToListAsync();
             }
             catch (Exception ex)
             {
@@ -34,17 +34,17 @@ namespace UserCore.Services.Implements
             }
         }
 
-        public async Task<List<ApplicationService>> GetSevicesByUserIdAsync(string userId)
+        public async Task<List<Service>> GetSevicesByUserIdAsync(string userId)
         {
             try
             {
-                var userServices = await _userDbContext.ApplicationUserServices.Where(x=> x.UserId == userId).AsNoTracking().ToListAsync();
-                if (userServices == null || userServices.Count == 0)
+                var userServices = await _userDbContext.UserServices.Where(x=> x.UserId == userId).AsNoTracking().ToListAsync();
+                if (userServices == null || userServices.Count() == 0)
                 {
                     return null;
                 }
                 var serviceIds = userServices.Select(x => x.ServiceId).ToList();
-                var services = await _userDbContext.ApplicationServices
+                var services = await _userDbContext.Services
                     .Where(x => serviceIds.Contains(x.Id))
                     .AsNoTracking()
                     .ToListAsync();
@@ -62,7 +62,7 @@ namespace UserCore.Services.Implements
         {
             try
             {
-                await _userDbContext.ApplicationUserServices.AddAsync(new ApplicationUserService
+                await _userDbContext.UserServices.AddAsync(new UserService
                 {
                     Id = Guid.NewGuid().ToString(),
                     ServiceId = serviceId,

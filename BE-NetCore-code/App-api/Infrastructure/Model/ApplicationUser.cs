@@ -7,6 +7,6 @@ namespace Infrastructure.Model
         public string? FullName { get; set; }
         public bool Gender { get; set; }
         public bool IsActive { get; set; } = true;
-        public ICollection<ApplicationUserService> ApplicationUserServices { get; set; }
+        public ICollection<UserService> UserServices { get; set; }
     }
 }

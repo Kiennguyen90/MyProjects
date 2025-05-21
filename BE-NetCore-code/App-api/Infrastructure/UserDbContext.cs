@@ -11,9 +11,9 @@
         public UserDbContext(DbContextOptions<UserDbContext> options) :
         base(options)
         { }
-        public DbSet<ApplicationUserToken> ApplicationUserToken { get; set; }
-        public DbSet<ApplicationUserService> ApplicationUserServices { get; set; }
-        public DbSet<ApplicationService> ApplicationServices { get; set; }
+        public DbSet<ApplicationUserToken> ApplicationUserTokens { get; set; }
+        public DbSet<UserService> UserServices { get; set; }
+        public DbSet<Service> Services { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //builder.Entity<ApplicationUserService>()
