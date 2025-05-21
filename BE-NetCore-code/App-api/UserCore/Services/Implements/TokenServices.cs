@@ -38,12 +38,12 @@ namespace UserCore.Services.Implements
             try
             {
                 var tokenValue = GenerateRandomTokenValue();
-                var refreshtoken = await _userDbContext.ApplicationUserToken.FirstOrDefaultAsync(x => x.UserId == user.Id && x.LoginProvider == "InternalProvider" && x.Name == "RefreshToken");
+                var refreshtoken = await _userDbContext.ApplicationUserTokens.FirstOrDefaultAsync(x => x.UserId == user.Id && x.LoginProvider == "InternalProvider" && x.Name == "RefreshToken");
                 if (refreshtoken != null)
                 {
                     refreshtoken.Value = tokenValue;
                     refreshtoken.ExpireTime = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("ExpiryDuration:ExpiryDuration"));
-                    _userDbContext.ApplicationUserToken.Update(refreshtoken);
+                    _userDbContext.ApplicationUserTokens.Update(refreshtoken);
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace UserCore.Services.Implements
                         CreatedAt = DateTime.UtcNow,
                         ExpireTime = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("ExpiryDuration:ExpiryDuration")),
                     };
-                    await _userDbContext.ApplicationUserToken.AddAsync(token);
+                    await _userDbContext.ApplicationUserTokens.AddAsync(token);
                 }
                 await _userDbContext.SaveChangesAsync();
                 return tokenValue;
@@ -79,7 +79,7 @@ namespace UserCore.Services.Implements
                     return Constants.StatusCode.UserNotFound;
                 }
 
-                var token = await _userDbContext.ApplicationUserToken.FirstOrDefaultAsync(x => x.Value == refreshToken && x.UserId == user.Id);
+                var token = await _userDbContext.ApplicationUserTokens.FirstOrDefaultAsync(x => x.Value == refreshToken && x.UserId == user.Id);
                 if (token == null)
                 {
                     return Constants.StatusCode.RefreshTokenNotFound;
@@ -102,10 +102,10 @@ namespace UserCore.Services.Implements
         {
             try
             {
-                var tokens = await _userDbContext.ApplicationUserToken.Where(x => x.UserId == userId).ToListAsync();
+                var tokens = await _userDbContext.ApplicationUserTokens.Where(x => x.UserId == userId).ToListAsync();
                 if (tokens != null && tokens.Count > 0)
                 {
-                    _userDbContext.ApplicationUserToken.RemoveRange(tokens);
+                    _userDbContext.ApplicationUserTokens.RemoveRange(tokens);
                     await _userDbContext.SaveChangesAsync();
                     return true;
                 }

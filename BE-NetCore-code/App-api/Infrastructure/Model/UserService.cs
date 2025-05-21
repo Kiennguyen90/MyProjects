@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Model
 {
-    public class ApplicationUserService
+    public class UserService
     {
         public string Id { get; set; }
         public string UserId { get; set; }
@@ -19,6 +19,6 @@ namespace Infrastructure.Model
         [ForeignKey("UserId")]
         public ApplicationUser User{ get; set; }
         [ForeignKey("ServiceId")]
-        public ApplicationService Service { get; set; }
+        public Service Service { get; set; }
     }
 }

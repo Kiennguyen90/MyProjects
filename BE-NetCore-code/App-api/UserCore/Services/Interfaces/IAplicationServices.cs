@@ -10,8 +10,8 @@ namespace UserCore.Services.Interfaces
     public interface IAplicationServices
     {
         Task <bool> RegisterServiceAsync(string serviceId, string userId);
-        Task<List<ApplicationService>> GetAllSevicesAsync();
-        Task<List<ApplicationService>> GetSevicesByUserIdAsync(string userId);
+        Task<List<Service>> GetAllSevicesAsync();
+        Task<List<Service>> GetSevicesByUserIdAsync(string userId);
 
     }
 }
