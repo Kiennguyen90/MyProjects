@@ -25,6 +25,7 @@ BE-NetCore-code/App-api/.vs
 *.bin
 *.obj
 *.suo
+*.cache
 # Visual Studio 2022    
 /UserManagerment/UserManagementAPI/.vs/UserManagementAPI/CopilotIndices
 /UserManagerment/UserManagementAPI/.vs/UserManagementAPI/FileContentIndex
