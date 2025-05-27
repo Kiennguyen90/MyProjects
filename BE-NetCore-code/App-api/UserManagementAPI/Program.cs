@@ -100,6 +100,28 @@ builder.Services.AddScoped<IAccountServices, AccountServices>();
 builder.Services.AddScoped<IAplicationServices, ApplicationServices>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
+var allowedHosts = builder.Configuration["AllowedHosts"];
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        op =>
+        {
+            if (string.IsNullOrEmpty(allowedHosts) || allowedHosts == "*")
+            {
+                op.AllowAnyOrigin();
+            }
+            else
+            {
+                op.WithOrigins(allowedHosts.Split(';'));
+            }
+
+            op.AllowAnyHeader();
+            op.AllowAnyMethod();
+        });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -118,9 +140,7 @@ app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors();
 app.UseAuthentication();
 
 app.UseAuthorization();
