@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   getAccessToken(): string | null {
-    if (!this.accessToken) {
+    if (!this.accessToken && typeof window !== 'undefined' && window.localStorage) {
       this.accessToken = localStorage.getItem('access_token');
     }
     return this.accessToken;

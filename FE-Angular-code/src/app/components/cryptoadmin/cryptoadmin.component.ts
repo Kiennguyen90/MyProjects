@@ -3,7 +3,6 @@ import { NgIf, CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
-import { ServicesModel } from '../../interfaces/services-model';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 

@@ -10,6 +10,8 @@ using Constants = UserCore.Constants;
 
 namespace UserManagementAPI.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class ServiceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -21,10 +23,6 @@ namespace UserManagementAPI.Controllers
             _userManager = userManager;
             _mapper = mapper;
             _aplicationServices = aplicationServices;
-        }
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -47,17 +45,22 @@ namespace UserManagementAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
+        [Route("GetAllServices")]
         public async Task<IActionResult> GetAllServicesAsync()
         {
             try
             {
                 var result = await _aplicationServices.GetAllSevicesAsync();
+                if (result == null)
+                {
+                    return NotFound(Constants.StatusCode.GetServiceFailed);
+                }
                 return Ok(result);
             }
             catch (Exception e)
             {
-                return BadRequest(Constants.StatusCode.RegisterFailed + e.Message);
+                return BadRequest(Constants.StatusCode.GetServiceFailed + e.Message);
             }
         }
     }

@@ -41,22 +41,22 @@ namespace UserCore.Services.Implements
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var registerService = await _aplicationServices.RegisterServiceAsync(Constants.Services.CRYPTO, user.Id);
-                    if (!registerService)
-                    {
-                        return new LoginRespone
-                        {
-                            Error = Constants.StatusCode.RegisterServiceFailed
-                        };
-                    }
-                    var registerRole = await _userManager.AddToRoleAsync(user, Constants.UserRoles.USERROLEID);
-                    if (!registerRole.Succeeded)
-                    {
-                        return new LoginRespone
-                        {
-                            Error = Constants.StatusCode.RegisterRoleFailed
-                        };
-                    }
+                    //var registerService = await _aplicationServices.RegisterServiceAsync(Constants.Services.CRYPTO, user.Id);
+                    //if (!registerService)
+                    //{
+                    //    return new LoginRespone
+                    //    {
+                    //        Error = Constants.StatusCode.RegisterServiceFailed
+                    //    };
+                    //}
+                    //var registerRole = await _userManager.AddToRoleAsync(user, Constants.UserRoles.USERROLEID);
+                    //if (!registerRole.Succeeded)
+                    //{
+                    //    return new LoginRespone
+                    //    {
+                    //        Error = Constants.StatusCode.RegisterRoleFailed
+                    //    };
+                    //}
                     respone = await LoginAsync(model.Email, model.Password);
                     return respone;
                 }

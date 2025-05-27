@@ -18,12 +18,18 @@
                 <h5>Please choose a Service</h5>
             </div>
             <div class="row services-container container" style="padding-top: 50px; padding-bottom: 50px;">
-                <div *ngIf="servicesModel.isShopHouse" class="col home-card"> Shop House Online</div>
-                <div *ngIf="servicesModel.isCrypto" class="col home-card" (click)="onDivClick()">Crypto Investor</div>
-                <div class="col home-card">Other Services</div>
+                <div *ngFor="let service of ListServices">
+                    <div *ngIf="service.id == '7FF6451C-7D2E-4568-B6D2-D84E27E18319'" class="col home-card" (click)="onDivClick()">
+                        <!-- <img src="assets/images/crypto.png" alt="Crypto Investor" /> -->
+                        <h4>Crypto Investor</h4>
+                    </div>
+                    <div *ngIf="service.id === 'B11CE3B0-3074-421C-A601-B7BF9252C78C'" class="col home-card" (click)="onDivClick()">
+                        <!-- <img src="assets/images/shop-house.png" alt="Shop House Online" /> -->
+                        <h4>Shop House Online</h4>
+                    </div>
+                </div>
                 <!-- <div class="col home-card">Profile</div> -->
-              </div>
+            </div>
         </div>
     </div>
 </section>
-

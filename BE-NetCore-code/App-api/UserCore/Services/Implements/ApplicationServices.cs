@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserCore.Services.Interfaces;
+using UserCore.ViewModels.Respones;
 
 namespace UserCore.Services.Implements
 {
@@ -21,11 +22,20 @@ namespace UserCore.Services.Implements
             _logger = logger;
         }
 
-        public async Task<List<Service>> GetAllSevicesAsync()
+        public async Task<List<ServiceRespone>> GetAllSevicesAsync()
         {
             try
             {
-               return await _userDbContext.Services.AsNoTracking().ToListAsync();
+                var result = new List<ServiceRespone>();
+                result = await _userDbContext.Services
+                    .Select(x => new ServiceRespone
+                    {
+                        Id = x.Id,
+                        Description = x.Description
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
+                return result;
             }
             catch (Exception ex)
             {

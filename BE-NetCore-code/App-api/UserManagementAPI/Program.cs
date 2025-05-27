@@ -18,21 +18,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("SQLServerIdentityConnection") ?? throw new InvalidOperationException("Connection string 'SQLServerIdentityConnection' not found.");
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("POLICY", corsPolicyBuilder =>
-    {
-        corsPolicyBuilder
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
-            var orig = builder.Configuration.GetSection("AllowSpecificOrigin").Get<List<string>>();
-        if (orig != null)
-        {
-            corsPolicyBuilder.WithOrigins(orig.ToArray());
-        }
-    });
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("POLICY", corsPolicyBuilder =>
+//    {
+//        corsPolicyBuilder
+//            .AllowAnyHeader()
+//            .AllowAnyMethod()
+//            .AllowCredentials();
+//            var orig = builder.Configuration.GetSection("AllowSpecificOrigin").Get<List<string>>();
+//        if (orig != null)
+//        {
+//            corsPolicyBuilder.WithOrigins(orig.ToArray());
+//        }
+//    });
+//});
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -118,7 +118,9 @@ app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCors("POLICY");
+app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 app.UseAuthentication();
 
 app.UseAuthorization();

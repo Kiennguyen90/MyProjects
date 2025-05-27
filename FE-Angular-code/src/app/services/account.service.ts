@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RegisterModel } from '../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
-import e from 'express';
 
 @Injectable({
   providedIn: 'root'
