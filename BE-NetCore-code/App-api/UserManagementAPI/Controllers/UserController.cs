@@ -3,6 +3,7 @@ using Infrastructure.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Respones;
 using Constants = UserCore.Constants;
@@ -69,10 +70,22 @@ namespace UserManagementAPI.Controllers
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var userServices = await _aplicationServices.GetSevicesByUserIdAsync(id);
                 var userInformationRespone = _mapper.Map<UserComonInfoRespone>(user);
-                userInformationRespone.userRole = userRoles.FirstOrDefault() ?? "";
+                if (userRoles != null)
+                {
+                    userInformationRespone.userRole = userRoles.FirstOrDefault() ?? "";
+                }
                 if(userServices != null)
                 {
-                    userInformationRespone.Services = userServices.Select(x => x.Id).ToList();
+                    var services = new List <UserServiceRespone>();
+                    foreach (var userService in userServices) {
+                        var userServiceRespone = new UserServiceRespone
+                        {
+                            ServiceId = userService.ServiceId,
+                            RoleId = userService.UserRoleService.RoleId,
+                        };
+                        services.Add(userServiceRespone);
+                    }
+                    userInformationRespone.Services = services;
                 }
                 return Ok(userInformationRespone);
             }

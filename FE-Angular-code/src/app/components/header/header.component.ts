@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { CommonModule, NgIf, NgOptimizedImage  } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
 import { AccountService } from '../../services/account.service';
@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterLink, NgIf, NgOptimizedImage],
+  imports: [CommonModule, RouterLink, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

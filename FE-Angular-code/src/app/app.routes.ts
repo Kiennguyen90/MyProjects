@@ -26,5 +26,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/cryptouser/cryptouser.component').then(c => c.CryptouserComponent),
         title: 'CryptoAdmin',
     },
+    {
+        path: 'registerservice/:serviceid',
+        loadComponent: () => import('./components/registerservice/registerservice.component').then(c => c.RegisterserviceComponent),
+        title: 'CryptoAdmin',
+    },
 ];
 export default routes;

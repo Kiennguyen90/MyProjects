@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { NgIf, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-adminview',
-  imports: [HeaderComponent, NgIf, CommonModule],
+  imports: [HeaderComponent, CommonModule],
   templateUrl: './cryptoadmin.component.html',
   styleUrl: './cryptoadmin.component.css'
 })

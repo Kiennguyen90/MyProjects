@@ -12,17 +12,14 @@ namespace Infrastructure.Model
     public class UserRoleService
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; }
         
         [Required]
         public string UserServiceId { get; set; }
-        [Required]
 
+        [Required]
         public string RoleId { get; set; }
 
-        [ForeignKey("UserServiceId")]
-        public UserService UserService { get; set; }
-        
         [ForeignKey("RoleId")]
         public IdentityRole Role { get; set; }
     }

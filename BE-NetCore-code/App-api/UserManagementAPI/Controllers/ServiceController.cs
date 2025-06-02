@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using UserCore.Services.Interfaces;
+using UserCore.ViewModels.Requests;
 using UserCore.ViewModels.Respones;
 using Constants = UserCore.Constants;
 
@@ -27,16 +28,17 @@ namespace UserManagementAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> RegisterService([FromBody] string servieceId, string userId)
+        [Route("RegisterService")]
+        public async Task<IActionResult> RegisterService([FromBody] RegisterServiceRequest request)
         {
             try
             {
-                var isSuccess = await _aplicationServices.RegisterServiceAsync(servieceId, userId);
+                var isSuccess = await _aplicationServices.RegisterServiceAsync(request.ServiceId, request.UserId, request.TypeId);
                 if (!isSuccess)
                 {
                     return BadRequest(Constants.StatusCode.RegisterFailed);
                 }
-                return Ok(Constants.StatusCode.Success);
+                return Ok(isSuccess);
             }
             catch (Exception e)
             {
@@ -56,6 +58,66 @@ namespace UserManagementAPI.Controllers
                 {
                     return NotFound(Constants.StatusCode.GetServiceFailed);
                 }
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(Constants.StatusCode.GetServiceFailed + e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetServicesByUserId")]
+        public async Task<IActionResult> GetServicesByUserIdAsync(string userId)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound(Constants.StatusCode.UserNotFound);
+                }
+                var result = await _aplicationServices.GetSevicesByUserIdAsync(userId);
+                if (result == null || result.Count == 0)
+                {
+                    return NotFound(Constants.StatusCode.GetServiceFailed);
+                }
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(Constants.StatusCode.GetServiceFailed + e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("{serviceId}")]
+        public async Task<IActionResult> GetServiceByIdAsync(string serviceId)
+        {
+            try
+            {
+                var result = await _aplicationServices.GetSevicesByIdAsync(serviceId);
+                if (result == null)
+                {
+                    return NotFound(Constants.StatusCode.GetServiceFailed);
+                }
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(Constants.StatusCode.GetServiceFailed + e.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Default")]
+        public async Task<IActionResult> GenegrateDefaultDataAsync()
+        {
+            try
+            {
+                var result = await _aplicationServices.GenegrateDefaultData();
                 return Ok(result);
             }
             catch (Exception e)

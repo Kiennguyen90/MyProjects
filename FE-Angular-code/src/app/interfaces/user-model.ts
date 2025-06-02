@@ -4,6 +4,11 @@ export interface UserModel {
     fullName: string,
     phoneNumber: string,
     avatar: string,
-    services: string[]
+    services: userServiceModel[] | undefined,
     userRole: string,
+}
+
+export interface userServiceModel {
+    serviceId: string,
+    roleId: string,
 }

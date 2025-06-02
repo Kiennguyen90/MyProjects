@@ -17,11 +17,10 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   async getUserById(id: string): Promise<UserModel | undefined> {
-    const headers = new HttpHeaders()
-      .set('X-Debug-Level', 'minimal')
-      .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-
     try {
+      const headers = new HttpHeaders()
+        .set('X-Debug-Level', 'minimal')
+        .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
       const response = await lastValueFrom(this.http.get<UserModel>(`${this.baseUrl}/User/${id}`, { headers }));
       this.userComonInformation = response;
       this.getUserSucceed = true;

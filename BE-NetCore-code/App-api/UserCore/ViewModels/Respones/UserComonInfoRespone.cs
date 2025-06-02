@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,12 @@ namespace UserCore.ViewModels.Respones
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
         public string userRole { get; set; }
-        public List<string> Services { get; set; }
+        public List<UserServiceRespone> Services { get; set; }
+    }
+
+    public class UserServiceRespone
+    {
+        public string ServiceId { get; set; }
+        public string RoleId { get; set; }
     }
 }

@@ -1,0 +1,26 @@
+.header-title {
+    background: linear-gradient(to right, #216c04, rgba(72, 72, 2, 0));
+    color: #fff;
+    border-top-left-radius : 25px;
+    border-top-right-radius : 25px;
+    padding: 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.card-service {
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: start;
+    background: linear-gradient(to right, #216c04, rgba(72, 72, 2, 0));
+    background-color: #8fd292;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    color: #fff;
+}
+.card-service:hover {
+    background-color: #b39c09;
+}
+.selected-service {
+    background-color: #b39c09;
+    border: #026a5e solid 1px;
+}

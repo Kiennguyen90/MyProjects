@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { catchError, lastValueFrom, Observable, of } from 'rxjs';
+import { catchError, lastValueFrom, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ServiceModel } from '../interfaces/service-model';
 
@@ -11,17 +11,28 @@ import { ServiceModel } from '../interfaces/service-model';
 export class CommonService {
   private baseUrl = environment.apiUrl;
   private authService = inject(AuthService);
-  private messageService : string | undefined;
+  private messageService: string | undefined;
   ListServices: ServiceModel[] | undefined;
+  SeletedService: ServiceModel | undefined;
 
   constructor(private http: HttpClient) { }
 
   async getAllService(): Promise<ServiceModel[] | undefined> {
     try {
-      const headers = new HttpHeaders()
-        .set('X-Debug-Level', 'minimal')
-        .set('host', 'http://localhost:4200')
-      const response = await lastValueFrom(this.http.get<ServiceModel[]>(`${this.baseUrl}/Service/GetAllServices`,{headers}));
+      const response = await lastValueFrom(this.http.get<ServiceModel[]>(`${this.baseUrl}/Service/GetAllServices`)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.error instanceof TypeError) {
+              // Client-side or network error
+              console.error('An error occurred:', error.error.message);
+            } else {
+              // Backend error
+              console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+            }
+            // Return an observable with user-friendly error message
+            return throwError(() => new Error('Something bad happened; please try again later.'));
+          })
+        ));
       this.ListServices = response;
       console.log("get ListService succeed");
       return this.ListServices;
@@ -31,20 +42,62 @@ export class CommonService {
     }
   }
 
-  private log(message: string) {
-  this.messageService = `CommonService: ${message}`;
-}
-  private handleError<T>(operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
+  async getServiceById(serviceId: string): Promise<ServiceModel | undefined> {
+    try {
+      const headers = new HttpHeaders()
+        .set('X-Debug-Level', 'minimal')
+        .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
+      const response = await lastValueFrom(this.http.get<ServiceModel>(`${this.baseUrl}/Service/${serviceId}`, { headers })
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.error instanceof TypeError) {
+              // Client-side or network error
+              console.error('An error occurred:', error.error.message);
+            } else {
+              // Backend error
+              console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+            }
+            // Return an observable with user-friendly error message
+            return throwError(() => new Error('Something bad happened; please try again later.'));
+          })
+        ));
+      this.SeletedService = response;
+      console.log("get Service succeed");
+      return this.SeletedService;
+    } catch (error) {
+      console.error("get Service failed", error);
+      return undefined;
+    }
+  }
 
-    // TODO: send the error to remote logging infrastructure
-    console.error(error); // log to console instead
+  async registerService(userId: string, serviceId: string, typeId: number): Promise<boolean> {
+    try {
+      const headers = new HttpHeaders()
+        .set('X-Debug-Level', 'minimal')
+        .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
+      const response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/Service/registerService`, { serviceId, userId, typeId }, { headers }));
+      if (response) {
+        console.log("register service succeed");
+        return true;
+      } else {
+        console.error("register service failed");
+        return false;
+      }
+    }
+    catch (error) {
+      console.error("register service failed", error);
+      return false;
+    }
+  }
 
-    // TODO: better job of transforming error for user consumption
-    this.log(`${operation} failed: ${error.message}`);
+  getMessageService(): string | undefined {
+    return this.messageService;
+  }
 
-    // Let the app keep running by returning an empty result.
-    return of(result as T);
-  };
+  setMessageService(message: string): void {
+    this.messageService = message;
+  }
 }
-}
+
+
+

@@ -1,17 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { NgIf, CommonModule, NgFor } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
-import { RouterLink, Router } from '@angular/router';
-import { UserModel } from '../../interfaces/user-model';
+import { Router } from '@angular/router';
+import { UserModel, userServiceModel } from '../../interfaces/user-model';
 import { ServiceModel } from "../../interfaces/service-model";
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { CommonService } from '../../services/common.service';
+import { DataService } from '../../services/data.service';
+import { DefaultServices } from '../../../assets/staticfiles/default-services';
 
 @Component({
   selector: 'app-home',
   standalone: true,  // In case you're building a standalone component.
-  imports: [HeaderComponent, RouterLink, NgIf, NgFor, CommonModule],  // Added NgIf for conditional rendering
+  imports: [HeaderComponent, NgIf, NgFor, CommonModule],  // Added NgIf for conditional rendering
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']  // Corrected property name
 })
@@ -22,8 +24,14 @@ export class HomeComponent {
   userService: UserService = inject(UserService);
   authService = inject(AuthService);
   commonService: CommonService = inject(CommonService);
+  isCryptoService: boolean = false;
+  isShoppingService: boolean = false;
+  defaultServices: DefaultServices = inject(DefaultServices);
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dataService: DataService) {
+  }
+
+  ngOnInit() {
     this.onLoadUserInfo();
   }
 
@@ -40,6 +48,8 @@ export class HomeComponent {
         this.userModel = await this.userService.getUserById(userId);
         if (this.userModel != undefined) {
           this.isLogin = true;
+          this.checkService();
+          this.dataService.setUserData(this.userModel);
         }
         else {
           this.isLogin = false;
@@ -52,15 +62,45 @@ export class HomeComponent {
     }
   }
 
-  onDivClick() {
-    if (this.userModel?.userRole === "admin") {
-      this.router.navigate(['/cryptoadmin']);
+  onServiceClick(isActive: boolean, serviceId: string) {
+    if (this.userModel === undefined) {
+      this.router.navigate(['/login']);
+      return;
     }
-    else if (this.userModel?.userRole === "user") {
-      this.router.navigate(['/cryptouser/' + this.userModel.id]);
+    if (this.userModel.services === undefined || this.userModel.services === null || this.userModel.services.length === 0 || !isActive) {
+      this.router.navigate(['/registerservice/' + serviceId]);
+      return;
+    }
+    else 
+    {
+      if (serviceId === "7FF6451C-7D2E-4568-B6D2-D84E27E18319") {
+        if (this.userModel.services.some(s => s.roleId == "86650F5A-E379-41EB-807A-BC750E9020F2")) {
+          this.router.navigate(['/cryptoadmin']);
+        }
+        else {
+          this.router.navigate(['/cryptouser/' + this.userModel?.id]);
+        }
+      }
+      else if (serviceId === "B11CE3B0-3074-421C-A601-B7BF9252C78C") {
+        this.router.navigate(['/shoppingservice']);
+      }
+    }
+  }
+
+  checkService() {
+    if (this.userModel === undefined || this.userModel.services === undefined || this.userModel.services === null) {
+      return;
     }
     else {
-      this.router.navigate(['/login']);
+      var userServices = this.userModel.services as userServiceModel[];
+      const serviceIds = userServices.map(s => s.serviceId);
+      console.log("serviceIds: ", serviceIds[0]);
+      if (serviceIds.includes(this.defaultServices.crypto.id)) {
+        this.isCryptoService = true;
+      }
+      if (serviceIds.includes(this.defaultServices.shophouse.id)) {
+        this.isShoppingService = true;
+      }
     }
   }
 }
