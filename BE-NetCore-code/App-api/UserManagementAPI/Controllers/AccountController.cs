@@ -1,14 +1,11 @@
 ﻿using Azure;
 using Google.Apis.Auth;
-using Infrastructure.Model;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Requests;
-using UserCore.ViewModels.Respones;
 using Constants = UserCore.Constants;
 
 namespace UserManagementAPI.Controllers
@@ -23,6 +20,7 @@ namespace UserManagementAPI.Controllers
         private readonly IAccountServices _accountServices;
         private readonly ITokenServices _tokenServices;
         private readonly IAplicationServices _aplicationServices;
+        
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,

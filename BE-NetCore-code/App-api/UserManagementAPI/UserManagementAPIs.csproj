@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServiceBusDelivery\ServiceBusDelivery.csproj" />
     <ProjectReference Include="..\UserCore\UserCore.csproj" />
   </ItemGroup>
 

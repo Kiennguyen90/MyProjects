@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Model
+namespace CryptoInfrastructure.Model
 {
     public class ApplicationUser : IdentityUser
     {

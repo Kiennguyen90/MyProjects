@@ -1,4 +1,4 @@
-﻿using Infrastructure.Model;
+﻿using CryptoInfrastructure.Model;
 
 namespace UserCore.Services.Interfaces
 {

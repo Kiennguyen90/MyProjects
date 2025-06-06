@@ -1,5 +1,5 @@
-﻿using Infrastructure;
-using Infrastructure.Model;
+﻿using CryptoInfrastructure;
+using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

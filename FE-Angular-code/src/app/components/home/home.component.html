@@ -19,13 +19,13 @@
             </div>
             <div class="row services-container container" style="padding-top: 50px; padding-bottom: 50px;">
                 <div *ngFor="let service of ListServices" class="col-md-6 mb-4 text-center">
-                    <div *ngIf="service.id == '7FF6451C-7D2E-4568-B6D2-D84E27E18319'" class="col card-body home-card" (click)="onServiceClick(isCryptoService, service.id)">
+                    <div *ngIf="service.id == defaultServices.crypto.id" class="col card-body home-card" (click)="onServiceClick(isCryptoService, service.id)">
                         <!-- <img src="assets/images/crypto.png" alt="Crypto Investor" /> -->
                         <h4>Crypto Investor</h4>
                         <div *ngIf="isCryptoService"> Active </div>
                     </div>
                     
-                    <div *ngIf="service.id === 'B11CE3B0-3074-421C-A601-B7BF9252C78C'" class="col home-card" (click)="onServiceClick(isShoppingService, service.id)">
+                    <div *ngIf="service.id === defaultServices.shophouse.id" class="col home-card" (click)="onServiceClick(isShoppingService, service.id)">
                         <!-- <img src="assets/images/shop-house.png" alt="Shop House Online" /> -->
                         <h4>Shop House Online</h4>
                         <div *ngIf="isShoppingService"> Active </div>

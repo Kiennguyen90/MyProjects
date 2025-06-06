@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Infrastructure.Model;
+using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
+using ServiceBusDelivery;
+using UserCore.Services.Implements;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Requests;
-using UserCore.ViewModels.Respones;
 using Constants = UserCore.Constants;
 
 namespace UserManagementAPI.Controllers
@@ -18,12 +18,17 @@ namespace UserManagementAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAplicationServices _aplicationServices;
         private readonly IMapper _mapper;
+        private readonly IServiceBusQueue _queue;
 
-        public ServiceController(UserManager<ApplicationUser> userManager, IMapper mapper, IAplicationServices aplicationServices)
+        public ServiceController(
+            UserManager<ApplicationUser> userManager,
+            IMapper mapper, IAplicationServices aplicationServices,
+            IServiceBusQueue queue)
         {
             _userManager = userManager;
             _mapper = mapper;
             _aplicationServices = aplicationServices;
+            _queue = queue;
         }
 
         [HttpPost]
@@ -124,6 +129,13 @@ namespace UserManagementAPI.Controllers
             {
                 return BadRequest(Constants.StatusCode.GetServiceFailed + e.Message);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            await _queue.SendMesssage("cryptoservice", "queue message");
+            return Ok("test ok");
         }
     }
 }

@@ -1,7 +1,6 @@
-using Infrastructure;
-using Infrastructure.Model;
+using CryptoInfrastructure;
+using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,30 +8,14 @@ using System.Text;
 using UserCore.Services.Implements;
 using UserCore.Services.Interfaces;
 using UserManagementAPI.Middlewares;
-using AutoMapper;
 using UserCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using ServiceBusDelivery;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("SQLServerIdentityConnection") ?? throw new InvalidOperationException("Connection string 'SQLServerIdentityConnection' not found.");
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("POLICY", corsPolicyBuilder =>
-//    {
-//        corsPolicyBuilder
-//            .AllowAnyHeader()
-//            .AllowAnyMethod()
-//            .AllowCredentials();
-//            var orig = builder.Configuration.GetSection("AllowSpecificOrigin").Get<List<string>>();
-//        if (orig != null)
-//        {
-//            corsPolicyBuilder.WithOrigins(orig.ToArray());
-//        }
-//    });
-//});
+var sbConn = builder.Configuration.GetConnectionString("ServiceBusConnection");
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -94,7 +77,8 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
+    x => new ServiceBusQueue(sbConn ?? ""));
 builder.Services.AddScoped<ITokenServices, TokenServices>();
 builder.Services.AddScoped<IAccountServices, AccountServices>();
 builder.Services.AddScoped<IAplicationServices, ApplicationServices>();

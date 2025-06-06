@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Infrastructure.Model;
+using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

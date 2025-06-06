@@ -1,10 +1,9 @@
-﻿namespace Infrastructure
+﻿namespace CryptoInfrastructure
 {
-    using Infrastructure.Model;
+    using CryptoInfrastructure.Model;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using System.Reflection.Emit;
 
     public class UserDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {

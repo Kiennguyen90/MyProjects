@@ -1,4 +1,4 @@
-﻿using Infrastructure.Model;
+﻿using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UserCore.Services.Interfaces;

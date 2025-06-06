@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Infrastructure.Model;
+using CryptoInfrastructure.Model;
 using UserCore.ViewModels.Respones;
 
 namespace UserCore

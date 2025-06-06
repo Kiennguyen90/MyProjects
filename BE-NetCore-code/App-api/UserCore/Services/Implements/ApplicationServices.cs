@@ -1,5 +1,5 @@
-﻿using Infrastructure;
-using Infrastructure.Model;
+﻿using CryptoInfrastructure;
+using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -88,7 +88,7 @@ namespace UserCore.Services.Implements
                 var serviceType = await _userDbContext.ServiceTypes.FindAsync(serviceTypeId);
                 var roles = await _userDbContext.Roles.ToListAsync();
                 var groupadminRole = roles.FirstOrDefault(x => x.Name == "groupadmin");
-                var memberRole = roles.FirstOrDefault(x => x.Name == "groupadmin");
+                var memberRole = roles.FirstOrDefault(x => x.Name == "member");
                 if (roles != null && groupadminRole != null && memberRole != null && serviceType != null)
                 {
                     var userRoleService = new UserRoleService()

@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonService } from '../../services/common.service';
 import { DataService } from '../../services/data.service';
 import { DefaultServices } from '../../../assets/staticfiles/default-services';
+import { DefaultRoles } from '../../../assets/staticfiles/default-roles';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ export class HomeComponent {
   isCryptoService: boolean = false;
   isShoppingService: boolean = false;
   defaultServices: DefaultServices = inject(DefaultServices);
+  DefaultRoles: DefaultRoles = inject(DefaultRoles);
 
   constructor(private router: Router, private dataService: DataService) {
   }
@@ -73,15 +75,16 @@ export class HomeComponent {
     }
     else 
     {
-      if (serviceId === "7FF6451C-7D2E-4568-B6D2-D84E27E18319") {
-        if (this.userModel.services.some(s => s.roleId == "86650F5A-E379-41EB-807A-BC750E9020F2")) {
+      if (serviceId === this.defaultServices.crypto.id) {
+        debugger
+        if (this.userModel.services.some(s => s.roleId == this.DefaultRoles.groupadmin.id)) {
           this.router.navigate(['/cryptoadmin']);
         }
         else {
           this.router.navigate(['/cryptouser/' + this.userModel?.id]);
         }
       }
-      else if (serviceId === "B11CE3B0-3074-421C-A601-B7BF9252C78C") {
+      else if (serviceId === this.defaultServices.shophouse.id) {
         this.router.navigate(['/shoppingservice']);
       }
     }
