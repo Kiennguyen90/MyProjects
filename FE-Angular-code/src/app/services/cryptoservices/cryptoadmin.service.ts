@@ -1,10 +1,10 @@
 
 import { lastValueFrom } from 'rxjs';
-import { UserModel } from '../interfaces/user-model';
+import { UserModel } from '../../interfaces/user-model';
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment';
+import { AuthService } from '../usermanagement/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

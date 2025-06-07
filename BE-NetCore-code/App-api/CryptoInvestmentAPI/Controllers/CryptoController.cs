@@ -10,8 +10,8 @@ namespace CryptoInvestmentAPI.Controllers
     public class CryptoController : Controller
     {
         private readonly ILogger<CryptoController> _logger;
-        private readonly ICryptoService _cryptoService;
-        public CryptoController(ILogger<CryptoController> logger, ICryptoService cryptoService)
+        private readonly ICryptoServices _cryptoService;
+        public CryptoController(ILogger<CryptoController> logger, ICryptoServices cryptoService)
         {
             _logger = logger;
             _cryptoService = cryptoService;

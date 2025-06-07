@@ -2,7 +2,7 @@
 
 namespace CryptoCore.Services.Interfaces
 {
-    public interface ICryptoService
+    public interface ICryptoServices
     {
         Task<List<CryptoToken>> GetAllCryptoTokenAsync();
     }

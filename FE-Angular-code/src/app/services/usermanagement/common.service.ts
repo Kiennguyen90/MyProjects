@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { catchError, lastValueFrom, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { ServiceModel } from '../interfaces/service-model';
+import { environment } from '../../../environments/environment';
+import { ServiceModel } from '../../interfaces/service-model';
 
 @Injectable({
   providedIn: 'root'
@@ -70,12 +70,12 @@ export class CommonService {
     }
   }
 
-  async registerService(userId: string, serviceId: string, typeId: number): Promise<boolean> {
+  async registerService(serviceId: string, typeId: number): Promise<boolean> {
     try {
       const headers = new HttpHeaders()
         .set('X-Debug-Level', 'minimal')
         .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-      const response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/Service/registerService`, { serviceId, userId, typeId }, { headers }));
+      const response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/Service/registerService`, { serviceId, typeId }, { headers }));
       if (response) {
         console.log("register service succeed");
         return true;

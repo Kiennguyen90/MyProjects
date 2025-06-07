@@ -127,9 +127,9 @@ namespace UserCore.Services.Implements
             var tokenHandler = new JwtSecurityTokenHandler();
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email??""),
+                new Claim(ClaimTypes.Email, user.Email??""),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim("FullName", user.FullName??"")
+                new Claim("UserNameClaim", user.FullName??"")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration[$"{tokenType}:Key"] ?? ""));

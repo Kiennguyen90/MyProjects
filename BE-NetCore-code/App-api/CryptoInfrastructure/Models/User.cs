@@ -13,6 +13,7 @@ namespace CryptoInfrastructure.Models
         public string Id { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public string UserGroupId { get; set; } = string.Empty;
 
         public ICollection<UserCryptoExchange> UserCryptoExchanges { get; set; } = new List<UserCryptoExchange>();
     }

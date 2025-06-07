@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceBusDelivery;
-using UserCore.Services.Implements;
+using System.Security.Claims;
+using System.Text.Json;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Requests;
 using Constants = UserCore.Constants;
@@ -38,10 +39,29 @@ namespace UserManagementAPI.Controllers
         {
             try
             {
-                var isSuccess = await _aplicationServices.RegisterServiceAsync(request.ServiceId, request.UserId, request.TypeId);
+                var userClaims = User.Claims;
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                var emailClaim = User.FindFirst(ClaimTypes.Email);
+                var userName = User.FindFirst("UserNameClaim");
+                if (userIdClaim == null || emailClaim == null || userName == null) {
+                    return BadRequest(Constants.StatusCode.RegisterFailed + "claim user infomation");
+                }
+                var isSuccess = await _aplicationServices.RegisterServiceAsync(request.ServiceId, userIdClaim.Value, request.TypeId);
                 if (!isSuccess)
                 {
                     return BadRequest(Constants.StatusCode.RegisterFailed);
+                }
+                if(request.ServiceId == Constants.Services.CRYPTO) 
+                {
+                    var messObj = new Dictionary<string, string>
+                    {
+                        {"UserId", userIdClaim.Value},
+                        {"Email", emailClaim.Value},
+                        {"UserName", userName.Value},
+                        {"ServiceRole", request.TypeId.ToString()}
+                    };
+                    string jsonMess = JsonSerializer.Serialize(messObj);
+                    await _queue.SendMesssage("cryptoservice", jsonMess);
                 }
                 return Ok(isSuccess);
             }
@@ -134,7 +154,15 @@ namespace UserManagementAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            await _queue.SendMesssage("cryptoservice", "queue message");
+            var messObj = new Dictionary<string, string>
+            {
+                {"UserId", "9ee58e17-e782-4fb6-a460-28cff3db106b"},
+                {"Email", "kienit5@gmail.com" },
+                {"UserName", "Kien Nguyen 4"},
+                {"ServiceRoleId", "1"}
+            };
+            string jsonMess = JsonSerializer.Serialize(messObj);
+            await _queue.SendMesssage("cryptoservice", jsonMess);
             return Ok("test ok");
         }
     }

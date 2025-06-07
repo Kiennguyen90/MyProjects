@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace CryptoCore.Services.Implements
 {
-    public class CryptoService : ICryptoService
+    public class CryptoServices : ICryptoServices
     {
         private readonly CryptoDbcontext _cryptoDbcontext;
-        public CryptoService(CryptoDbcontext cryptoDbcontext) {
+        public CryptoServices(CryptoDbcontext cryptoDbcontext) {
             _cryptoDbcontext = cryptoDbcontext;
         }
         public async Task<List<CryptoToken>> GetAllCryptoTokenAsync()
