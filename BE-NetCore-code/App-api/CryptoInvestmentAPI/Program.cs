@@ -68,8 +68,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
     x => new ServiceBusQueue(sbConn ?? ""));
+
 builder.Services.AddHostedService<AzureServiceBusListener>();
-builder.Services.AddScoped<ICryptoService, CryptoService>();
+builder.Services.AddScoped<ICryptoServices, CryptoServices>();
+builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IGroupServices, GroupServices>();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

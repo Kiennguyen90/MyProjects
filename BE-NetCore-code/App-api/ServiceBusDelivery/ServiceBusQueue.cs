@@ -1,6 +1,9 @@
 ﻿
 using Azure.Messaging.ServiceBus;
+using Microsoft.Azure.Amqp.Framing;
+using System;
 using System.Text;
+using System.Text.Json;
 
 namespace ServiceBusDelivery
 {
@@ -23,8 +26,15 @@ namespace ServiceBusDelivery
 
                 var sbReceiver = sbClient.CreateReceiver(queueName);
                 var msg = await sbReceiver.ReceiveMessageAsync();
-                var messageBody = Encoding.UTF8.GetString(msg.Body);
-                return messageBody;
+                if (msg != null)
+                {
+
+                    // Complete the message, removing it from the queue
+                    await sbReceiver.CompleteMessageAsync(msg);
+                    var messageBody = Encoding.UTF8.GetString(msg.Body);
+                    return messageBody;
+                }
+                return "";
             }
             catch (Exception e)
             {

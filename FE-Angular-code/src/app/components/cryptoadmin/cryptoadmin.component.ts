@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/usermanagement/user.service';
+import { AuthService } from '../../services/usermanagement/auth.service';
 
 @Component({
   selector: 'app-adminview',

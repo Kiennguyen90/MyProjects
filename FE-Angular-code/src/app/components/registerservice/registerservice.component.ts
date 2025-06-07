@@ -2,11 +2,11 @@ import { Component, inject } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { UserModel } from '../../interfaces/user-model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../services/data.service';
+import { DataService } from '../../services/usermanagement/data.service';
 import { ServiceModel } from '../../interfaces/service-model';
-import { CommonService } from '../../services/common.service';
-import { AuthService } from '../../services/auth.service';
-import { UserService } from '../../services/user.service';
+import { CommonService } from '../../services/usermanagement/common.service';
+import { AuthService } from '../../services/usermanagement/auth.service';
+import { UserService } from '../../services/usermanagement/user.service';
 import { NgClass, NgFor } from '@angular/common';
 
 @Component({
@@ -66,7 +66,7 @@ export class RegisterserviceComponent {
     if (this.selectedService === undefined || this.userModel === undefined) {
       return;
     }
-    await this.commonService.registerService(this.userModel.id, this.selectedService.id, this.selectedTypeId).then((response) => {
+    await this.commonService.registerService(this.selectedService.id, this.selectedTypeId).then((response) => {
       if (response) {
         this.router.navigate(['/']);
       } else {

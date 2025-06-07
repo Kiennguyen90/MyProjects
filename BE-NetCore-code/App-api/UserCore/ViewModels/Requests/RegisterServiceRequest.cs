@@ -9,7 +9,6 @@ namespace UserCore.ViewModels.Requests
     public class RegisterServiceRequest
     {
         public string ServiceId { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
 
         public int TypeId { get; set; }
     }

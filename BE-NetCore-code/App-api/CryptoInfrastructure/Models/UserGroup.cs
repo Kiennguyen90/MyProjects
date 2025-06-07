@@ -9,9 +9,6 @@ namespace CryptoInfrastructure.Models
         public string Id { get; set; } = string.Empty;
         public string AdminId { get; set; } = string.Empty;
 
-        [ForeignKey("AdminId")]
-        public User Admin { get; set; }
-
-        public List<User> Members { get; set; } = new List<User>();
+        public ICollection<User> Members { get; set; }
     }
 }

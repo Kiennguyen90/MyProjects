@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
-import { AuthModel } from '../interfaces/auth-model';
+import { AuthModel } from '../../interfaces/auth-model';
 import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterModel } from '../interfaces/register-model';
+import { RegisterModel } from '../../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({

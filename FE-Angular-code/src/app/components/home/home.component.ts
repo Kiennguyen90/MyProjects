@@ -4,10 +4,10 @@ import { HeaderComponent } from '../header/header.component';
 import { Router } from '@angular/router';
 import { UserModel, userServiceModel } from '../../interfaces/user-model';
 import { ServiceModel } from "../../interfaces/service-model";
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
-import { CommonService } from '../../services/common.service';
-import { DataService } from '../../services/data.service';
+import { UserService } from '../../services/usermanagement/user.service';
+import { AuthService } from '../../services/usermanagement/auth.service';
+import { CommonService } from '../../services/usermanagement/common.service';
+import { DataService } from '../../services/usermanagement/data.service';
 import { DefaultServices } from '../../../assets/staticfiles/default-services';
 import { DefaultRoles } from '../../../assets/staticfiles/default-roles';
 
