@@ -2,6 +2,7 @@ using CryptoCore.BackgroundServices;
 using CryptoCore.Services.Implements;
 using CryptoCore.Services.Interfaces;
 using CryptoInfrastructure;
+using CryptoInvestmentAPI.CustomExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -29,8 +30,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
 })
     .AddJwtBearer(x =>
     {
@@ -74,6 +74,8 @@ builder.Services.AddScoped<ICryptoServices, CryptoServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IGroupServices, GroupServices>();
 builder.Services.AddAuthorization();
+builder.Logging.ClearProviders();
+builder.Logging.AddProvider(new ColorConsoleLoggerProvider());
 
 var app = builder.Build();
 

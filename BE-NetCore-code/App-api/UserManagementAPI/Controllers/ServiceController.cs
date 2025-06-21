@@ -51,14 +51,14 @@ namespace UserManagementAPI.Controllers
                 {
                     return BadRequest(Constants.StatusCode.RegisterFailed);
                 }
-                if(request.ServiceId == Constants.Services.CRYPTO) 
+                if(request.ServiceId == Constants.Services.CRYPTOID) 
                 {
                     var messObj = new Dictionary<string, string>
                     {
                         {"UserId", userIdClaim.Value},
                         {"Email", emailClaim.Value},
                         {"UserName", userName.Value},
-                        {"ServiceRole", request.TypeId.ToString()}
+                        {"ServiceRoleId", request.TypeId.ToString()}
                     };
                     string jsonMess = JsonSerializer.Serialize(messObj);
                     await _queue.SendMesssage("cryptoservice", jsonMess);
@@ -152,6 +152,7 @@ namespace UserManagementAPI.Controllers
         }
 
         [HttpGet]
+        [Route("Sendqueue")]
         public async Task<IActionResult> Get()
         {
             var messObj = new Dictionary<string, string>
@@ -159,7 +160,7 @@ namespace UserManagementAPI.Controllers
                 {"UserId", "9ee58e17-e782-4fb6-a460-28cff3db106b"},
                 {"Email", "kienit5@gmail.com" },
                 {"UserName", "Kien Nguyen 4"},
-                {"ServiceRoleId", "1"}
+                {"ServiceRoleId", "0"}
             };
             string jsonMess = JsonSerializer.Serialize(messObj);
             await _queue.SendMesssage("cryptoservice", jsonMess);

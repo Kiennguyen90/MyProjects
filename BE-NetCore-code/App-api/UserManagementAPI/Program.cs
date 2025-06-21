@@ -11,6 +11,9 @@ using UserManagementAPI.Middlewares;
 using UserCore;
 using Microsoft.AspNetCore.Authentication.Google;
 using ServiceBusDelivery;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +63,17 @@ builder.Services.AddAuthentication(options =>
     //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
+    .AddCookie()
+    .AddGoogle( options =>
+    {
+        options.ClientId = builder.Configuration["Google:ClientId"] ?? "";
+        options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;  
+        options.SaveTokens = true;
+        options.Scope.Add("email");
+        options.Scope.Add("profile");
+        options.ClaimActions.MapJsonKey("picture", "picture", "url");
+    })
     .AddJwtBearer(x =>
     {
         x.RequireHttpsMetadata = false;
@@ -128,6 +142,22 @@ app.UseCors();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapGet("/api/login/google", ([FromQuery] string returnUrl, LinkGenerator linkGenerator, SignInManager<ApplicationUser> signInManager,  HttpContext context) =>
+{
+    var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", linkGenerator.GetPathByName(context, "GoogleLoginCallback") + $"?returnUrl={returnUrl}");
+    return Results.Challenge(properties, ["Google"]);
+});
+
+app.MapGet("/api/login/google/callback", async ([FromQuery] string returnUrl, HttpContext context, IAccountServices accountServices) =>
+{
+    var result = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+    if (!result.Succeeded)
+    {
+        return Results.Unauthorized();
+    }
+    return Results.Redirect(returnUrl);
+}).WithName("GoogleLoginCallback");
 
 app.MapControllers();
 

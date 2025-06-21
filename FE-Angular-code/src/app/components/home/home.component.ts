@@ -76,7 +76,6 @@ export class HomeComponent {
     else 
     {
       if (serviceId === this.defaultServices.crypto.id) {
-        debugger
         if (this.userModel.services.some(s => s.roleId == this.DefaultRoles.groupadmin.id)) {
           this.router.navigate(['/cryptoadmin']);
         }

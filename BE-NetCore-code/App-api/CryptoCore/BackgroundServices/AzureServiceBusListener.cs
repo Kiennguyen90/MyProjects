@@ -1,18 +1,11 @@
-﻿using CryptoCore.Services.Implements;
-using CryptoCore.Services.Interfaces;
-using CryptoCore.ViewModels;
+﻿using CryptoCore.ViewModels;
 using CryptoInfrastructure;
 using CryptoInfrastructure.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ServiceBusDelivery;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CryptoCore.BackgroundServices
 {
@@ -42,25 +35,37 @@ namespace CryptoCore.BackgroundServices
                 {
                     var userInfo = JsonSerializer.Deserialize<UserServiceRequest>(msg);
                     if (userInfo != null) {
-                        var isRegisterUser = await RegisterUser(userInfo.UserId, userInfo.UserName, userInfo.Email);
                         var isRegisterGroup = false;
-                        if (isRegisterUser && userInfo.ServiceRoleId == "0")
+                        var isRegisterUser = false;
+                        if (userInfo.ServiceRoleId == Constants.ServiceRoles.Pro)
                         {
-                            isRegisterGroup = await RegisterGroup(userInfo.UserId);
+                            var group = new UserGroup()
+                            {
+                                Id = Guid.NewGuid().ToString(),
+                                AdminId = userInfo.UserId
+                            };
+                            isRegisterGroup = await RegisterGroup(group);
+                            if (isRegisterGroup) {
+                                isRegisterUser = await RegisterUser(userInfo.UserId, userInfo.UserName, userInfo.Email, group.Id);
+                            }
                         }
-                        if (isRegisterGroup)
+                        else
                         {
-                            _logger.LogInformation("Receive cryptoservice bus succeed");
+                            isRegisterUser = await RegisterUser(userInfo.UserId, userInfo.UserName, userInfo.Email, Constants.Id.DEFAULTGROUP);
+                        }
+                        if (isRegisterUser)
+                        {
+                            _logger.LogInformation(Constants.StatusCodes.REGISTERUSERSUCCED);
                         }
                         else 
                         {
-                            _logger.LogInformation("Receive cryptoservice bus failed");
+                            _logger.LogInformation(Constants.StatusCodes.REGISTERUSERFAILED);
                         }
                     }
                 }
             }
         }
-        private async Task<bool> RegisterUser(string id, string userName, string email)
+        private async Task<bool> RegisterUser(string id, string userName, string email, string groupId)
         {
             try
             {
@@ -84,17 +89,12 @@ namespace CryptoCore.BackgroundServices
             }
         }
 
-        public async Task<bool> RegisterGroup(string adminId)
+        public async Task<bool> RegisterGroup(UserGroup group)
         {
             try
             {
                 using var scope = _scopeFactory.CreateScope();
                 var cryptoDbcontext = scope.ServiceProvider.GetRequiredService<CryptoDbcontext>();
-                var group = new UserGroup()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    AdminId = adminId
-                };
                 await cryptoDbcontext.UserGroups.AddAsync(group);
                 var saveCount = await cryptoDbcontext.SaveChangesAsync();
                 return saveCount > 0;

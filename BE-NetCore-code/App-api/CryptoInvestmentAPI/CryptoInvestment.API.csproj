@@ -5,7 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6520eef9-9a0d-4cd3-ae51-9b2a616e5106</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
   <ItemGroup>
     <ProjectReference Include="..\CryptoCore\CryptoCore.csproj" />
     <ProjectReference Include="..\ServiceBusDelivery\ServiceBusDelivery.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CustomMiddleWare\" />
   </ItemGroup>
 
 </Project>

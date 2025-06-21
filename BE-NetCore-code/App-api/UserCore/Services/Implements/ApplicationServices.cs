@@ -157,8 +157,8 @@ namespace UserCore.Services.Implements
                 {
                     new Service
                     {
-                        Id = "7FF6451C-7D2E-4568-B6D2-D84E27E18319",
-                        Name = "Crypto",
+                        Id = Constants.Services.CRYPTOID,
+                        Name = Constants.Services.CRYPTONAME,
                         ServiceTypes = new List<ServiceType>
                         {
                             new ServiceType
@@ -177,8 +177,8 @@ namespace UserCore.Services.Implements
                     },
                     new Service
                     {
-                        Id = "B11CE3B0-3074-421C-A601-B7BF9252C78C",
-                        Name = "Shop House",
+                        Id = Constants.Services.SHOPID,
+                        Name = Constants.Services.SHOPNAME,
                         ServiceTypes = new List<ServiceType>
                         {
                             new ServiceType
@@ -200,26 +200,26 @@ namespace UserCore.Services.Implements
                 {
                     new IdentityRole
                     {
-                        Id = "42CD4109-6174-4FE0-A912-5AA0C1410A6A",
-                        Name = "admin",
+                        Id = Constants.DefaultRoles.ADMINID,
+                        Name = Constants.DefaultRoles.ADMINNAME,
                         NormalizedName = "ADMIN"
                     },
                     new IdentityRole
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "user",
+                        Id = Constants.DefaultRoles.USERID,
+                        Name = Constants.DefaultRoles.USERNAME,
                         NormalizedName = "USER"
                     },
                     new IdentityRole
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "groupadmin",
+                        Id = Constants.DefaultRoles.GROUPADMINID,
+                        Name = Constants.DefaultRoles.GROUPADMINNAME,
                         NormalizedName = "GROUPADMIN"
                     },
                     new IdentityRole
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "member",
+                        Id = Constants.DefaultRoles.MEMBERID,
+                        Name = Constants.DefaultRoles.MEMBERNAME,
                         NormalizedName = "MEMBER"
                     },
                 };

@@ -3,12 +3,12 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "UserManagementAPI\\UserManagementAPIs.csproj",
+        "Path": "UserManagementAPI\\UserManagement.API.csproj",
         "Action": "Start",
-        "DebugTarget": "https"
+        "DebugTarget": "http"
       },
       {
-        "Path": "CryptoInvestmentAPI\\CryptoInvestmentAPI.csproj",
+        "Path": "CryptoInvestmentAPI\\CryptoInvestment.API.csproj",
         "Action": "Start",
         "DebugTarget": "https"
       }

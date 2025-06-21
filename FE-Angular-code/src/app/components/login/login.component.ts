@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
           client_id: "333413287567-mmh71anmggqo2dbg4nqopk38n8s1g9j7.apps.googleusercontent.com",
           callback: this.handleGoogleCallback.bind(this),
         });
-
         google.accounts.id.renderButton(
           document.getElementById("g_id_signin"),
           { theme: "outline", size: "large", text: "continue_with", shape: "rectangular", logo_alignment: "right" }
@@ -86,7 +85,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-
     const { email, password } = this.loginForm.value;
     try {
       const response = await this.accountService.Login(email ?? '', password ?? '');
