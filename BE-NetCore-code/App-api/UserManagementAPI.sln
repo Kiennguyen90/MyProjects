@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementAPIs", "UserManagementAPI\UserManagementAPIs.csproj", "{F5F4474F-C746-4E1D-8AA4-A8439DE1CD2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.API", "UserManagementAPI\UserManagement.API.csproj", "{F5F4474F-C746-4E1D-8AA4-A8439DE1CD2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{58F4C2C0-75BD-49AF-8D1C-B01989CCD40D}"
 EndProject
@@ -13,13 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserManagement", "UserManag
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CryptoInvestment", "CryptoInvestment", "{C4457698-0480-47E2-95B1-BC91246BB40B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoInvestmentAPI", "CryptoInvestmentAPI\CryptoInvestmentAPI.csproj", "{E4520750-97D9-46EA-B276-5A9248A5CFE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoInvestment.API", "CryptoInvestmentAPI\CryptoInvestment.API.csproj", "{E4520750-97D9-46EA-B276-5A9248A5CFE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{ABA49080-6620-471D-819C-8E2024D623C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoInfrastructure", "CryptoInfrastructure\CryptoInfrastructure.csproj", "{BDB05A1E-9131-44BC-BE2C-E6B13E6E5440}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoCore", "CryptoCore\CryptoCore.csproj", "{BFA15186-EA29-4FE6-B246-EEE7B101242A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceBusHandle", "ServiceBusHandle", "{34043C86-31CC-4A3F-A008-22C58978FA1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBusDelivery", "ServiceBusDelivery\ServiceBusDelivery.csproj", "{84BFECD9-A648-4443-9BD8-AB1FC9DAD7A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenPriceFunction", "TokenPriceFunction\TokenPriceFunction.csproj", "{4A02E8CD-E847-43C6-8853-2976692B8FE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.API", "Gateway.API\Gateway.API.csproj", "{A00DD47A-DE63-4398-B168-F1E3B2EA3879}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +61,22 @@ Global
 		{BFA15186-EA29-4FE6-B246-EEE7B101242A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA15186-EA29-4FE6-B246-EEE7B101242A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFA15186-EA29-4FE6-B246-EEE7B101242A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84BFECD9-A648-4443-9BD8-AB1FC9DAD7A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BFECD9-A648-4443-9BD8-AB1FC9DAD7A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BFECD9-A648-4443-9BD8-AB1FC9DAD7A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BFECD9-A648-4443-9BD8-AB1FC9DAD7A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A02E8CD-E847-43C6-8853-2976692B8FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A02E8CD-E847-43C6-8853-2976692B8FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A02E8CD-E847-43C6-8853-2976692B8FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A02E8CD-E847-43C6-8853-2976692B8FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00DD47A-DE63-4398-B168-F1E3B2EA3879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00DD47A-DE63-4398-B168-F1E3B2EA3879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00DD47A-DE63-4398-B168-F1E3B2EA3879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00DD47A-DE63-4398-B168-F1E3B2EA3879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +88,8 @@ Global
 		{E4520750-97D9-46EA-B276-5A9248A5CFE6} = {C4457698-0480-47E2-95B1-BC91246BB40B}
 		{BDB05A1E-9131-44BC-BE2C-E6B13E6E5440} = {C4457698-0480-47E2-95B1-BC91246BB40B}
 		{BFA15186-EA29-4FE6-B246-EEE7B101242A} = {C4457698-0480-47E2-95B1-BC91246BB40B}
+		{84BFECD9-A648-4443-9BD8-AB1FC9DAD7A9} = {34043C86-31CC-4A3F-A008-22C58978FA1A}
+		{A00DD47A-DE63-4398-B168-F1E3B2EA3879} = {ABA49080-6620-471D-819C-8E2024D623C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F14577C1-B8DC-4F25-8603-B4B55121CDDD}

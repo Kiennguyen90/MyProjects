@@ -1,0 +1,37 @@
+services:
+  gateway.api:
+    image: ${DOCKER_REGISTRY-}gatewayapi
+    build:
+      context: .
+      dockerfile: Gateway.API/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    networks:
+      - proxybackend
+
+
+  usermanagement.api:
+    image: ${DOCKER_REGISTRY-}usermanagementapi
+    build:
+      context: .
+      dockerfile: UserManagementAPI/Dockerfile
+    ports:
+        - "4000:4000"
+        - "4001:4001"
+    networks:
+      - "proxybackend"
+
+
+
+  cryptoinvestment.api:
+    image: ${DOCKER_REGISTRY-}cryptoinvestmentapi
+    build:
+      context: .
+      dockerfile: CryptoInvestmentAPI/Dockerfile
+    ports:
+        - "4010:4010"
+        - "4011:4011"
+    networks:
+      - "proxybackend"
+

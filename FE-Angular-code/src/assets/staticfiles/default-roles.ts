@@ -11,7 +11,7 @@ export class DefaultRoles {
         };
     readonly user = 
         {
-            id: '459aae32-62e3-4fb0-bf09-354c4416a56c',
+            id: '717EA88B-196C-4003-93D0-A4D153B3E131',
             name: 'user',
         };
     readonly member = 

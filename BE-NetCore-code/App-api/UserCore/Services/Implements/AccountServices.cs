@@ -12,19 +12,18 @@ namespace UserCore.Services.Implements
         private readonly ITokenServices _tokenServices;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAplicationServices _aplicationServices;
         private readonly ILogger<AccountServices> _logger;
         public AccountServices(ITokenServices tokenServices,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<AccountServices> logger,
-            IAplicationServices aplicationServices)
+            IAplicationServices aplicationServices,
+            RoleManager<IdentityRole> roleManager)
         {
             _tokenServices = tokenServices;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _aplicationServices = aplicationServices;
         }
 
         public async Task<LoginRespone> RegisterAsync(RegisterRequest model)
@@ -41,22 +40,7 @@ namespace UserCore.Services.Implements
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //var registerService = await _aplicationServices.RegisterServiceAsync(Constants.Services.CRYPTO, user.Id);
-                    //if (!registerService)
-                    //{
-                    //    return new LoginRespone
-                    //    {
-                    //        Error = Constants.StatusCode.RegisterServiceFailed
-                    //    };
-                    //}
-                    //var registerRole = await _userManager.AddToRoleAsync(user, Constants.UserRoles.USERROLEID);
-                    //if (!registerRole.Succeeded)
-                    //{
-                    //    return new LoginRespone
-                    //    {
-                    //        Error = Constants.StatusCode.RegisterRoleFailed
-                    //    };
-                    //}
+                    await _userManager.AddToRoleAsync(user, Constants.DefaultRoles.USERNAME);
                     respone = await LoginAsync(model.Email, model.Password);
                     return respone;
                 }
