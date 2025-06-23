@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { catchError, lastValueFrom, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from '../fe-services/auth.service';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { ServiceModel } from '../../interfaces/service-model';
+import { environment } from '../../../../environments/environment';
+import { ServiceModel } from '../../../interfaces/service-model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class CommonService {
 
   async getAllService(): Promise<ServiceModel[] | undefined> {
     try {
-      const response = await lastValueFrom(this.http.get<ServiceModel[]>(`${this.baseUrl}/Service/GetAllServices`)
+      const response = await lastValueFrom(this.http.get<ServiceModel[]>(`${this.baseUrl}/user-management/Service/GetAllServices`)
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.error instanceof TypeError) {
@@ -47,7 +47,7 @@ export class CommonService {
       const headers = new HttpHeaders()
         .set('X-Debug-Level', 'minimal')
         .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-      const response = await lastValueFrom(this.http.get<ServiceModel>(`${this.baseUrl}/Service/${serviceId}`, { headers })
+      const response = await lastValueFrom(this.http.get<ServiceModel>(`${this.baseUrl}/user-management/Service/${serviceId}`, { headers })
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.error instanceof TypeError) {
@@ -75,7 +75,7 @@ export class CommonService {
       const headers = new HttpHeaders()
         .set('X-Debug-Level', 'minimal')
         .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-      const response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/Service/registerService`, { serviceId, typeId }, { headers }));
+      const response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/user-management/Service/registerService`, { serviceId, typeId }, { headers }));
       if (response) {
         console.log("register service succeed");
         return true;

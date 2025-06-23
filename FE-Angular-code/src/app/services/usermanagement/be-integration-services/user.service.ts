@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { UserModel } from '../../interfaces/user-model';
-import { environment } from '../../../environments/environment';
+import { UserModel } from '../../../interfaces/user-model';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../fe-services/auth.service';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class UserService {
       const headers = new HttpHeaders()
         .set('X-Debug-Level', 'minimal')
         .set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-      const response = await lastValueFrom(this.http.get<UserModel>(`${this.baseUrl}/User/${id}`, { headers }));
+      const response = await lastValueFrom(this.http.get<UserModel>(`${this.baseUrl}/user-management/User/${id}`, { headers }));
       this.userComonInformation = response;
       this.getUserSucceed = true;
       console.log("get user information succeed");
