@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
-import { AuthModel } from '../../interfaces/auth-model';
-import { AuthService } from './auth.service';
+import { AuthModel } from '../../../interfaces/auth-model';
+import { AuthService } from '../fe-services/auth.service';
 import { inject } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterModel } from '../../interfaces/register-model';
+import { RegisterModel } from '../../../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class AccountService {
 
   async Register(registerPayload: RegisterModel): Promise<boolean> {
     try {
-      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/register`, registerPayload));
+      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/register`, registerPayload));
       if (response.error === "") {
         this.userId = response.userId;
         this.accessToken = response.accessToken;
@@ -52,7 +52,7 @@ export class AccountService {
 
   async Login(email: string, password: string): Promise<string | ""> {
     try {
-      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/login`, { Email: email, Password: password }));
+      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/login`, { Email: email, Password: password }));
       if (response) {
         this.userId = response.userId;
         this.accessToken = response.accessToken;
@@ -74,7 +74,7 @@ export class AccountService {
   async LoginByGoogle(token: string): Promise<string | ""> {
     try {      
       const data = { token: token };
-      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/Account/auth/google`, data));
+      const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/auth/google`, data));
 
       if (response) {
         this.userId = response.userId;
@@ -96,7 +96,7 @@ export class AccountService {
 
   async SignOut(): Promise<boolean> {
     try {
-      var response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/Account/logout`, {}));
+      var response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/user-management/Account/logout`, {}));
       if (response === true) {
         this.isLogOutSucceed = true;
       }

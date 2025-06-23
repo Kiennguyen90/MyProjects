@@ -1,10 +1,10 @@
 declare const google: any;
 import { Component, inject, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { AccountService } from '../../services/usermanagement/account.service';
+import { AccountService } from '../../services/usermanagement/be-integration-services/account.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
-import { UserService } from '../../services/usermanagement/user.service';
+import { UserService } from '../../services/usermanagement/be-integration-services/user.service';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule, NgIf, isPlatformBrowser } from '@angular/common';
 

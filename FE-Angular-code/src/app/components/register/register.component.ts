@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, FormBuilder, Validators} from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
-import { AccountService } from '../../services/usermanagement/account.service';
+import { AccountService } from '../../services/usermanagement/be-integration-services/account.service';
 import {ActivatedRoute} from '@angular/router';
 import { Router } from '@angular/router';
 import { RegisterModel } from '../../interfaces/register-model';

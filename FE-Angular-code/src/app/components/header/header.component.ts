@@ -2,8 +2,8 @@ import { Component, Input, inject } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
-import { AccountService } from '../../services/usermanagement/account.service';
-import { AuthService } from '../../services/usermanagement/auth.service';
+import { AccountService } from '../../services/usermanagement/be-integration-services/account.service';
+import { AuthService } from '../../services/usermanagement/fe-services/auth.service';
 
 @Component({
   selector: 'app-header',

@@ -2,11 +2,11 @@ import { Component, inject } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { UserModel } from '../../interfaces/user-model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../services/usermanagement/data.service';
+import { DataService } from '../../services/usermanagement/fe-services/data.service';
 import { ServiceModel } from '../../interfaces/service-model';
-import { CommonService } from '../../services/usermanagement/common.service';
-import { AuthService } from '../../services/usermanagement/auth.service';
-import { UserService } from '../../services/usermanagement/user.service';
+import { CommonService } from '../../services/usermanagement/be-integration-services/common.service';
+import { AuthService } from '../../services/usermanagement/fe-services/auth.service';
+import { UserService } from '../../services/usermanagement/be-integration-services/user.service';
 import { NgClass, NgFor } from '@angular/common';
 
 @Component({
