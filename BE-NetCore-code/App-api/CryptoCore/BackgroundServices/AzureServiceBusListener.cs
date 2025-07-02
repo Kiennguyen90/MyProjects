@@ -1,6 +1,7 @@
-﻿using CryptoCore.ViewModels;
+﻿using CryptoCore.ViewModels.Requests;
 using CryptoInfrastructure;
 using CryptoInfrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,10 +40,11 @@ namespace CryptoCore.BackgroundServices
                         var isRegisterUser = false;
                         if (userInfo.ServiceRoleId == Constants.ServiceRoles.Pro)
                         {
-                            var group = new UserGroup()
+                            var group = new Group()
                             {
                                 Id = Guid.NewGuid().ToString(),
-                                AdminId = userInfo.UserId
+                                AdminId = userInfo.UserId,
+                                Name = userInfo.UserName + "'s Group",
                             };
                             isRegisterGroup = await RegisterGroup(group);
                             if (isRegisterGroup) {
@@ -59,7 +61,7 @@ namespace CryptoCore.BackgroundServices
                         }
                         else 
                         {
-                            _logger.LogInformation(Constants.StatusCodes.REGISTERUSERFAILED);
+                            _logger.LogWarning(Constants.StatusCodes.REGISTERUSERFAILED);
                         }
                     }
                 }
@@ -71,12 +73,18 @@ namespace CryptoCore.BackgroundServices
             {
                 using var scope = _scopeFactory.CreateScope();
                 var cryptoDbcontext = scope.ServiceProvider.GetRequiredService<CryptoDbcontext>();
+                var existingUser = await cryptoDbcontext.Users.FirstOrDefaultAsync(x => x.Email == email);
+                if (existingUser != null)
+                {
+                    _logger.LogWarning($"User with email {email} already exists.");
+                    return false;
+                }
                 var user = new User()
                 {
                     Id = id,
                     UserName = userName,
                     Email = email,
-                    UserGroupId = "93F92BA0-1097-4AA1-832E-4818F8AAF48B"
+                    GroupId = groupId
                 };
                 await cryptoDbcontext.Users.AddAsync(user);
                 var saveCount = await cryptoDbcontext.SaveChangesAsync();
@@ -89,13 +97,19 @@ namespace CryptoCore.BackgroundServices
             }
         }
 
-        public async Task<bool> RegisterGroup(UserGroup group)
+        public async Task<bool> RegisterGroup(Group group)
         {
             try
             {
                 using var scope = _scopeFactory.CreateScope();
                 var cryptoDbcontext = scope.ServiceProvider.GetRequiredService<CryptoDbcontext>();
-                await cryptoDbcontext.UserGroups.AddAsync(group);
+                var existingGroup = await cryptoDbcontext.Groups.FirstOrDefaultAsync(x => x.AdminId == group.AdminId);
+                if (existingGroup != null)
+                {
+                    _logger.LogWarning($"Group with AdminId {group.AdminId} already exists.");
+                    return false;
+                }
+                await cryptoDbcontext.Groups.AddAsync(group);
                 var saveCount = await cryptoDbcontext.SaveChangesAsync();
                 return saveCount > 0;
             }

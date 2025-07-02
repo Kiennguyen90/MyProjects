@@ -18,12 +18,12 @@ export const routes: Routes = [
     },
     {
         path: 'cryptoadmin',
-        loadComponent: () => import('./components/cryptoadmin/cryptoadmin.component').then(c => c.CryptoadminComponent),
+        loadComponent: () => import('./components/crypto-components/cryptoadmin/cryptoadmin.component').then(c => c.CryptoadminComponent),
         title: 'CryptoAdmin',
     },
     {
         path: 'cryptouser/:userid',
-        loadComponent: () => import('./components/cryptouser/cryptouser.component').then(c => c.CryptouserComponent),
+        loadComponent: () => import('./components/crypto-components/cryptouser/cryptouser.component').then(c => c.CryptouserComponent),
         title: 'CryptoAdmin',
     },
     {

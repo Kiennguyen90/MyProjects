@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-export interface UserData {
+export interface AddUserData {
   name: string;
   email: string;
 }
@@ -28,7 +28,7 @@ export interface UserData {
 export class UserDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UserData
+    @Inject(MAT_DIALOG_DATA) public data: AddUserData
   ) { }
 
   onCancel(): void {

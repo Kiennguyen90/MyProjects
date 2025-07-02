@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using CryptoInfrastructure.Models;
 
 namespace CryptoCore.Services.Interfaces
 {
     public interface IGroupServices
     {
         Task<bool> RegisterGroup(string adminId);
+        Task<Group> GetGroupIdByAdminId(string adminId);
+        Task<List<User>> GetAllUsersByAdminId(string adminId);
     }
 }

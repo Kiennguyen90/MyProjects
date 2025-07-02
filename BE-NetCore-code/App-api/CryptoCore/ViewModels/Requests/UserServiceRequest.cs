@@ -1,6 +1,4 @@
-﻿
-
-namespace CryptoCore.ViewModels
+﻿namespace CryptoCore.ViewModels.Requests
 {
     public class UserServiceRequest
     {

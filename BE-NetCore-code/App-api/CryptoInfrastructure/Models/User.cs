@@ -14,10 +14,13 @@ namespace CryptoInfrastructure.Models
         public string Id { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string UserGroupId { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
 
-        [ForeignKey("UserGroupId")]
-        public UserGroup UserGroup { get; set; }
+        [Required]
+        public string GroupId { get; set; }
+
+        [ForeignKey("GroupId")]
+        public Group Group { get; set; }
 
         public ICollection<UserCryptoExchange> UserCryptoExchanges { get; set; } = new List<UserCryptoExchange>();
     }
