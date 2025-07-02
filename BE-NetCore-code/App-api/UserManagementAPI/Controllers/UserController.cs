@@ -3,7 +3,7 @@ using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Text.Json;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Respones;
 using Constants = UserCore.Constants;
@@ -14,14 +14,16 @@ namespace UserManagementAPI.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        ILogger<UserController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IAplicationServices _aplicationServices;
-        public UserController(UserManager<ApplicationUser> userManager, IMapper mapper, IAplicationServices aplicationServices)
+        public UserController(UserManager<ApplicationUser> userManager, IMapper mapper, IAplicationServices aplicationServices, ILogger<UserController> logger)
         {
             _userManager = userManager;
             _mapper = mapper;
             _aplicationServices = aplicationServices;
+            _logger = logger;
         }
 
 
@@ -58,7 +60,7 @@ namespace UserManagementAPI.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetUser(string id)
+        public async Task<IActionResult> GetUserByIdAsync(string id)
         {
             try
             {
@@ -74,10 +76,11 @@ namespace UserManagementAPI.Controllers
                 {
                     userInformationRespone.userRole = userRoles.FirstOrDefault() ?? "";
                 }
-                if(userServices != null)
+                if (userServices != null)
                 {
-                    var services = new List <UserServiceRespone>();
-                    foreach (var userService in userServices) {
+                    var services = new List<UserServiceRespone>();
+                    foreach (var userService in userServices)
+                    {
                         var userServiceRespone = new UserServiceRespone
                         {
                             ServiceId = userService.ServiceId,
@@ -88,6 +91,37 @@ namespace UserManagementAPI.Controllers
                     userInformationRespone.Services = services;
                 }
                 return Ok(userInformationRespone);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error retrieving user: " + e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetUserByEmail/{serviceId}/{email}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserByEmailAsync(string email, string serviceId)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user != null) {
+                    var serviceTypeId = await _aplicationServices.GetServiceTypeIdByIdAsync(serviceId, "Free");
+                    var isRegisterServiced = await _aplicationServices.RegisterServiceAsync(serviceId, user.Id, serviceTypeId);
+                    if (!isRegisterServiced)
+                    {
+                        _logger.LogError($"Failed to register service {serviceId} for user {user.Id}");
+                    }
+                    var userInfo = new Dictionary<string, string>
+                    {
+                        {"UserId", user.Id ?? ""},
+                        {"Email", user.Email ?? ""},
+                        {"UserName", user.FullName ?? ""},
+                    };
+                    return Ok(JsonSerializer.Serialize(userInfo));
+                }
+                return Ok(user);
             }
             catch (Exception e)
             {

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
-import { AuthModel } from '../../../interfaces/auth-model';
+import { AuthModel, UserInformation } from '../../../interfaces/auth-model';
 import { AuthService } from '../fe-services/auth.service';
 import { inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../../../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
 
@@ -16,6 +16,7 @@ export class AccountService {
   private accessToken = "";
   private refreshToken = "";
   userId = "";
+  userInformation : UserInformation | undefined;
   userService = inject(UserService);
   authService = inject(AuthService);
   isLoginSucceed = false;
@@ -28,14 +29,14 @@ export class AccountService {
     try {
       const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/register`, registerPayload));
       if (response.error === "") {
-        this.userId = response.userId;
+        this.userInformation = response.userInformation;
         this.accessToken = response.accessToken;
         this.refreshToken = response.refreshToken;
         this.isRegisterSucceed = true;
 
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
-        this.authService.setCurrentUserId(this.userId);
+        this.authService.setUserInformation(JSON.stringify(this.userInformation));
         console.log('Account Register Succeed');
         return true;
       }
@@ -54,14 +55,14 @@ export class AccountService {
     try {
       const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/login`, { Email: email, Password: password }));
       if (response) {
-        this.userId = response.userId;
+        this.userInformation = response.userInformation;
         this.accessToken = response.accessToken;
         this.refreshToken = response.refreshToken;
         this.isLoginSucceed = true;
-
+        
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
-        this.authService.setCurrentUserId(this.userId);
+        this.authService.setUserInformation(JSON.stringify(this.userInformation));
         console.log('Account Login Succeed');
         return this.userId;
       }
@@ -77,14 +78,14 @@ export class AccountService {
       const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/auth/google`, data));
 
       if (response) {
-        this.userId = response.userId;
+        this.userInformation = response.userInformation;
         this.accessToken = response.accessToken;
         this.refreshToken = response.refreshToken;
         this.isLoginSucceed = true;
 
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
-        this.authService.setCurrentUserId(this.userId);
+        this.authService.setUserInformation(JSON.stringify(this.userInformation));
         console.log('Account Login Succeed');
         return this.userId;
       }
@@ -112,7 +113,7 @@ export class AccountService {
     if (this.isLogOutSucceed) {
       this.authService.removeAccessToken();
       this.authService.removeRefreshToken();
-      this.authService.removeUserId();
+      this.authService.removeUserInformation();
       console.log('Account SignOut Succeed');
       return true;
     }

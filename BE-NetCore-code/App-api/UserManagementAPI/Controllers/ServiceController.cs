@@ -123,7 +123,7 @@ namespace UserManagementAPI.Controllers
         {
             try
             {
-                var result = await _aplicationServices.GetSevicesByIdAsync(serviceId);
+                var result = await _aplicationServices.GetServiceByIdAsync(serviceId);
                 if (result == null)
                 {
                     return NotFound(Constants.StatusCode.GetServiceFailed);
@@ -160,7 +160,7 @@ namespace UserManagementAPI.Controllers
                 {"UserId", "9ee58e17-e782-4fb6-a460-28cff3db106b"},
                 {"Email", "kienit5@gmail.com" },
                 {"UserName", "Kien Nguyen 4"},
-                {"ServiceRoleId", "0"}
+                {"ServiceRoleId", "1"}
             };
             string jsonMess = JsonSerializer.Serialize(messObj);
             await _queue.SendMesssage("cryptoservice", jsonMess);

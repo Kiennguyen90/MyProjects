@@ -7,22 +7,30 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-    networks:
-      - proxybackend
-
 
   usermanagement.api:
     image: ${DOCKER_REGISTRY-}usermanagementapi
+    container_name: usermanagement.api
     build:
       context: .
       dockerfile: UserManagementAPI/Dockerfile
     ports:
         - "4000:4000"
         - "4001:4001"
-    networks:
-      - "proxybackend"
-
-
+  # usermanagement.database:
+  #   image: sqlserver:2019-latest
+  #   container_name: usermanagement.database
+  #   environment:
+  #     - SQL_SERVER_DB=IdentityCoreDB
+  #     - ACCEPT_EULA=Y
+  #     - SA_PASSWORD=YourStrong@Passw0rd
+  #   volumes:
+  #    - ./UserManagementDatabase/backup:/var/opt/mssql/backup
+  #   build:
+  #     context: .
+  #     dockerfile: UserManagementDatabase/Dockerfile
+  #   ports:
+  #       - "5432:5432"
 
   cryptoinvestment.api:
     image: ${DOCKER_REGISTRY-}cryptoinvestmentapi
@@ -32,6 +40,4 @@ services:
     ports:
         - "4010:4010"
         - "4011:4011"
-    networks:
-      - "proxybackend"
 

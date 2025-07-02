@@ -1,6 +1,6 @@
 [
   {
-    "Name": "New Profile",
+    "Name": "Multiple startup project",
     "Projects": [
       {
         "Path": "UserManagementAPI\\UserManagement.API.csproj",
@@ -10,7 +10,12 @@
       {
         "Path": "CryptoInvestmentAPI\\CryptoInvestment.API.csproj",
         "Action": "Start",
-        "DebugTarget": "https"
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "Gateway.API\\Gateway.API.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
       }
     ]
   }

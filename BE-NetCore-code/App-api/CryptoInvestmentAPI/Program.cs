@@ -66,6 +66,11 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddHttpClient("apiClient", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5000/");
+});
+
 builder.Services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
     x => new ServiceBusQueue(sbConn ?? ""));
 

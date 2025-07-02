@@ -111,7 +111,7 @@ namespace UserCore.Services.Implements
             
         }
 
-        public async Task<ServiceRespone> GetSevicesByIdAsync(string serviceId)
+        public async Task<ServiceRespone> GetServiceByIdAsync(string serviceId)
         {
             try
             {
@@ -141,6 +141,25 @@ namespace UserCore.Services.Implements
             {
                 _logger.LogError(ex.Message);
                 return null;
+            }
+        }
+
+        public async Task<int> GetServiceTypeIdByIdAsync(string serviceId, string name)
+        {
+            try
+            {
+                var serviceType = await _userDbContext.ServiceTypes.FirstOrDefaultAsync(x => x.ServiceId == serviceId && x.Name == name);
+                if (serviceType == null)
+                {
+                    _logger.LogWarning($"Service type with name {name} for service ID {serviceId} not found.");
+                    return -1;
+                }
+                return serviceType.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return -1;
             }
         }
 

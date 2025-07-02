@@ -13,6 +13,11 @@ BE-NetCore-code/App-api/UserManagement.API/bin
 BE-NetCore-code/App-api/UserManagement.API/obj
 BE-NetCore-code/App-api/.vs/UserManagement.API/DesignTimeBuild/.dtbcache.v2
 
+BE-NetCore-code/App-api/UserManagementAPI/bin
+BE-NetCore-code/App-api/UserManagementAPI/obj
+BE-NetCore-code/App-api/CryptoInvestmentAPI/obj
+BE-NetCore-code/App-api/CryptoInvestmentAPI/bin
+
 BE-NetCore-code/App-api/UserCore/obj
 BE-NetCore-code/App-api/UserCore/bin
 
@@ -30,6 +35,8 @@ BE-NetCore-code/App-api/.vs
 
 BE-NetCore-code/App-api/Gateway.API/obj
 BE-NetCore-code/App-api/Gateway.API/bin
+BE-NetCore-code/App-api/bin
+BE-NetCore-code/App-api/obj
 
 *.bin
 *.obj

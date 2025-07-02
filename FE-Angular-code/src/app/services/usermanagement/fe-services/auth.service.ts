@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {jwtDecode} from 'jwt-decode';
+import { UserInformation } from '../../../interfaces/auth-model';
+import { get } from 'http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,23 +9,58 @@ import {jwtDecode} from 'jwt-decode';
 export class AuthService {
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
-  private userId: string | null = null;
-
-  setCurrentUserId(userId: string) {
-    this.userId = userId;
-    localStorage.setItem('user_Id', userId);
-  }
+  private userInformation: string | null = null;
+  private decodedAccessToken: any;
+  private decodedRefreshToken: any;
+  private currentTime = Math.floor(Date.now() / 1000);
 
   getCurrentUserId(): string | null {
-    if (!this.userId && typeof window !== 'undefined' && window.localStorage) {
-      this.userId = localStorage.getItem('user_Id');
+    const userInformation = this.getUserInformation();
+    if (userInformation !== null) {
+      const user : UserInformation = JSON.parse(userInformation);
+      return user.userId;
     }
-    return this.userId;
+    return null;
   }
 
-  removeUserId() {
-    this.userId = null;
-    localStorage.removeItem('user_Id');
+  setUserInformation(userInformation: string) {
+    this.userInformation = userInformation;
+    localStorage.setItem('userInformation', userInformation);
+  }
+
+  getUserInformation(): string | null {
+    if(this.accessToken !== null ) {
+      this.decodedAccessToken = jwtDecode(this.accessToken);
+      if (this.decodedAccessToken && this.decodedAccessToken.exp && this.decodedAccessToken.exp < this.currentTime) {
+        console.warn('Access token is expired');
+        this.removeAccessToken();
+        this.decodedRefreshToken = jwtDecode(this.getRefreshToken() || '');
+        if (this.decodedRefreshToken && this.decodedRefreshToken.exp) {
+          if(this.decodedRefreshToken.exp < this.currentTime) {
+            console.warn('Refresh token is also expired');
+            this.removeRefreshToken();
+            this.removeUserInformation();
+            return null;
+          }
+          else {
+            console.warn('Refresh token is valid, but access token is expired');
+            // Here you would typically call a method to refresh the access token
+            // For example: this.refreshAccessToken();
+          }
+          return null;
+        }
+        return null;
+      }
+    }
+    if (!this.userInformation && typeof window !== 'undefined' && window.localStorage) {
+      this.userInformation = localStorage.getItem('userInformation');
+    }
+    return this.userInformation;
+  }
+
+  removeUserInformation() {
+    this.userInformation = null;
+    localStorage.removeItem('userInformation');
   }
 
   setAccessToken(token: string) {

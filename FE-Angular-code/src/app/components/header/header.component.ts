@@ -4,6 +4,8 @@ import { RouterLink, Router } from '@angular/router';
 import { UserModel } from '../../interfaces/user-model';
 import { AccountService } from '../../services/usermanagement/be-integration-services/account.service';
 import { AuthService } from '../../services/usermanagement/fe-services/auth.service';
+import { HeaderService } from '../../services/usermanagement/fe-services/header.service';
+import { UserInformation } from '../../interfaces/auth-model';
 
 @Component({
   selector: 'app-header',
@@ -13,16 +15,23 @@ import { AuthService } from '../../services/usermanagement/fe-services/auth.serv
 })
 
 export class HeaderComponent {
-  @Input() userModel!: UserModel|undefined;
-  @Input() isLogin!: boolean|undefined;
-  @Input() isRegister!: boolean|undefined;
-  
+  userInformation: UserInformation | undefined;
+  isLogin: boolean = false;
   imagePath: string = '../../../assets/icons/mylogo.png';
-
   accountService = inject(AccountService);
   authService = inject(AuthService);
+  
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private headerService : HeaderService) {
+  }
+
+  ngOnInit(): void {
+    this.userInformation = this.headerService.getUserInformation();
+    if (this.userInformation !== undefined) {
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
+    }
   }
   
   async onLogout() {

@@ -14,7 +14,8 @@ namespace UserCore.Services.Interfaces
         Task<List<ServiceRespone>> GetAllSevicesAsync();
         Task<List<UserService>> GetSevicesByUserIdAsync(string userId);
 
-        Task<ServiceRespone> GetSevicesByIdAsync(string serviceId);
+        Task<ServiceRespone> GetServiceByIdAsync(string serviceId);
+        Task<int> GetServiceTypeIdByIdAsync(string serviceId, string name);
 
         Task<bool> GenegrateDefaultData();
 

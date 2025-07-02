@@ -79,8 +79,14 @@ namespace UserCore.Services.Implements
                     respone.Error = Constants.StatusCode.WrongPassWord;
                     return respone;
                 }
+                var userInformation = new UserInformationRespone
+                {
+                    UserId = user.Id,
+                    UserName = user.FullName ?? "",
+                    Email = user.Email ?? "",
+                };
 
-                respone.UserId = user.Id;
+                respone.UserInformation = userInformation;
                 respone.AccessToken = await _tokenServices.GenerateAccessToken(user);
                 respone.RefreshToken = await _tokenServices.GenerateRefreshToken(user);
                 return respone;
@@ -106,7 +112,14 @@ namespace UserCore.Services.Implements
                     respone.Error = Constants.StatusCode.UserNotFound;
                     return respone;
                 }
-                respone.UserId = user.Id;
+                var userInformation = new UserInformationRespone
+                {
+                    UserId = user.Id,
+                    UserName = user.FullName ?? "",
+                    Email = user.Email ?? "",
+                };
+
+                respone.UserInformation = userInformation;
                 respone.AccessToken = await _tokenServices.GenerateAccessToken(user);
                 respone.RefreshToken = await _tokenServices.GenerateRefreshToken(user);
                 return respone;

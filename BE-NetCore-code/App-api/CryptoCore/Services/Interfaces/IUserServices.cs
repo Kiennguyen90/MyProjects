@@ -8,6 +8,6 @@ namespace CryptoCore.Services.Interfaces
 {
     public interface IUserServices
     {
-        Task<bool> RegisterUser (string id, string userName, string email);
+        Task<bool> AddUserAsync (string groupId, string userName, string email);
     }
 }
