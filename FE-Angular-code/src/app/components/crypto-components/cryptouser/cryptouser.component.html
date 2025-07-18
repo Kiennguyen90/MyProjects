@@ -1,1 +1,112 @@
-<p>cryptouser works!</p>
+<app-header></app-header>
+<section>
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 container">
+        <div class="bg-white rounded-lg shadow p-4 card">
+            <div *ngIf="isGroupAdmin" class="flex justify-between items-center mb-4 text-end">
+                <button [routerLink]="['/cryptoadmin']" class="common-button">Quay Lại</button>
+            </div>
+
+            <h2 class="text-lg font-semibold text-gray-800">Thông tin nhà đầu tư</h2>
+            <div class="mt-2">
+                <table class="table-userinformation w-full">
+                    <tbody>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Email:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Tên người dùng:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.userName }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Số điện thoại:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.phoneNumber }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Số dư tài khoản:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.balance }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Số dư đầu tư:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.totalDeposit }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Số dư đã rút:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.totalWithdraw }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Lợi nhuận:</strong></td>
+                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.profit }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 card">
+            <h2 class="text-lg font-semibold text-gray-800">Danh mục đầu tư hiện tại</h2>
+            <div *ngIf="isGroupAdmin" class="flex justify-between items-center mb-4" style="text-align: center;">
+                <h4>Nạp Rút Tiền</h4>
+                <table class="table-userinformation w-full">
+                    <tbody>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Nạp Tiền: </strong></td>
+                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
+                            <td class="text-sm text-gray-800" style="text-align: center;">
+                                <button class="common-button">
+                                    Xác Nhận
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Rút Tiền: </strong></td>
+                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
+                            <td class="text-sm text-gray-800" style="text-align: center;">
+                                <button class="common-button">
+                                    Xác Nhận
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h4>Mua bán Tiền Số</h4>
+                <div class="flex items-center mb-4 text-end">
+                    <label style="margin-right: 20px; color: #255802; font-weight: 600;">Chọn loại tiền số:</label>
+                    <select class="common-select" style="min-width: 150px;">
+                        <option value="BTC">Bitcoin</option>
+                        <option value="ETH">Ethereum</option>
+                        <option value="XRP">Ripple</option>
+                        <option value="LTC">Litecoin</option>
+                        <option value="ADA">Cardano</option>
+                        <option value="SOL">Solana</option>
+                    </select>
+                </div>
+                <table class="table-userinformation w-full">
+                    <tbody>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Mua: </strong></td>
+                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
+                            <td class="text-sm text-gray-800" style="text-align: center;">
+                                <button class="common-button">
+                                    Xác Nhận
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Bán: </strong></td>
+                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
+                            <td class="text-sm text-gray-800" style="text-align: center;">
+                                <button class="common-button">
+                                    Xác Nhận
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex justify-between items-center mb-4" style="text-align: center;">
+                <h4>Chi tiết đầu tư</h4>
+            </div>
+        </div>
+    </main>
+</section>

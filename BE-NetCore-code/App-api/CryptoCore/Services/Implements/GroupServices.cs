@@ -23,7 +23,7 @@ namespace CryptoCore.Services.Implements
             _logger = logger;
         }
 
-        public async Task<Group> GetGroupIdByAdminId(string adminId)
+        public async Task<Group> GetGroupIdByAdminIdAsync(string adminId)
         {
             try
             {
@@ -37,11 +37,16 @@ namespace CryptoCore.Services.Implements
             }
         }
 
-        public async Task<List<User>> GetAllUsersByAdminId(string adminId)
+        public async Task<List<User>> GetAllUsersByAdminIdAsync(string adminId)
         {
             try
             {
-                var group = await GetGroupIdByAdminId(adminId);
+                var group = await GetGroupIdByAdminIdAsync(adminId);
+                if (group == null)
+                {
+                    _logger.LogWarning("No group found for admin ID: " + adminId);
+                    return new List<User>();
+                }
                 var users = await _cryptoDbcontext.Users.Where(x => x.GroupId == group.Id).ToListAsync();
                 return users;
             }
@@ -69,6 +74,25 @@ namespace CryptoCore.Services.Implements
             {
                 _logger.LogError("RegisterGroup Error: " + e.Message);
                 return false;
+            }
+        }
+
+        public async Task<string> GetAdminIdByGroupIdAsync(string groupId)
+        {
+            try
+            {
+                var group = await _cryptoDbcontext.Groups.FindAsync(groupId);
+                if (group == null)
+                {
+                    _logger.LogWarning("No group found for group ID: " + groupId);
+                    return null;
+                }
+                return group.AdminId;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return null;
             }
         }
     }

@@ -1,3 +1,4 @@
+using CryptoCore;
 using CryptoCore.BackgroundServices;
 using CryptoCore.Services.Implements;
 using CryptoCore.Services.Interfaces;
@@ -7,6 +8,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ServiceBusDelivery;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +85,12 @@ builder.Services.AddScoped<IGroupServices, GroupServices>();
 builder.Services.AddAuthorization();
 builder.Logging.ClearProviders();
 builder.Logging.AddProvider(new ColorConsoleLoggerProvider());
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddStackExchangeRedisCache(option =>
+{
+    option.Configuration = builder.Configuration["Redis:Configuration"];
+    option.InstanceName = builder.Configuration["Redis:InstanceName"];
+});
 
 var app = builder.Build();
 

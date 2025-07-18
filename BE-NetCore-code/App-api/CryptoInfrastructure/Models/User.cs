@@ -15,6 +15,12 @@ namespace CryptoInfrastructure.Models
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
+        public float Balance { get; set; } = 0;
+        public float TotalDeposit { get; set; } = 0;
+        public float TotalWithdraw { get; set; } = 0;
+        public string UpdateBy { get; set; } = "default";
+        public bool IsActive { get; set; } = false;
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         [Required]
         public string GroupId { get; set; }

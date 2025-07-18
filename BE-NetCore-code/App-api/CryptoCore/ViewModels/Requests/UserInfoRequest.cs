@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace CryptoCore.ViewModels.Requests
 {
-    public class UserRequest
+    public class UserInfoRequest
     {
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 }

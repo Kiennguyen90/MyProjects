@@ -137,7 +137,8 @@ namespace UserManagementAPI.Controllers
         }
 
         [HttpPost]
-        [Route("Default")]
+        [AllowAnonymous]
+        [Route("GenegrateDefaultData")]
         public async Task<IActionResult> GenegrateDefaultDataAsync()
         {
             try

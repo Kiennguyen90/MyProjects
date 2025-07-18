@@ -1,0 +1,15 @@
+.card{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.table-userinformation {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-userinformation th, .table-userinformation td {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}

@@ -1,7 +1,15 @@
-import { Injectable } from '@angular/core';
-import {jwtDecode} from 'jwt-decode';
+import { inject, Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
 import { UserInformation } from '../../../interfaces/auth-model';
-import { get } from 'http';
+import { lastValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+
+
+export interface RefreshAccesstoken {
+  errorMessage: string;
+  accessToken: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +19,14 @@ export class AuthService {
   private refreshToken: string | null = null;
   private userInformation: string | null = null;
   private decodedAccessToken: any;
-  private decodedRefreshToken: any;
   private currentTime = Math.floor(Date.now() / 1000);
+  private http = inject(HttpClient);
+  private baseUrl = environment.apiUrl;
 
   getCurrentUserId(): string | null {
     const userInformation = this.getUserInformation();
     if (userInformation !== null) {
-      const user : UserInformation = JSON.parse(userInformation);
+      const user: UserInformation = JSON.parse(userInformation);
       return user.userId;
     }
     return null;
@@ -29,29 +38,6 @@ export class AuthService {
   }
 
   getUserInformation(): string | null {
-    if(this.accessToken !== null ) {
-      this.decodedAccessToken = jwtDecode(this.accessToken);
-      if (this.decodedAccessToken && this.decodedAccessToken.exp && this.decodedAccessToken.exp < this.currentTime) {
-        console.warn('Access token is expired');
-        this.removeAccessToken();
-        this.decodedRefreshToken = jwtDecode(this.getRefreshToken() || '');
-        if (this.decodedRefreshToken && this.decodedRefreshToken.exp) {
-          if(this.decodedRefreshToken.exp < this.currentTime) {
-            console.warn('Refresh token is also expired');
-            this.removeRefreshToken();
-            this.removeUserInformation();
-            return null;
-          }
-          else {
-            console.warn('Refresh token is valid, but access token is expired');
-            // Here you would typically call a method to refresh the access token
-            // For example: this.refreshAccessToken();
-          }
-          return null;
-        }
-        return null;
-      }
-    }
     if (!this.userInformation && typeof window !== 'undefined' && window.localStorage) {
       this.userInformation = localStorage.getItem('userInformation');
     }
@@ -86,7 +72,7 @@ export class AuthService {
   }
 
   getRefreshToken(): string | null {
-    if (!this.refreshToken) {
+    if (!this.refreshToken && typeof window !== 'undefined' && window.localStorage) {
       this.refreshToken = localStorage.getItem('refresh_token');
     }
     return this.refreshToken;
@@ -108,5 +94,78 @@ export class AuthService {
       }
     }
     return null;
+  }
+
+  async checkUserLogin(): Promise<boolean> {
+    this.accessToken = this.getAccessToken();
+    this.refreshToken = this.getRefreshToken();
+    if (this.accessToken !== null) {
+      this.decodedAccessToken = jwtDecode(this.accessToken);
+      if (this.decodedAccessToken && this.decodedAccessToken.exp && this.decodedAccessToken.exp < this.currentTime) {
+        console.warn('Access token is expired');
+        this.removeAccessToken();
+        if (this.refreshToken !== null) {
+          let isrefreshtokenSuccess = await this.refreshAccessToken(this.refreshToken);
+          if (!isrefreshtokenSuccess) {
+            this.removeRefreshToken();
+            this.removeUserInformation();
+            return false; // Refresh token failed, user is not logged in
+          }
+          else {
+            return isrefreshtokenSuccess; // Access token refreshed successfully
+          }
+        }
+      }
+      else {
+        console.log('Access token is valid');
+        return true; // Access token is valid, user is logged in
+      }
+    }
+    else {
+      if (this.refreshToken !== null) {
+        let isrefreshtokenSuccess = await this.refreshAccessToken(this.refreshToken);
+        if (!isrefreshtokenSuccess) {
+          this.removeRefreshToken();
+          this.removeUserInformation();
+          return false; // Refresh token failed, user is not logged in
+        }
+        else {
+          return isrefreshtokenSuccess; // Access token refreshed successfully
+        }
+      }
+    }
+
+    return this.accessToken !== null;
+  }
+
+  async refreshAccessToken(refreshtoken: string): Promise<boolean> {
+    try {
+      let userInformation = localStorage.getItem('userInformation');
+      if (userInformation !== null) {
+        const user: UserInformation = JSON.parse(userInformation);
+        var email = user.email;
+        const response = await lastValueFrom(this.http.post<RefreshAccesstoken>(`${this.baseUrl}/user-management/Account/LoginByRefreshtoken`, { Email: email, refreshtoken: refreshtoken }));
+        if (response.errorMessage === '') {
+          this.accessToken = response.accessToken;
+          this.setAccessToken(this.accessToken);
+          console.log('Refresh token login Succeed');
+          return true; // Refresh token login succeeded
+        }
+        else {
+          this.removeRefreshToken();
+          this.removeUserInformation();
+          console.log('Refresh token login failed:', response.errorMessage);
+          return false; // Refresh token login failed
+        }
+      }
+      else {
+        console.warn('User information not found, cannot refresh token');
+        return false; // User information not found, cannot refresh token
+      }
+    }
+    catch (error) {
+      console.error('Refresh token login Error', error);
+      return false; // Error occurred during refresh token login
+    }
   }
 }

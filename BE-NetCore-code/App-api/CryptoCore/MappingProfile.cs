@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CryptoCore.ViewModels.Respones;
+using CryptoInfrastructure.Models;
 
 namespace CryptoCore
 {
@@ -6,6 +8,7 @@ namespace CryptoCore
     {
         public MappingProfile()
         {
+            CreateMap<User, UserInformationRespone>();
         }
     }
 }

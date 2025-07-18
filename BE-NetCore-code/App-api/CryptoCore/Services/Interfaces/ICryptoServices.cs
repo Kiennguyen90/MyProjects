@@ -5,5 +5,6 @@ namespace CryptoCore.Services.Interfaces
     public interface ICryptoServices
     {
         Task<List<CryptoToken>> GetAllCryptoTokenAsync();
+        Task<bool> GenegrateDefaultDataAsync();
     }
 }

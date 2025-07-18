@@ -29,38 +29,42 @@ export class HomeComponent {
   isShoppingService: boolean = false;
   defaultServices: DefaultServices = inject(DefaultServices);
   DefaultRoles: DefaultRoles = inject(DefaultRoles);
+  currentActionUserId: string | null = null;
 
   constructor(private router: Router, private dataService: DataService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.onLoadPage();
+    this.isLogin = await this.authService.checkUserLogin();
+    this.currentActionUserId = this.authService.getCurrentUserId();
+    if (this.currentActionUserId === null) {
+      return;
+    }
     this.onLoadUserInfo();
   }
 
-  async onLoadUserInfo() {
-    try {
-      const userId = this.authService.getCurrentUserId();
-      if (this.commonService.ListServices === undefined) {
+  async onLoadPage() {
+    if (this.commonService.ListServices === undefined) {
         this.ListServices = await this.commonService.getAllService();
       }
       else {
         this.ListServices = this.commonService.ListServices;
       }
-      if (userId !== null) {
-        this.userModel = await this.userService.getUserById(userId);
+  }
+  
+  async onLoadUserInfo() {
+    try {
+      if (this.currentActionUserId !== null && this.isLogin) {
+        this.userModel = await this.userService.getUserById(this.currentActionUserId);
         if (this.userModel != undefined) {
-          this.isLogin = true;
           this.checkService();
           this.dataService.setUserData(this.userModel);
-        }
-        else {
-          this.isLogin = false;
         }
       }
     }
     catch (error) {
       console.error('Error getting user:', error);
-      this.isLogin = false;
     }
   }
 
@@ -80,7 +84,7 @@ export class HomeComponent {
           this.router.navigate(['/cryptoadmin']);
         }
         else {
-          this.router.navigate(['/cryptouser/' + this.userModel?.id]);
+          this.router.navigate(['/cryptouser/'+ this.userModel.email]);
         }
       }
       else if (serviceId === this.defaultServices.shophouse.id) {

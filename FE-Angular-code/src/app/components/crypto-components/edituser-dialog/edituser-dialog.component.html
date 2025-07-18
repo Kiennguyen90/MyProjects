@@ -1,5 +1,8 @@
-<h1 mat-dialog-title>Add User</h1>
+<h1 mat-dialog-title>Edit User</h1>
 <div mat-dialog-content>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="ID" [(ngModel)]="data.userId" disabled>
+    </mat-form-field>
     <mat-form-field class="full-width">
         <input matInput placeholder="Name" [(ngModel)]="data.name">
     </mat-form-field>
@@ -11,6 +14,6 @@
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button (click)="onAddUser()">Add</button>
+    <button mat-button (click)="onCancel()">Hủy</button>
+    <button mat-button (click)="onUpdated()">Cập Nhật</button>
 </div>

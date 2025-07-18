@@ -1,7 +1,7 @@
 <section>
     <app-header></app-header>
     <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 container">
-        <div class="bg-white rounded-lg shadow" style="padding-left: 10px; padding-right: 10px;">
+        <div *ngIf="isPermission && isLogin" class="bg-white rounded-lg shadow" style="padding-left: 10px; padding-right: 10px;">
             <div class="grid">
                 <div class="row">
                     <div class="col-8">
@@ -56,14 +56,14 @@
                     </thead>
                     <tbody id="users-table-body" class="bg-white divide-y divide-gray-200">
                         <tr *ngFor="let user of cryptoUsers">
-                            <td class="px-6 py-4 whitespace-nowrap">{{ user.fullName }}</td>
+                            <td (click)="selectedUser(user.email)" class="px-6 py-4 whitespace-nowrap">{{ user.userName }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ user.email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ user.status }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ user.balance }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ user.profit }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ user.phoneNumber }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <button (click)="editUser(user.id)" class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                                <button (click)="editUser(user.userName, user.email, user.phoneNumber, user.userId)" class="text-indigo-600 hover:text-indigo-900">Edit</button>
                                 <!-- <button (click)="deleteUser(user.id)" class="text-red-600 hover:text-red-900 ml-4">Delete</button> -->
                             </td>
                         </tr>
@@ -82,6 +82,10 @@
                     </a>
                 </div>
             </div>
+        </div>
+        <div *ngIf="!isPermission || !isLogin" class="bg-white rounded-lg shadow p-4">
+            <h2 class="text-lg font-semibold text-gray-800">Access Denied</h2>
+            <p class="text-sm text-gray-500 mt-1">You do not have permission to view this page.</p>
         </div>
     </main>
 </section>

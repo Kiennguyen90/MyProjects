@@ -7,7 +7,8 @@ namespace CryptoCore.Services.Interfaces
     public interface IGroupServices
     {
         Task<bool> RegisterGroup(string adminId);
-        Task<Group> GetGroupIdByAdminId(string adminId);
-        Task<List<User>> GetAllUsersByAdminId(string adminId);
+        Task<Group> GetGroupIdByAdminIdAsync(string adminId);
+        Task<string> GetAdminIdByGroupIdAsync(string groupId);
+        Task<List<User>> GetAllUsersByAdminIdAsync(string adminId);
     }
 }

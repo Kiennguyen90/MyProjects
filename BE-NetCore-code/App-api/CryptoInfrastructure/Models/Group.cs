@@ -9,6 +9,7 @@ namespace CryptoInfrastructure.Models
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string AdminId { get; set; } = string.Empty;
+        public DateTime DateCreate { get; set; } = DateTime.UtcNow;
 
         public ICollection<User> Members { get; set; }
     }

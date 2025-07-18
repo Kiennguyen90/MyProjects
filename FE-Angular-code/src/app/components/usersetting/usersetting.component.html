@@ -1,0 +1,29 @@
+<section>
+    <app-header></app-header>
+    <div *ngIf="isLogin" class="container">
+        <div class="user-setting">
+            <div class="text-left" style="margin-top: 2%;">
+                <h2>User Setting</h2>
+                <p>Manage your account settings and preferences.</p>
+            </div>
+            <div class="container row" style="margin-top: 5%;">
+                <div class="col-md-2 mb-4 text-left">
+                    <img (click)="selectedImg()" [src]="imagePath" alt="Logo"
+                        style="height: 100px; width: 100px; border-radius: 50%;" />
+                </div>
+                <div class="user-info col-md-10 mb-4 text-left">
+
+                    <p><strong>Name:</strong> {{userInformation?.userName}}</p>
+                    <p><strong>Email:</strong> {{userInformation?.email}}</p>
+                    <!-- <p><strong>Phone:</strong> {{userInformation?.phoneNumber}}</p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isLogin" class="container">
+        <div class="user-setting-no-permission">
+            <h2>Please Login to access your settings</h2>
+            <p>Login to manage your account settings and preferences.</p>
+        </div>
+    </div>
+</section>

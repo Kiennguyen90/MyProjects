@@ -89,24 +89,13 @@ namespace UserManagementAPI.Controllers
 
         }
 
-        [HttpPost("updateaccesstoken")]
+        [HttpPost]
+        [Route("LoginByRefreshtoken")]
         public async Task<IActionResult> ReGenerateAccessToken([FromBody] RegenerateAccessTokenRequest model)
         {
             try
             {
                 var result = await _tokenServices.GeneratedAccessTokenbyRefreshToken(model.RefreshToken, model.Email);
-                if (result == Constants.StatusCode.UserNotFound)
-                {
-                    return BadRequest("User not found");
-                }
-                else if (result == Constants.StatusCode.RefreshTokenNotFound)
-                {
-                    return BadRequest("Refresh token not found");
-                }
-                else if (result == Constants.StatusCode.RefreshTokenExpired)
-                {
-                    return BadRequest("Refresh token expired");
-                }
                 return Ok(result);
             }
             catch (Exception ex)
