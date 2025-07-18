@@ -22,7 +22,7 @@ export const routes: Routes = [
         title: 'CryptoAdmin',
     },
     {
-        path: 'cryptouser/:userid',
+        path: 'cryptouser/:email',
         loadComponent: () => import('./components/crypto-components/cryptouser/cryptouser.component').then(c => c.CryptouserComponent),
         title: 'CryptoAdmin',
     },
@@ -31,5 +31,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/registerservice/registerservice.component').then(c => c.RegisterserviceComponent),
         title: 'CryptoAdmin',
     },
+    {
+        path: 'Usersetting/:email',
+        loadComponent: () => import('./components/usersetting/usersetting.component').then(c => c.UsersettingComponent),
+        title: 'User Setting',
+    }
 ];
 export default routes;

@@ -76,14 +76,18 @@ namespace CryptoCore.BackgroundServices
                 var existingUser = await cryptoDbcontext.Users.FirstOrDefaultAsync(x => x.Email == email);
                 if (existingUser != null)
                 {
-                    _logger.LogWarning($"User with email {email} already exists.");
-                    return false;
+                    existingUser.UserName = userName;
+                    existingUser.IsActive = true;
+                    cryptoDbcontext.Users.Update(existingUser);
+                    var saveC = await cryptoDbcontext.SaveChangesAsync();
+                    return saveC > 0;
                 }
                 var user = new User()
                 {
                     Id = id,
                     UserName = userName,
                     Email = email,
+                    UpdateBy = "User Management",
                     GroupId = groupId
                 };
                 await cryptoDbcontext.Users.AddAsync(user);

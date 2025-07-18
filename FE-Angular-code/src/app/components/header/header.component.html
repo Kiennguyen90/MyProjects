@@ -1,12 +1,12 @@
 <header class="p-3 mb-3 border-bottom main-menu" style="margin-bottom: 0em !important;">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <img [src]="imagePath" width="50" height="50" priority id="main-logo" title="logo">
+            <img  [src]="imagePath" width="50" height="50" priority id="main-logo" title="logo">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#home" class="nav-link px-2 link-secondary white-text">Home</a></li>
+                <li><a href="" class="nav-link px-2 link-secondary white-text">Home</a></li>
                 
                 <li>
-                    <a href="#about" class="nav-link px-2 link-dark white-text">About Me</a>
+                    <a href="/about" class="nav-link px-2 link-dark white-text">About Me</a>
                 </li>
             </ul>
             <div *ngIf="isLogin" class="dropdown text-end">
@@ -15,10 +15,7 @@
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                     <li>
-                        <a class="dropdown-item" href="#">Settings</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">{{userInformation?.userName}}</a>
+                        <a class="dropdown-item" routerLink="/Usersetting/{{userInformation?.email}}">{{userInformation?.userName}}</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

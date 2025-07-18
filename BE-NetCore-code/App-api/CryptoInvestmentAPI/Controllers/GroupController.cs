@@ -26,25 +26,54 @@ namespace CryptoInvestment.API.Controllers
         {
             try
             {
+                var respone = new GetAllUserRespone();
                 var userClaims = User.Claims;
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null)
                 {
-                    return BadRequest("User ID claim not found");
+                    respone.Message = "No Permission";
+                    return Ok(respone);
                 }
 
-                var users = await _groupServices.GetAllUsersByAdminId(userIdClaim.Value);
+                var users = await _groupServices.GetAllUsersByAdminIdAsync(userIdClaim.Value);
                 if (users == null || !users.Any())
                 {
-                    return NotFound("No users found for this group");
+                    respone.Message = "No Permission";
+                    return Ok(respone);
                 }
-                var respone = users.Select(u => new AllUsersRespone
+
+                users.ForEach(user =>
                 {
-                    UserId = u.Id,
-                    Email = u.Email,
-                    FullName = u.UserName,
-                    PhoneNumber = u.PhoneNumber
-                }).ToList();
+                    float profit = 0;
+                    
+                    if (user.TotalDeposit - user.TotalWithdraw > 0)
+                    {
+                        profit = user.Balance / (user.TotalDeposit - user.TotalWithdraw) * 100;
+                    }
+                    else
+                    {
+                        if (user.TotalDeposit == 0)
+                        {
+                            profit = 0;
+                        }
+                        else
+                        {
+                            profit = (user.Balance + user.TotalWithdraw - user.TotalDeposit) / user.TotalDeposit * 100;
+                        } 
+                    }
+                    respone.ListUser.Add(new UserInformationRespone
+                    {
+                        UserId = user.Id,
+                        Email = user.Email,
+                        UserName = user.UserName,
+                        PhoneNumber = user.PhoneNumber,
+                        Balance = user.Balance,
+                        Profit = profit,
+                        Status = user.IsActive ? "Active" : "Inactive"
+                    });
+                });
+
+                respone.Message = "Get User succeed";
                 return Ok(respone);
             }
             catch (Exception ex)
@@ -52,6 +81,23 @@ namespace CryptoInvestment.API.Controllers
                 _logger.LogError(ex, "Error fetching groups");
                 return StatusCode(500, "Internal server error");
             }
+        }
+
+        [HttpGet]
+        [Route("GetAdmin/{groupId}")]
+        [Authorize]
+        public async Task<IActionResult> GetAdminIdByGroupId(string groupId)
+        {
+            try
+            {
+                var adminId = await _groupServices.GetAdminIdByGroupIdAsync(groupId);
+                return Ok(adminId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using UserCore.Services.Interfaces;
+using UserCore.ViewModels.Respones;
 
 namespace UserCore.Services.Implements
 {
@@ -42,7 +43,7 @@ namespace UserCore.Services.Implements
                 if (refreshtoken != null)
                 {
                     refreshtoken.Value = tokenValue;
-                    refreshtoken.ExpireTime = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("ExpiryDuration:ExpiryDuration"));
+                    refreshtoken.ExpireTime = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JwtRefreshToken:ExpiryDuration"));
                     _userDbContext.ApplicationUserTokens.Update(refreshtoken);
                 }
                 else
@@ -54,7 +55,7 @@ namespace UserCore.Services.Implements
                         Name = "RefreshToken",
                         Value = tokenValue,
                         CreatedAt = DateTime.UtcNow,
-                        ExpireTime = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("ExpiryDuration:ExpiryDuration")),
+                        ExpireTime = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JwtRefreshToken:ExpiryDuration")),
                     };
                     await _userDbContext.ApplicationUserTokens.AddAsync(token);
                 }
@@ -69,32 +70,39 @@ namespace UserCore.Services.Implements
             
         }
 
-        public async Task<string> GeneratedAccessTokenbyRefreshToken(string refreshToken, string email)
+        public async Task<RefreshAccesstokenRespone> GeneratedAccessTokenbyRefreshToken(string refreshToken, string email)
         {
             try
             {
+                var response = new RefreshAccesstokenRespone();
                 var user = await _userManager.FindByEmailAsync(email);
                 if (user == null)
                 {
-                    return Constants.StatusCode.UserNotFound;
+                    response.ErrorMessage = Constants.StatusCode.UserNotFound;
+                    return response;
                 }
 
                 var token = await _userDbContext.ApplicationUserTokens.FirstOrDefaultAsync(x => x.Value == refreshToken && x.UserId == user.Id);
                 if (token == null)
                 {
-                    return Constants.StatusCode.RefreshTokenNotFound;
+                    response.ErrorMessage = Constants.StatusCode.RefreshTokenNotFound;
+                    return response;
                 }
                 if(token.ExpireTime < DateTime.UtcNow)
                 {
-                    return Constants.StatusCode.RefreshTokenExpired;
+                    response.ErrorMessage = Constants.StatusCode.RefreshTokenExpired;
+                    return response;
                 }
                 var accessToken = GenerateJWToken(user, "JwtAccessToken");
-                return accessToken;
+                response.AccessToken = accessToken;
+                return response;
             }
             catch (Exception ex)
             {
+                var response = new RefreshAccesstokenRespone();
                 _logger.LogError($"Error GeneratedAccessTokenbyRefreshToken {refreshToken}, Exception Message:{ex.Message}");
-                return $"Error GeneratedAccessTokenbyRefreshToken {refreshToken}";
+                response.ErrorMessage = $"Error GeneratedAccessTokenbyRefreshToken {refreshToken}";
+                return response;
             }
         }
 

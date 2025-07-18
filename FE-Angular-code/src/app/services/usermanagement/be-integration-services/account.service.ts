@@ -95,6 +95,7 @@ export class AccountService {
     return "error";
   }
 
+
   async SignOut(): Promise<boolean> {
     try {
       var response = await lastValueFrom(this.http.post<boolean>(`${this.baseUrl}/user-management/Account/logout`, {}));
@@ -118,5 +119,13 @@ export class AccountService {
       return true;
     }
     return false;
+  }
+
+  getUserInformation() {
+    const userInformation = this.authService.getUserInformation();
+    if (userInformation !== null) {
+      return JSON.parse(userInformation);
+    }
+    return undefined;
   }
 }

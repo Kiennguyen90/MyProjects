@@ -8,11 +8,7 @@ export class HeaderService {
 
   constructor(private authService : AuthService) { }
 
-  getUserInformation() {
-    const userInformation = this.authService.getUserInformation();
-    if (userInformation !== null) {
-      return JSON.parse(userInformation);
-    }
-    return undefined;
+  async checkUserLogin(): Promise<boolean> {
+    return await this.authService.checkUserLogin();
   }
 }

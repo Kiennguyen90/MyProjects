@@ -6,8 +6,11 @@
     <mat-form-field class="full-width">
         <input matInput placeholder="Email" [(ngModel)]="data.email">
     </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="Phone Number" [(ngModel)]="data.phoneNumber">
+    </mat-form-field>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button (click)="onAddUser()">Add</button>
+    <button mat-button (click)="onCancel()">Hủy</button>
+    <button mat-button (click)="onAddUser()">Thêm Mới</button>
 </div>

@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 export interface AddUserData {
   name: string;
   email: string;
+  phoneNumber: string;
 }
 
 @Component({
