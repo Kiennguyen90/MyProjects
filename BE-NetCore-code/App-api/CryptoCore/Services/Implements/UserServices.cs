@@ -1,12 +1,11 @@
-﻿using Azure;
-using CryptoCore.Services.Interfaces;
+﻿using CryptoCore.Services.Interfaces;
 using CryptoCore.ViewModels.Requests;
 using CryptoCore.ViewModels.Respones;
 using CryptoInfrastructure;
 using CryptoInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace CryptoCore.Services.Implements
@@ -16,17 +15,18 @@ namespace CryptoCore.Services.Implements
         private readonly CryptoDbcontext _cryptoDbcontext;
         private readonly ILogger<UserServices> _logger;
         private readonly HttpClient _httpClient;
-        private readonly IGroupServices _groupServices;
+        
+        private readonly ICommonServices _commonServices;
         public UserServices(
             CryptoDbcontext cryptoDbcontext
             , ILogger<UserServices> logger
             , IHttpClientFactory httpClientFactory
-            , IGroupServices groupServices)
+            , ICommonServices commonServices)
         {
             _cryptoDbcontext = cryptoDbcontext;
             _logger = logger;
             _httpClient = httpClientFactory.CreateClient("apiClient");
-            _groupServices = groupServices;
+            _commonServices = commonServices;
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
@@ -58,12 +58,12 @@ namespace CryptoCore.Services.Implements
                 throw;
             }
         }
-        public async Task<UserRespone> AddUserAsync(string adminId, string userName, string email, string phoneNumber)
+        public async Task<BaseRespone> AddUserAsync(string adminId, string userName, string email, string phoneNumber)
         {
             try
             {
-                var respone = new UserRespone();
-                var group = await _groupServices.GetGroupIdByAdminIdAsync(adminId);
+                var respone = new BaseRespone();
+                var group = await _cryptoDbcontext.Groups.AsNoTracking().FirstOrDefaultAsync(x => x.AdminId == adminId);
                 if (group == null)
                 {
                     _logger.LogWarning($"Group not found for admin ID {adminId}.");
@@ -124,7 +124,7 @@ namespace CryptoCore.Services.Implements
             }
             catch (Exception e)
             {
-                var respone = new UserRespone();
+                var respone = new BaseRespone();
                 respone.IsSuccess = false;
                 respone.Message = "Failed to create user.";
                 _logger.LogError("RegisterUser Error: " + e.Message);
@@ -142,8 +142,13 @@ namespace CryptoCore.Services.Implements
                     _logger.LogError($"User with ID {userId} not found.");
                     return false;
                 }
-                var groupAdminId = await _groupServices.GetAdminIdByGroupIdAsync(user.GroupId);
-                if (groupAdminId != adminId)
+                var groupAdmin = await _cryptoDbcontext.Groups.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.GroupId);
+                if(groupAdmin == null)
+                {
+                    _logger.LogError($"Group for user ID {userId} not found.");
+                    return false;
+                }
+                if (groupAdmin.Id != adminId)
                 {
                     _logger.LogWarning($"Admin ID {adminId} does not have permission to update user ID {userId}.");
                     return false;
@@ -181,6 +186,147 @@ namespace CryptoCore.Services.Implements
             {
                 _logger.LogError("IsUserExists Error: " + e.Message);
                 return null;
+            }
+        }
+
+        public async Task<BaseRespone> UpdateUserBalanceAsync(string adminId, UserBalanceRequest userBalanceRequest)
+        {
+            try
+            {
+                var respone = new BaseRespone()
+                {
+                    IsSuccess = true,
+                    Message = string.Empty
+                };
+                var user = await GetUserByIdAsync(userBalanceRequest.UserId);
+                if (user == null)
+                {
+                    respone.IsSuccess = false;
+                    respone.Message = "User not found.";
+                    return respone;
+                }
+                var group = await _cryptoDbcontext.Groups.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.GroupId);
+                if (group == null)
+                {
+                    _logger.LogError($"Group for user ID {user.Id} not found.");
+                    respone.IsSuccess = false;
+                    respone.Message = "Group not found for user.";
+                    return respone;
+                }
+                if (group.AdminId != adminId)
+                {
+                    respone.IsSuccess = false;
+                    respone.Message = "No permission to update user balance.";
+                    return respone;
+                }
+                if(userBalanceRequest.IsDeposit)
+                {
+                    user.Balance += userBalanceRequest.Amount;
+                    user.TotalDeposit += userBalanceRequest.Amount;
+                    _cryptoDbcontext.Users.Update(user);
+                    var userBalanceAction = new UserBalanceAction()
+                    {
+                        UserId = user.Id,
+                        Amount = userBalanceRequest.Amount,
+                        IsDeposit = userBalanceRequest.IsDeposit,
+                        CreatedBy = adminId,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    await _cryptoDbcontext.UserBalanceActions.AddAsync(userBalanceAction);
+                }
+                else
+                {
+                    if (user.Balance < userBalanceRequest.Amount)
+                    {
+                        respone.IsSuccess = false;
+                        respone.Message = "Insufficient balance.";
+                        return respone;
+                    }
+                    user.Balance -= userBalanceRequest.Amount;
+                    user.TotalWithdraw += userBalanceRequest.Amount;
+                    _cryptoDbcontext.Users.Update(user);
+                    var userBalanceAction = new UserBalanceAction()
+                    {
+                        UserId = user.Id,
+                        Amount = userBalanceRequest.Amount,
+                        IsDeposit = false,
+                        CreatedBy = adminId,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    await _cryptoDbcontext.UserBalanceActions.AddAsync(userBalanceAction);
+                }
+                var saveCount = await _cryptoDbcontext.SaveChangesAsync();
+                respone.IsSuccess = saveCount > 0;
+                respone.Message = "User balance updated successfully.";
+                return respone;
+            }
+            catch (Exception e)
+            {
+                var respone = new BaseRespone();
+                respone.IsSuccess = false;
+                respone.Message = "Failed to update user balance.";
+                _logger.LogError("UpdateUserBalance Error: " + e.Message);
+                return respone;
+            }
+        }
+
+        public async Task<List<UserToken>> GetTokensByUserIdAsync(string userId)
+        {
+            try
+            {
+                var tokens = _cryptoDbcontext.UserTokens
+                    .Include(x => x.CryptoToken)
+                    .Where(x => x.UserId == userId);
+                if (tokens == null || !tokens.Any())
+                {
+                    _logger.LogWarning($"No tokens found for user ID {userId}.");
+                    return new List<UserToken>();
+                }
+                else
+                {
+                    return await tokens.ToListAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error retrieving tokens for user ID {userId}: {e.Message}");
+                return new List<UserToken>();
+            }
+        }
+
+        public async Task<float> GetTotalAmountByUserIdAsync(string userId)
+        {
+            try
+            {
+                float totalAmount = 0;
+                var tokenPriceData = await _commonServices.GetTokenPriceDataFromCaching();
+                if (tokenPriceData == null)
+                {
+                    _logger.LogWarning("Token price data is empty or not found in cache.");
+                    return 0;
+                }
+                var tokens = await GetTokensByUserIdAsync(userId);
+                if (tokens == null || !tokens.Any())
+                {
+                    return totalAmount;
+                }
+
+                foreach (var item in tokens)
+                {
+                    var tokenPrice = tokenPriceData.TokenPrices.FirstOrDefault(x => x.Symbol == item.CryptoToken.Symbol)?.Price;
+                    if (tokenPrice == null)
+                    {
+                        tokenPrice = 0; // Default to 0 if price is not found
+                    }
+                    totalAmount += item.CurrentAmount * (float)tokenPrice * 26431;
+                }
+                return totalAmount;
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error retrieving tokens for user ID {userId}: {e.Message}");
+                return 0;
             }
         }
     }

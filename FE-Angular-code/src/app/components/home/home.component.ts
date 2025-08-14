@@ -81,10 +81,10 @@ export class HomeComponent {
     {
       if (serviceId === this.defaultServices.crypto.id) {
         if (this.userModel.services.some(s => s.roleId == this.DefaultRoles.groupadmin.id)) {
-          this.router.navigate(['/cryptoadmin']);
+          this.router.navigate(['/cryptoservice/admin']);
         }
         else {
-          this.router.navigate(['/cryptouser/'+ this.userModel.email]);
+          this.router.navigate(['/cryptoservice/user/'+ this.userModel.email]);
         }
       }
       else if (serviceId === this.defaultServices.shophouse.id) {

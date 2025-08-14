@@ -15,14 +15,13 @@ namespace CryptoInfrastructure.Models
 
         [Required]
         public string UserId { get; set; }
-        public bool IsDeposit { get; set; } = false;
-        public bool IsWithdraw { get; set; } = false;
+        public bool IsDeposit { get; set; }
         public float Amount { get; set; } = 0;
-        public string UpdateBy { get; set; } = string.Empty;
-        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
+        public string CreatedBy { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
         [ForeignKey("UserId")]
-        public User User { get; set; } = new User();
+        public User User { get; set; }
 
     }
 }

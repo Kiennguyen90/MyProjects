@@ -31,49 +31,11 @@ namespace CryptoInvestment.API.Controllers
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null)
                 {
+                    respone.IsSuccess = false;
                     respone.Message = "No Permission";
                     return Ok(respone);
                 }
-
-                var users = await _groupServices.GetAllUsersByAdminIdAsync(userIdClaim.Value);
-                if (users == null || !users.Any())
-                {
-                    respone.Message = "No Permission";
-                    return Ok(respone);
-                }
-
-                users.ForEach(user =>
-                {
-                    float profit = 0;
-                    
-                    if (user.TotalDeposit - user.TotalWithdraw > 0)
-                    {
-                        profit = user.Balance / (user.TotalDeposit - user.TotalWithdraw) * 100;
-                    }
-                    else
-                    {
-                        if (user.TotalDeposit == 0)
-                        {
-                            profit = 0;
-                        }
-                        else
-                        {
-                            profit = (user.Balance + user.TotalWithdraw - user.TotalDeposit) / user.TotalDeposit * 100;
-                        } 
-                    }
-                    respone.ListUser.Add(new UserInformationRespone
-                    {
-                        UserId = user.Id,
-                        Email = user.Email,
-                        UserName = user.UserName,
-                        PhoneNumber = user.PhoneNumber,
-                        Balance = user.Balance,
-                        Profit = profit,
-                        Status = user.IsActive ? "Active" : "Inactive"
-                    });
-                });
-
-                respone.Message = "Get User succeed";
+                respone = await _groupServices.GetAllUsersByAdminIdAsync(userIdClaim.Value);
                 return Ok(respone);
             }
             catch (Exception ex)

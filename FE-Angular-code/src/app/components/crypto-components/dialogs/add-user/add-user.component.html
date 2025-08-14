@@ -1,13 +1,16 @@
-<h1 mat-dialog-title>Add User</h1>
+<h1 mat-dialog-title>Thêm mới nhà đầu tư</h1>
 <div mat-dialog-content>
     <mat-form-field class="full-width">
-        <input matInput placeholder="Name" [(ngModel)]="data.name">
+        <mat-label>Họ và Tên</mat-label>
+        <input matInput placeholder="Họ và Tên" [(ngModel)]="data.name">
     </mat-form-field>
     <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
         <input matInput placeholder="Email" [(ngModel)]="data.email">
     </mat-form-field>
     <mat-form-field class="full-width">
-        <input matInput placeholder="Phone Number" [(ngModel)]="data.phoneNumber">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput placeholder="Số điện thoại" [(ngModel)]="data.phoneNumber">
     </mat-form-field>
 </div>
 <div mat-dialog-actions>

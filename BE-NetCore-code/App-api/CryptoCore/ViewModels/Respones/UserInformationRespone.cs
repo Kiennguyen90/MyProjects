@@ -11,7 +11,7 @@ namespace CryptoCore.ViewModels.Respones
         public string UserId { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Status { get; set; } = "Inactive"; // Default status
+        public string Status { get; set; } = string.Empty; // Default status
         public string PhoneNumber { get; set; } = string.Empty;
         public string Avatar { get; set; } = string.Empty;
         public float Balance { get; set; } = 0;
@@ -22,9 +22,8 @@ namespace CryptoCore.ViewModels.Respones
         public string GroupAdminId { get; set; } = string.Empty;
     }
 
-    public class GetAllUserRespone
+    public class GetAllUserRespone : BaseRespone
     {
         public List<UserInformationRespone> ListUser { get; set; } = new List<UserInformationRespone>();
-        public string Message { get; set; } = string.Empty;
     }
 }

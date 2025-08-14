@@ -31,7 +31,7 @@ namespace CryptoInvestment.API.Controllers
         {
             try
             {
-                var respone = new UserRespone();
+                var respone = new BaseRespone();
                 var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (adminIdClaim == null)
                 {
@@ -49,6 +49,31 @@ namespace CryptoInvestment.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("UpdateUserBalace")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserBalanceAsync([FromBody] UserBalanceRequest userBalanceRequest)
+        {
+            try
+            {
+                var respone = new BaseRespone();
+                var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (adminIdClaim == null)
+                {
+                    respone.Message = "User ID claim not found";
+                    respone.IsSuccess = false;
+                    return Ok(respone);
+                }
+
+                respone = await _userServices.UpdateUserBalanceAsync(adminIdClaim.Value, userBalanceRequest);
+                return Ok(respone);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error updating user balance: " + e.Message);
+            }
+        }
+
         [HttpGet]
         [Route("{email}")]
         [Authorize]
@@ -57,15 +82,16 @@ namespace CryptoInvestment.API.Controllers
             try
             {
                 float profit = 0;
+                float totalPredictedAmount = 0;
                 var user = await _userServices.GetUserByEmailAsync(email);
                 if (user == null)
                 {
                     return NotFound("User not found");
                 }
-
+                totalPredictedAmount = await _userServices.GetTotalAmountByUserIdAsync(user.Id);
                 if (user.TotalDeposit - user.TotalWithdraw > 0)
                 {
-                    profit = user.Balance / (user.TotalDeposit - user.TotalWithdraw) * 100;
+                    profit = (user.Balance + totalPredictedAmount) / (user.TotalDeposit - user.TotalWithdraw) * 100 - 100;
                 }
                 else
                 {
@@ -75,7 +101,7 @@ namespace CryptoInvestment.API.Controllers
                     }
                     else
                     {
-                        profit = (user.Balance + user.TotalWithdraw - user.TotalDeposit) / user.TotalDeposit * 100;
+                        profit = (totalPredictedAmount + user.Balance + user.TotalWithdraw - user.TotalDeposit) / user.TotalDeposit * 100;
                     }
                 }
                 var userInformationRespone = new UserInformationRespone() 
@@ -107,7 +133,7 @@ namespace CryptoInvestment.API.Controllers
         {
             try
             {
-                var respone = new UserRespone();
+                var respone = new BaseRespone();
                 var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (adminIdClaim == null)
                 {

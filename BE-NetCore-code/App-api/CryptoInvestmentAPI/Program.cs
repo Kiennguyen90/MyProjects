@@ -79,6 +79,8 @@ builder.Services.AddSingleton<IServiceBusQueue, ServiceBusQueue>(
     x => new ServiceBusQueue(sbConn ?? ""));
 
 builder.Services.AddHostedService<AzureServiceBusListener>();
+builder.Services.AddHostedService<RealTimeTokenPriceService>();
+builder.Services.AddScoped<ICommonServices, CommonServices>();
 builder.Services.AddScoped<ICryptoServices, CryptoServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IGroupServices, GroupServices>();

@@ -3,7 +3,7 @@
     <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 container">
         <div class="bg-white rounded-lg shadow p-4 card">
             <div *ngIf="isGroupAdmin" class="flex justify-between items-center mb-4 text-end">
-                <button [routerLink]="['/cryptoadmin']" class="common-button">Quay Lại</button>
+                <button [routerLink]="['/cryptoservice/admin']" class="common-button">Quay Lại</button>
             </div>
 
             <h2 class="text-lg font-semibold text-gray-800">Thông tin nhà đầu tư</h2>
@@ -11,101 +11,189 @@
                 <table class="table-userinformation w-full">
                     <tbody>
                         <tr>
-                            <td class="text-sm text-gray-500"><strong>Email:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.email }}</td>
+                            <td class="text-sm text-gray-500"><strong>Tên người dùng:</strong></td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.userName }}</td>
                         </tr>
                         <tr>
-                            <td class="text-sm text-gray-500"><strong>Tên người dùng:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.userName }}</td>
+                            <td class="text-sm text-gray-500"><strong>Email:</strong></td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.email }}</td>
                         </tr>
                         <tr>
                             <td class="text-sm text-gray-500"><strong>Số điện thoại:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.phoneNumber }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-sm text-gray-500"><strong>Số dư tài khoản:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.balance }}</td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.phoneNumber }}</td>
                         </tr>
                         <tr>
                             <td class="text-sm text-gray-500"><strong>Số dư đầu tư:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.totalDeposit }}</td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.totalDeposit | number }} VNĐ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Số dư tài khoản:</strong></td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.balance | number }} VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td class="text-sm text-gray-500"><strong>Giá trị tài sản hiện tại: </strong></td>
+                            <td class="text-sm text-gray-800">{{ totalPredictedValue | number }} VNĐ</td>
                         </tr>
                         <tr>
                             <td class="text-sm text-gray-500"><strong>Số dư đã rút:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.totalWithdraw }}</td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.totalWithdraw | number }} VNĐ
+                            </td>
                         </tr>
                         <tr>
                             <td class="text-sm text-gray-500"><strong>Lợi nhuận:</strong></td>
-                            <td class="text-sm text-gray-800">{{ cryptouserInformation?.profit }}</td>
+                            <td class="text-sm text-gray-800">{{ selectedUserInformation?.profit }} %</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <div *ngIf="isGroupAdmin" class="bg-white rounded-lg shadow p-4 card">
+            <h2 class="text-lg font-semibold text-gray-800">Quản lý Tài Sản</h2>
+            <div class="flex justify-between items-center mb-4" style="text-align: center;">
+                <div class="bg-white rounded-lg p-4 card">
+                    <h4>Nạp Rút Tiền</h4>
+                    <div style="padding: 20px;">
+                        <label style="margin-right: 20px; color: #255802; font-weight: 600;">Nạp / Rút: </label>
+                        <select (change)="onBalanceSelectionChange($event)" class="common-select"
+                            style="min-width: 150px;">
+                            <option value="Deposit">Nạp Tiền</option>
+                            <option value="WithDraw">Rút Tiền</option>
+                        </select>
+                    </div>
+                    <table class="table-userinformation w-full">
+                        <tbody>
+                            <tr *ngIf="balanceChangeType === 'Deposit'">
+                                <td class="text-sm text-gray-500 buying-color"><strong>Nạp Tiền: </strong></td>
+                                <td class="text-sm text-gray-800"><input type="number" min="0"
+                                        [(ngModel)]="userBalanceAmount" placeholder="Nhập số tiền"></td>
+                                <td class="text-sm text-gray-800" style="text-align: center;">
+                                    <button class="common-button" (click)="onUpdateUserBalance('Deposit')">
+                                        Xác nhận
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="balanceChangeType === 'WithDraw'">
+                                <td class="text-sm text-gray-500 selling-color"><strong>Rút Tiền: </strong></td>
+                                <td class="text-sm text-gray-800"><input type="number" min="0"
+                                        [(ngModel)]="userBalanceAmount" placeholder="Nhập số tiền"></td>
+                                <td class="text-sm text-gray-800" style="text-align: center;">
+                                    <button class="common-button" (click)="onUpdateUserBalance('WithDraw')">
+                                        Xác nhận
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-white rounded-lg p-4 card">
+                    <h4>Mua bán Tiền Số</h4>
+                    <div class="row container center" style="padding: 20px; text-align: center;">
+                        <div class="col-md-6 text-center">
+                            <label style="margin-right: 20px; color: #255802; font-weight: 600;">Chọn loại tiền
+                                số:</label>
+                            <select (change)="onTokenSelectionChange($event)" class="common-select"
+                                style="min-width: 150px;">
+                                <option value="" disabled selected>Chọn loại tiền</option>
+                                <option *ngFor="let token of cryptoTokenList?.cryptoTokens" [value]="token.symbol">
+                                    {{token.symbol}} - {{token.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <label style="margin-right: 20px; color: #255802; font-weight: 600;">Mua / Bán: </label>
+                            <select (change)="onTransactionSelectionChange($event)" class="common-select"
+                                style="min-width: 150px;">
+                                <option value="Buy">Mua</option>
+                                <option value="Sell">Bán</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="table-userinformation w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-sm text-gray-500"><strong>Loại tiền</strong></th>
+                                <th class="text-sm text-gray-500"><strong>Số lượng</strong></th>
+                                <th class="text-sm text-gray-500"><strong>Số tiền (Usdt)</strong></th>
+                                <th class="text-sm text-gray-500"><strong>Số tiền (VNĐ)</strong></th>
+                                <th class="text-sm text-gray-500" style="text-align: center;"><strong>Thực hiện</strong>
+                                </th>
+                            </tr>
+                        <tbody>
+                            <tr *ngIf="transactionType === 'Buy'">
+                                <td class="text-sm text-gray-500 buying-color"><strong>{{selectedToken}} </strong></td>
+                                <td class="text-sm text-gray-800"><input type="number" min="0" [(ngModel)]="tokenAmount"
+                                        placeholder="Số lượng"></td>
+                                <td class="text-sm text-gray-800"><input type="number" min="0" [(ngModel)]="amountUsdt"
+                                        (blur)="onAmountUsdtChange()" placeholder="Số Tiền (Usdt)"></td>
+                                <td class="text-sm text-gray-800">
+                                    <input type="number" min="0" [(ngModel)]="amountVnd" (blur)="onAmountVndChange()"
+                                        placeholder="Số Tiền (VNĐ)" /></td>
+                                <td class="text-sm text-gray-800" style="text-align: center;">
+                                    <button (click)="onTradeTokenAsync(true)" class="common-button">
+                                        Mua
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="transactionType === 'Sell'">
+                                <td class="text-sm text-gray-500 selling-color"><strong>{{selectedToken}}</strong></td>
+                                <td class="text-sm text-gray-800">
+                                    <input type="number" min="0" [(ngModel)]="tokenAmount" placeholder="Số lượng" />
+                                </td>
+                                <td class="text-sm text-gray-800"><input type="number" min="0" [(ngModel)]="amountUsdt"
+                                        (blur)="onAmountUsdtChange()" placeholder="Số Tiền (Usdt)"></td>
+                                <td class="text-sm text-gray-800"><input type="number" min="0" [(ngModel)]="amountVnd"
+                                        placeholder="Số Tiền (VNĐ)"></td>
+                                <td class="text-sm text-gray-800" style="text-align: center;">
+                                    <button (click)="onTradeTokenAsync(false)" class="common-button">
+                                        Bán
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="bg-white rounded-lg shadow p-4 card">
             <h2 class="text-lg font-semibold text-gray-800">Danh mục đầu tư hiện tại</h2>
-            <div *ngIf="isGroupAdmin" class="flex justify-between items-center mb-4" style="text-align: center;">
-                <h4>Nạp Rút Tiền</h4>
-                <table class="table-userinformation w-full">
-                    <tbody>
-                        <tr>
-                            <td class="text-sm text-gray-500"><strong>Nạp Tiền: </strong></td>
-                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
-                            <td class="text-sm text-gray-800" style="text-align: center;">
-                                <button class="common-button">
-                                    Xác Nhận
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-sm text-gray-500"><strong>Rút Tiền: </strong></td>
-                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
-                            <td class="text-sm text-gray-800" style="text-align: center;">
-                                <button class="common-button">
-                                    Xác Nhận
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
-                <h4>Mua bán Tiền Số</h4>
-                <div class="flex items-center mb-4 text-end">
-                    <label style="margin-right: 20px; color: #255802; font-weight: 600;">Chọn loại tiền số:</label>
-                    <select class="common-select" style="min-width: 150px;">
-                        <option value="BTC">Bitcoin</option>
-                        <option value="ETH">Ethereum</option>
-                        <option value="XRP">Ripple</option>
-                        <option value="LTC">Litecoin</option>
-                        <option value="ADA">Cardano</option>
-                        <option value="SOL">Solana</option>
-                    </select>
+            <div *ngFor="let token of userTokens?.tokens" class="bg-white rounded-lg shadow p-4 card">
+                <div class="row">
+                    <h4 class="text-lg font-semibold text-gray-800">{{token.tokenName}}</h4>
+                    <div class="col-md-6">
+                        <p class="text-sm text-gray-500">Số lượng hiện có: {{token.totalTokenAmount}}</p>
+                        <p class="text-sm text-gray-500">Đơn giá: {{token.currentPrice | number}} (VNĐ)</p>
+                        <p class="text-sm text-gray-500">Tổng giá trị: {{token.totalValue | number}} (VNĐ)</p>
+                    </div>
                 </div>
+
                 <table class="table-userinformation w-full">
-                    <tbody>
+                    <thead>
                         <tr>
-                            <td class="text-sm text-gray-500"><strong>Mua: </strong></td>
-                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
-                            <td class="text-sm text-gray-800" style="text-align: center;">
-                                <button class="common-button">
-                                    Xác Nhận
-                                </button>
-                            </td>
+                            <th class="text-sm text-gray-500"><strong>Số lượng</strong></th>
+                            <th class="text-sm text-gray-500"><strong>Giá</strong></th>
+                            <th class="text-sm text-gray-500"><strong>Số tiền (VND)</strong></th>
+                            <th class="text-sm text-gray-500"><strong>Số tiền (Usdt)</strong></th>
+                            <th class="text-sm text-gray-500"><strong>Loại giao dịch</strong></th>
+                            <th class="text-sm text-gray-500"><strong>Ngày</strong></th>
                         </tr>
-                        <tr>
-                            <td class="text-sm text-gray-500"><strong>Bán: </strong></td>
-                            <td class="text-sm text-gray-800"><input placeholder="Nhập số tiền"></td>
-                            <td class="text-sm text-gray-800" style="text-align: center;">
-                                <button class="common-button">
-                                    Xác Nhận
-                                </button>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let transaction of token.transactions">
+                            <td class="text-sm text-gray-800">{{ transaction.tokenAmount | number }}</td>
+                            <td class="text-sm text-gray-800">{{ transaction.price | number }} (VNĐ)</td>
+                            <td class="text-sm text-gray-800">{{ transaction.amountVnd| number }} (VNĐ)</td>
+                            <td class="text-sm text-gray-800">{{ transaction.amountUsdt| number }} (Usdt)</td>
+                            <td class="text-sm text-gray-800">
+                                <div [ngClass]="{'buying-color': transaction.isBuy, 'selling-color': !transaction.isBuy}">
+                                    {{ transaction.isBuy ? 'Mua' : 'Bán' }}
+
+                                </div>
                             </td>
+                            <td class="text-sm text-gray-800">{{ transaction.exchangeDate | date: 'dd/MM/yyyy'}}</td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="flex justify-between items-center mb-4" style="text-align: center;">
-                <h4>Chi tiết đầu tư</h4>
             </div>
         </div>
     </main>

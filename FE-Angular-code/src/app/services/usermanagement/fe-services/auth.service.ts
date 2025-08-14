@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { UserInformation } from '../../../interfaces/auth-model';
+import { BaseUserInformationModel } from '../../../interfaces/auth-model';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -26,7 +26,7 @@ export class AuthService {
   getCurrentUserId(): string | null {
     const userInformation = this.getUserInformation();
     if (userInformation !== null) {
-      const user: UserInformation = JSON.parse(userInformation);
+      const user: BaseUserInformationModel = JSON.parse(userInformation);
       return user.userId;
     }
     return null;
@@ -142,7 +142,7 @@ export class AuthService {
     try {
       let userInformation = localStorage.getItem('userInformation');
       if (userInformation !== null) {
-        const user: UserInformation = JSON.parse(userInformation);
+        const user: BaseUserInformationModel = JSON.parse(userInformation);
         var email = user.email;
         const response = await lastValueFrom(this.http.post<RefreshAccesstoken>(`${this.baseUrl}/user-management/Account/LoginByRefreshtoken`, { Email: email, refreshtoken: refreshtoken }));
         if (response.errorMessage === '') {

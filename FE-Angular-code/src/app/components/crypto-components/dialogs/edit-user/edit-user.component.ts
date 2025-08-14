@@ -6,14 +6,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-export interface AddUserData {
+export interface EditUserData {
   name: string;
   email: string;
   phoneNumber: string;
+  userId: string;
 }
 
 @Component({
-  selector: 'app-user-dialog',
+  selector: 'app-edituser-dialog',
   imports: [
     CommonModule,
     FormsModule,
@@ -22,21 +23,20 @@ export interface AddUserData {
     MatInputModule,
     MatButtonModule
   ],
-  templateUrl: './user-dialog.component.html',
-  styleUrl: './user-dialog.component.css'
+  templateUrl: './edit-user.component.html',
+  styleUrl: './edit-user.component.css'
 })
-
-export class UserDialogComponent {
+export class EdituserDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<UserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AddUserData
+    public dialogRef: MatDialogRef<EdituserDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: EditUserData
   ) { }
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
-  onAddUser(): void {
+  onUpdated(): void {
     this.dialogRef.close(this.data);
   }
 }

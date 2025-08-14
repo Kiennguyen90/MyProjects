@@ -12,6 +12,12 @@
         {
             base.OnModelCreating(modelBuilder);
             // Configure your entities here
+            modelBuilder.Entity<CryptoToken>()
+                .HasIndex(ct => ct.Symbol)
+                .IsUnique();
+            modelBuilder.Entity<UserToken>()
+                .HasIndex(ut => new { ut.UserId, ut.TokenId })
+                .IsUnique();
         }
         // DbSets for your entities
         public DbSet<CryptoToken> CryptoTokens { get; set; }
@@ -19,5 +25,6 @@
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<UserBalanceAction> UserBalanceActions { get; set; }
+        public DbSet<UserToken> UserTokens { get; set; }
     }
 }

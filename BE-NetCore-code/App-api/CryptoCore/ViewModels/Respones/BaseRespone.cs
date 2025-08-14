@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CryptoCore.ViewModels.Respones
 {
-    public class UserRespone
+    public class BaseRespone
     {
         public bool IsSuccess { get; set; } = false;
         public string Message { get; set; } = string.Empty;

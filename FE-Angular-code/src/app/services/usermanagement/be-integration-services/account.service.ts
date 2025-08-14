@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
-import { AuthModel, UserInformation } from '../../../interfaces/auth-model';
+import { AuthModel, BaseUserInformationModel } from '../../../interfaces/auth-model';
 import { AuthService } from '../fe-services/auth.service';
 import { inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
@@ -16,7 +16,7 @@ export class AccountService {
   private accessToken = "";
   private refreshToken = "";
   userId = "";
-  userInformation : UserInformation | undefined;
+  userInformation : BaseUserInformationModel | undefined;
   userService = inject(UserService);
   authService = inject(AuthService);
   isLoginSucceed = false;

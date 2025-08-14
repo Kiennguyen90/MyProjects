@@ -1,15 +1,18 @@
-<h1 mat-dialog-title>Edit User</h1>
+<h1 mat-dialog-title>Chỉnh sửa thông tin nhà đầu tư</h1>
 <div mat-dialog-content>
     <mat-form-field class="full-width">
         <input matInput placeholder="ID" [(ngModel)]="data.userId" disabled>
     </mat-form-field>
     <mat-form-field class="full-width">
+        <mat-label>Tên người dùng</mat-label>
         <input matInput placeholder="Name" [(ngModel)]="data.name">
     </mat-form-field>
     <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
         <input matInput placeholder="Email" [(ngModel)]="data.email">
     </mat-form-field>
     <mat-form-field class="full-width">
+        <mat-label>Số điện thoại</mat-label>
         <input matInput placeholder="Phone Number" [(ngModel)]="data.phoneNumber">
     </mat-form-field>
 </div>

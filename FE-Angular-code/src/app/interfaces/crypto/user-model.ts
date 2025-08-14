@@ -1,4 +1,6 @@
-export interface CryptoUserModel {
+import { BaseResponseModel } from "../base-respone-model";
+
+export interface UserInformationModel {
     userId: string;
     email: string;
     userName: string;
@@ -13,7 +15,6 @@ export interface CryptoUserModel {
     groupAdminId: string;
 }
 
-export interface ListUserResponeModel {
-    listUser: CryptoUserModel[];
-    message: string;
+export interface ListUserResponeModel extends BaseResponseModel {
+    listUser: UserInformationModel[];
 }
