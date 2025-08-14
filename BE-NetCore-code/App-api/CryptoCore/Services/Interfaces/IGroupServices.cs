@@ -1,5 +1,6 @@
 ﻿
 
+using CryptoCore.ViewModels.Respones;
 using CryptoInfrastructure.Models;
 
 namespace CryptoCore.Services.Interfaces
@@ -9,6 +10,6 @@ namespace CryptoCore.Services.Interfaces
         Task<bool> RegisterGroup(string adminId);
         Task<Group> GetGroupIdByAdminIdAsync(string adminId);
         Task<string> GetAdminIdByGroupIdAsync(string groupId);
-        Task<List<User>> GetAllUsersByAdminIdAsync(string adminId);
+        Task<GetAllUserRespone> GetAllUsersByAdminIdAsync(string adminId);
     }
 }

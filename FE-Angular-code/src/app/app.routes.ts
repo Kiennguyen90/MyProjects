@@ -17,12 +17,12 @@ export const routes: Routes = [
         title: 'Login',
     },
     {
-        path: 'cryptoadmin',
+        path: 'cryptoservice/admin',
         loadComponent: () => import('./components/crypto-components/cryptoadmin/cryptoadmin.component').then(c => c.CryptoadminComponent),
         title: 'CryptoAdmin',
     },
     {
-        path: 'cryptouser/:email',
+        path: 'cryptoservice/user/:email',
         loadComponent: () => import('./components/crypto-components/cryptouser/cryptouser.component').then(c => c.CryptouserComponent),
         title: 'CryptoAdmin',
     },

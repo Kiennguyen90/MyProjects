@@ -1,23 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { HeaderComponent } from '../../header/header.component';
 import { Router } from '@angular/router';
 import { UserModel } from '../../../interfaces/user-model';
-import { UserService } from '../../../services/usermanagement/be-integration-services/user.service';
 import { AuthService } from '../../../services/usermanagement/fe-services/auth.service';
 import { CryptoadminService } from '../../../services/cryptoservices/be-integration-services/cryptoadmin.service';
 
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UserDialogComponent, AddUserData } from '../user-dialog/user-dialog.component';
+import { UserDialogComponent, AddUserData } from '../dialogs/add-user/add-user.component';
 import { MatButtonModule } from '@angular/material/button';
-import { CryptoUserModel } from '../../../interfaces/crypto/cryptouser-model';
-import { EditUserData, EdituserDialogComponent } from '../edituser-dialog/edituser-dialog.component';
+import { UserInformationModel } from '../../../interfaces/crypto/user-model';
+import { EditUserData, EdituserDialogComponent } from '../dialogs/edit-user/edit-user.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DataService } from '../../../services/usermanagement/fe-services/data.service';
 
 
 @Component({
   selector: 'app-adminview',
-  imports: [HeaderComponent, CommonModule, MatDialogModule, MatButtonModule],
+  imports: [HeaderComponent, CommonModule, MatDialogModule, MatButtonModule, DecimalPipe],
   templateUrl: './cryptoadmin.component.html',
   styleUrl: './cryptoadmin.component.css'
 })
@@ -25,12 +25,14 @@ export class CryptoadminComponent {
   userModel: UserModel | undefined;
   isLogin: boolean = false;
   isPermission: boolean = false;
-  cryptoUsers: CryptoUserModel[] | undefined;
+  cryptoUsers: UserInformationModel[] | undefined;
   currentUserId: string | null = null;
-  authService = inject(AuthService);
+  authService = inject(AuthService);  
+  currentActionUser: any | undefined;
 
-  constructor(private router: Router, private userService: UserService, public dialog: MatDialog, private cryptoadminService: CryptoadminService,private snackBar: MatSnackBar) {
+  constructor(private router: Router, private dataService: DataService, public dialog: MatDialog, private cryptoadminService: CryptoadminService,private snackBar: MatSnackBar) {
     this.currentUserId = this.authService.getCurrentUserId();
+    this.currentActionUser = this.dataService.getUserData();
   }
 
   async ngOnInit() {
@@ -77,7 +79,7 @@ export class CryptoadminComponent {
     }
   }
 
-  async editUser(fullName: string, email: string, phoneNumber: string, userId: string): Promise<void> {
+  async editUserDialog(fullName: string, email: string, phoneNumber: string, userId: string): Promise<void> {
     const editDialogRef = this.dialog.open(EdituserDialogComponent, {
       width: '50%',
       data: { name: fullName, email: email, phoneNumber: phoneNumber, userId: userId }
@@ -89,44 +91,48 @@ export class CryptoadminComponent {
           if (respone.isSuccess) {
             console.log(respone.message);
             this.onLoadCryptoUsers(); // Refresh user info after adding
+            this.showActionMessage(respone.message);
           } else {
             console.error(respone.message);
+            this.showActionMessage(respone.message);
           }
         }).catch(error => {
           console.error('Error updating user:', error);
+          this.showActionMessage('Error updating user: ' + error.message);
         });
       }
     });
   }
 
-  addUserDialog(): void {
+  async addUserDialog(): Promise<void> {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '50%',
       data: { name: '', email: '', phoneNumber: '' }
     });
-
     dialogRef.afterClosed().subscribe((result: AddUserData) => {
       if (result) {
         this.cryptoadminService.addUser(result.email, result.name, result.phoneNumber).then(respone => {
           if (respone.isSuccess) {
             console.log(respone.message);
-            this.onLoadCryptoUsers(); // Refresh user info after adding
+            this.onLoadCryptoUsers();
+            this.showActionMessage(respone.message);
           } else {
-            this.showError(respone.message);
+            this.showActionMessage(respone.message);
           }
         }).catch(error => {
           console.error('Error adding user:', error);
+          this.showActionMessage('Error adding user: ' + error.message);
         });
       }
     });
   }
 
   selectedUser(email: string): void {
-    this.router.navigate(['/cryptouser/' + email]);
+    this.router.navigate(['/cryptoservice/user/' + email]);
   }
 
-  showError(eror : string = ''): void {
-    this.snackBar.open(eror, 'Close', {
+  showActionMessage(message : string = ''): void {
+    this.snackBar.open(message, 'Close', {
       duration: 3000, // thời gian để snackbar tự động đóng
       horizontalPosition: 'right', // vị trí ngang
       verticalPosition: 'top', // vị trí dọc

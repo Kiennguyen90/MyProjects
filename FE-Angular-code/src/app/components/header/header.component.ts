@@ -4,7 +4,7 @@ import { RouterLink, Router } from '@angular/router';
 import { AccountService } from '../../services/usermanagement/be-integration-services/account.service';
 import { AuthService } from '../../services/usermanagement/fe-services/auth.service';
 import { HeaderService } from '../../services/usermanagement/fe-services/header.service';
-import { UserInformation } from '../../interfaces/auth-model';
+import { BaseUserInformationModel } from '../../interfaces/auth-model';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +14,7 @@ import { UserInformation } from '../../interfaces/auth-model';
 })
 
 export class HeaderComponent {
-  userInformation: UserInformation | undefined;
+  userInformation: BaseUserInformationModel | undefined;
   isLogin: boolean = false;
   imagePath: string = '../../../assets/icons/mylogo.png';
   accountService = inject(AccountService);

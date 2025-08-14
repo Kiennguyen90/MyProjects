@@ -32,8 +32,4 @@ export class UserService {
       return undefined;
     }
   }
-
-  getUserModel() {
-    return this.userComonInformation;
-  }
 }

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
-import { UserInformation } from '../../interfaces/auth-model';
+import { BaseUserInformationModel } from '../../interfaces/auth-model';
 import { AccountService } from '../../services/usermanagement/be-integration-services/account.service';
 import { AuthService } from '../../services/usermanagement/fe-services/auth.service';
 import { HeaderService } from '../../services/usermanagement/fe-services/header.service';
@@ -15,7 +15,7 @@ import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
   styleUrl: './usersetting.component.css'
 })
 export class UsersettingComponent {
-  userInformation: UserInformation | undefined;
+  userInformation: BaseUserInformationModel | undefined;
   isLogin: boolean = false;
   imagePath: string = '../../../assets/icons/mylogo.png';
   accountService = inject(AccountService);

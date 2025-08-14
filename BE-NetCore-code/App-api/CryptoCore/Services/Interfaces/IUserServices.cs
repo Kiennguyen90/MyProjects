@@ -11,9 +11,13 @@ namespace CryptoCore.Services.Interfaces
 {
     public interface IUserServices
     {
-        Task<UserRespone> AddUserAsync (string adminId, string userName, string email, string phoneNumber);
+        Task<BaseRespone> AddUserAsync (string adminId, string userName, string email, string phoneNumber);
+        Task<BaseRespone> UpdateUserBalanceAsync(string adminId, UserBalanceRequest userBalanceRequest);
         Task<User> GetUserByEmailAsync (string email);
         Task<User> GetUserByIdAsync(string userId);
         Task<bool> UpdateUserInfoByAdminAsync(string adminId, string userId, UserInfoRequest userRequest);
+
+        Task<List<UserToken>> GetTokensByUserIdAsync(string userId);
+        Task<float> GetTotalAmountByUserIdAsync(string userId);
     }
 }

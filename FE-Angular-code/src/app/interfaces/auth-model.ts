@@ -1,11 +1,11 @@
 export interface AuthModel {
-    userInformation: UserInformation;
+    userInformation: BaseUserInformationModel;
     accessToken: string;
     refreshToken: string;
     error: string;
 }
 
-export interface UserInformation {
+export interface BaseUserInformationModel {
     userId: string;
     email: string;
     userName : string;

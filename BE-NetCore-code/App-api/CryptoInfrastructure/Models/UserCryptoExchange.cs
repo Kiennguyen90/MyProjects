@@ -11,18 +11,21 @@ namespace CryptoInfrastructure.Models
     public class UserCryptoExchange
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string UserId { get; set; } = string.Empty;
-        public string CryptoTokenId { get; set; } = string.Empty;
-        public float AmountExchange { get; set; }
-        public float PriceExchange { get; set; }
-        public string Type { get; set; } = "Buy";
+        public string TokenId { get; set; } = string.Empty;
+        public float TokenAmount { get; set; }
+        public float AmountVnd { get; set; }
+        public float AmountUsdt { get; set; }
+        public float Price { get; set; }
+        public bool IsBuy { get; set; } = true;
+        public string CreatedBy { get; set; } = "default"; // Default creator
         public DateTime ExchangeDate { get; set; } = DateTime.UtcNow;
 
         [ForeignKey("UserId")]
         public User User { get; set; }
 
-        [ForeignKey("CryptoTokenId")]
+        [ForeignKey("TokenId")]
         public CryptoToken CryptoToken { get; set; }
     }
 }
