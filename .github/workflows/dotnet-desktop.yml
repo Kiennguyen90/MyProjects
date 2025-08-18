@@ -3,7 +3,7 @@ name: Build .NET Core 9 and Angular
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
