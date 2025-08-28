@@ -7,6 +7,7 @@ import { HeaderService } from '../../services/usermanagement/fe-services/header.
 import { NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { UserService } from '../../services/usermanagement/be-integration-services/user.service';
 
 @Component({
   selector: 'app-usersetting',
@@ -21,6 +22,7 @@ export class UsersettingComponent {
   accountService = inject(AccountService);
   authService = inject(AuthService);
   headerService = inject(HeaderService);
+  userService = inject(UserService);
 
   constructor(public dialog: MatDialog) {
   }
@@ -28,25 +30,28 @@ export class UsersettingComponent {
   async ngOnInit(): Promise<void> {
     this.isLogin = await this.authService.checkUserLogin();
     this.userInformation = this.accountService.getUserInformation();
+    this.imagePath = await this.userService.getAvatar();
   }
 
   async selectedImg() : Promise<void> {
     const imgDialogRef = this.dialog.open(ImageDialogComponent, {
           width: '50%',
-          data: { imageUrl: "", userId: this.userInformation?.userId }
+          data: { file: File, userId: this.userInformation?.userId }
         });
 
     imgDialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        // await this.accountService.UpdateUserImg(result.imageUrl, result.userId)
-        //   .then((response) => {
-        //     if (response) {
-        //       this.userInformation!.imageUrl = result.imageUrl;
-        //       this.headerService.setUserInformation(this.userInformation!);
-        //     } else {
-        //       console.error("Failed to update user image.");
-        //     }
-        //   });
+        await this.userService.uploadAvatar(result.file)
+          .then((response) => {
+            if (response.isSuccess) {
+              console.log("User image updated successfully.");
+              this.userService.getAvatar().then((imgUrl) => {
+                this.imagePath = imgUrl;
+              });
+            } else {
+              console.error("Failed to update user image.");
+            }
+          });
       }
     });
   }

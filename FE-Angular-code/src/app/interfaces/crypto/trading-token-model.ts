@@ -4,6 +4,7 @@ import { BaseResponseModel } from "../base-respone-model";
 export interface TransactionTokenRequestModel {
     userId: string;
     tokenId: string;
+    tokenName: string;
     tokenAmount: number;
     amountVnd: number;
     amountUsdt: number;

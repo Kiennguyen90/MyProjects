@@ -52,9 +52,9 @@
             <h2 class="text-lg font-semibold text-gray-800">Quản lý Tài Sản</h2>
             <div class="flex justify-between items-center mb-4" style="text-align: center;">
                 <div class="bg-white rounded-lg p-4 card">
-                    <h4>Nạp Rút Tiền</h4>
+                    <h4>{{balanceChangeType === 'Deposit' ? 'Nạp Tiền Vào Tài Khoản' : 'Rút Tiền Khỏi Tài Khoản'}}</h4>
                     <div style="padding: 20px;">
-                        <label style="margin-right: 20px; color: #255802; font-weight: 600;">Nạp / Rút: </label>
+                        <label style="margin-right: 20px; color: #255802; font-weight: 600;"> Nộp / Rút Tiền </label>
                         <select (change)="onBalanceSelectionChange($event)" class="common-select"
                             style="min-width: 150px;">
                             <option value="Deposit">Nạp Tiền</option>
@@ -66,20 +66,20 @@
                             <tr *ngIf="balanceChangeType === 'Deposit'">
                                 <td class="text-sm text-gray-500 buying-color"><strong>Nạp Tiền: </strong></td>
                                 <td class="text-sm text-gray-800"><input type="number" min="0"
-                                        [(ngModel)]="userBalanceAmount" placeholder="Nhập số tiền"></td>
+                                        [(ngModel)]="userBalanceAmount" placeholder="Nhập số tiền (VNĐ)"></td>
                                 <td class="text-sm text-gray-800" style="text-align: center;">
-                                    <button class="common-button" (click)="onUpdateUserBalance('Deposit')">
-                                        Xác nhận
+                                    <button class="common-button" (click)="onUpdateUserBalanceDialog(true)">
+                                        Nạp tiền
                                     </button>
                                 </td>
                             </tr>
                             <tr *ngIf="balanceChangeType === 'WithDraw'">
                                 <td class="text-sm text-gray-500 selling-color"><strong>Rút Tiền: </strong></td>
                                 <td class="text-sm text-gray-800"><input type="number" min="0"
-                                        [(ngModel)]="userBalanceAmount" placeholder="Nhập số tiền"></td>
+                                        [(ngModel)]="userBalanceAmount" placeholder="Nhập số tiền (VNĐ)"></td>
                                 <td class="text-sm text-gray-800" style="text-align: center;">
-                                    <button class="common-button" (click)="onUpdateUserBalance('WithDraw')">
-                                        Xác nhận
+                                    <button class="common-button" (click)="onUpdateUserBalanceDialog(false)">
+                                        Rút tiền
                                     </button>
                                 </td>
                             </tr>
@@ -130,7 +130,7 @@
                                     <input type="number" min="0" [(ngModel)]="amountVnd" (blur)="onAmountVndChange()"
                                         placeholder="Số Tiền (VNĐ)" /></td>
                                 <td class="text-sm text-gray-800" style="text-align: center;">
-                                    <button (click)="onTradeTokenAsync(true)" class="common-button">
+                                    <button (click)="onTradingTokenDialog(true)" class="common-button">
                                         Mua
                                     </button>
                                 </td>
@@ -145,7 +145,7 @@
                                 <td class="text-sm text-gray-800"><input type="number" min="0" [(ngModel)]="amountVnd"
                                         placeholder="Số Tiền (VNĐ)"></td>
                                 <td class="text-sm text-gray-800" style="text-align: center;">
-                                    <button (click)="onTradeTokenAsync(false)" class="common-button">
+                                    <button (click)="onTradingTokenDialog(false)" class="common-button">
                                         Bán
                                     </button>
                                 </td>

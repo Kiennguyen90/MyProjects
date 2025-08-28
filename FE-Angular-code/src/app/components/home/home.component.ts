@@ -10,11 +10,12 @@ import { CommonService } from '../../services/usermanagement/be-integration-serv
 import { DataService } from '../../services/usermanagement/fe-services/data.service';
 import { DefaultServices } from '../../../assets/staticfiles/default-services';
 import { DefaultRoles } from '../../../assets/staticfiles/default-roles';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   standalone: true,  // In case you're building a standalone component.
-  imports: [HeaderComponent, NgIf, NgFor, CommonModule],  // Added NgIf for conditional rendering
+  imports: [HeaderComponent, NgIf, NgFor, CommonModule, TranslatePipe],  // Added NgIf for conditional rendering
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']  // Corrected property name
 })
@@ -31,7 +32,7 @@ export class HomeComponent {
   DefaultRoles: DefaultRoles = inject(DefaultRoles);
   currentActionUserId: string | null = null;
 
-  constructor(private router: Router, private dataService: DataService) {
+  constructor(private router: Router, private dataService: DataService, private translate: TranslateService) {
   }
 
   async ngOnInit() {
