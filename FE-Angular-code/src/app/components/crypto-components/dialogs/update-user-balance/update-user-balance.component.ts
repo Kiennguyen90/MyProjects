@@ -6,13 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-export interface ImgData {
-  imageUrl: string;
-  userId: string;
+
+export interface UpdateUserBalanceData {
+  amount: number;
+  isDeposit: boolean;
 }
 
 @Component({
-  selector: 'app-image-dialog',
+  selector: 'app-update-user-balance',
   imports: [
     CommonModule,
     FormsModule,
@@ -21,29 +22,20 @@ export interface ImgData {
     MatInputModule,
     MatButtonModule
   ],
-  templateUrl: './image-dialog.component.html',
-  styleUrl: './image-dialog.component.css'
+  templateUrl: './update-user-balance.component.html',
+  styleUrl: './update-user-balance.component.css'
 })
-export class ImageDialogComponent {
-  selectedImage: string | ArrayBuffer | null = null;
+export class UpdateUserBalanceComponent {
   constructor(
-      public dialogRef: MatDialogRef<ImageDialogComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: {file :File, userId: string }
+      public dialogRef: MatDialogRef<UpdateUserBalanceComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: UpdateUserBalanceData
     ) { }
   
     onCancel(): void {
       this.dialogRef.close();
     }
-
-    onFileSelected(event: any) {
-    this.data.file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.selectedImage = e.target.result;
-    }
-    reader.readAsDataURL(this.data.file);
-  }
-    onUpdated(): void {
+  
+    onConfirm(): void {
       this.dialogRef.close(this.data);
     }
 }

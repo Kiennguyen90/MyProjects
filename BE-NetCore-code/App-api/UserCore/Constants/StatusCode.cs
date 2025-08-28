@@ -30,5 +30,6 @@ namespace UserCore.Constants
         public const string RegisterServiceFailed = "Register Service Failed";
         public const string RegisterRoleFailed = "Register Role Failed";
         public const string GetServiceFailed = "Get Service Failed";
+        public const string FileValidated = "File Validated";
     }
 }

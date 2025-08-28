@@ -1,0 +1,16 @@
+<h1 mat-dialog-title class="text-center">{{data.isBuy ? 'Xác nhận Mua' : 'Xác nhận Bán'}}</h1>
+<div mat-dialog-content>
+    <mat-form-field class="full-width">
+        <div *ngIf="data.tokenAmount > 0">
+            <label style="font-size: 16px;"><strong>Tên Token: </strong> {{data.tokenName}} </label>
+            <label style="font-size: 16px;"><strong>Số lượng: </strong> {{data.tokenAmount}} </label>
+            <label style="font-size: 16px;"><strong>Số tiền (VNĐ): </strong> {{data.amountVnd}} (VNĐ) </label>
+            <label style="font-size: 16px;"><strong>Số tiền (Usdt): </strong> {{data.amountUsdt}} (Usdt) </label>
+        </div>
+        <label *ngIf="data.tokenAmount === 0" style="color: red; font-size: 16px;"> Số lượng phải lớn hơn 0 </label>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button (click)="onCancel()" class="common-button">Hủy</button>
+    <button *ngIf="data.tokenAmount > 0" (click)="onConfirm()" class="common-button">Xác Nhận</button>
+</div>

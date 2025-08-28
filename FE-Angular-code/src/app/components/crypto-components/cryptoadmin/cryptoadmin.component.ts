@@ -7,7 +7,7 @@ import { AuthService } from '../../../services/usermanagement/fe-services/auth.s
 import { CryptoadminService } from '../../../services/cryptoservices/be-integration-services/cryptoadmin.service';
 
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UserDialogComponent, AddUserData } from '../dialogs/add-user/add-user.component';
+import { UserDialogComponent as AddUserDialogComponent, AddUserData } from '../dialogs/add-user/add-user.component';
 import { MatButtonModule } from '@angular/material/button';
 import { UserInformationModel } from '../../../interfaces/crypto/user-model';
 import { EditUserData, EdituserDialogComponent } from '../dialogs/edit-user/edit-user.component';
@@ -87,14 +87,14 @@ export class CryptoadminComponent {
     // Pre-fill the dialog with existing user data
     editDialogRef.afterClosed().subscribe((result: EditUserData) => {
       if (result) {
-        this.cryptoadminService.updateUser(result).then(respone => {
-          if (respone.isSuccess) {
-            console.log(respone.message);
+        this.cryptoadminService.updateUser(result).then(response => {
+          if (response.isSuccess) {
+            console.log(response.message);
             this.onLoadCryptoUsers(); // Refresh user info after adding
-            this.showActionMessage(respone.message);
+            this.showActionMessage(response.message);
           } else {
-            console.error(respone.message);
-            this.showActionMessage(respone.message);
+            console.error(response.message);
+            this.showActionMessage(response.message);
           }
         }).catch(error => {
           console.error('Error updating user:', error);
@@ -105,7 +105,7 @@ export class CryptoadminComponent {
   }
 
   async addUserDialog(): Promise<void> {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
+    const dialogRef = this.dialog.open(AddUserDialogComponent, {
       width: '50%',
       data: { name: '', email: '', phoneNumber: '' }
     });

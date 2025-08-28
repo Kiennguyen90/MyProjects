@@ -1,0 +1,11 @@
+<h1 mat-dialog-title class="text-center">{{data.isDeposit ? 'Xác nhận Nạp Tiền' : 'Xác nhận Rút Tiền'}}</h1>
+<div mat-dialog-content>
+    <mat-form-field class="full-width">
+        <label *ngIf="data.amount > 0" style="font-size: 16px;"><strong>Số tiền: </strong> {{data.amount}} (VNĐ) </label>
+        <label *ngIf="data.amount === 0 || data.amount < 0" style="color: red; font-size: 16px;"> Số tiền phải lớn hơn 0 </label>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button (click)="onCancel()" class="common-button">Hủy</button>
+    <button *ngIf="data.amount > 0" (click)="onConfirm()" class="common-button">Xác Nhận</button>
+</div>

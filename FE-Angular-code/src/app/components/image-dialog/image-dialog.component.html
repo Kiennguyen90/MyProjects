@@ -1,5 +1,18 @@
-<input type="file" file-model="myFile" />
-<div mat-dialog-actions>
-    <button mat-button (click)="onCancel()">Hủy</button>
-    <button mat-button (click)="onUpdated()">Cập Nhật</button>
+<div mat-dialog-title style="margin-left: 20px;">Cập nhật ảnh đại diện</div>
+<div mat-dialog-content class="dialog-content">
+    <div style="display: flex; align-content: center; justify-content: center;">
+        <label for="fileInput" class="upload-label">
+            <div *ngIf="!selectedImage">
+                <i class="fa fa-upload" aria-hidden="true"></i>
+                <br>
+                <span>Chọn ảnh</span>
+            </div>
+            <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" class="preview-image" />
+        </label>
+        <input type="file" hidden (change)="onFileSelected($event)" required id="fileInput" />
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="onCancel()">Hủy</button>
+        <button mat-button (click)="onUpdated()">Cập Nhật</button>
+    </div>
 </div>

@@ -7,6 +7,8 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../../../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
+import { BaseResponseModel } from '../../../interfaces/base-respone-model';
+import e from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +18,9 @@ export class AccountService {
   private accessToken = "";
   private refreshToken = "";
   userId = "";
-  userInformation : BaseUserInformationModel | undefined;
+  userInformation: BaseUserInformationModel | undefined;
   userService = inject(UserService);
   authService = inject(AuthService);
-  isLoginSucceed = false;
   isLogOutSucceed = false;
   isRegisterSucceed = false;
 
@@ -51,48 +52,59 @@ export class AccountService {
     return false;
   }
 
-  async Login(email: string, password: string): Promise<string | ""> {
+  async Login(email: string, password: string): Promise<AuthModel | undefined> {
     try {
       const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/login`, { Email: email, Password: password }));
-      if (response) {
+      if (!response) {
+        console.error("Login failed");
+        return undefined;
+      }
+
+      if (response.error === "") {
         this.userInformation = response.userInformation;
         this.accessToken = response.accessToken;
         this.refreshToken = response.refreshToken;
-        this.isLoginSucceed = true;
-        
+
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
         this.authService.setUserInformation(JSON.stringify(this.userInformation));
-        console.log('Account Login Succeed');
-        return this.userId;
+        return response;
       }
-    } catch (error) {
-      console.error('Login error:', error);
+      else {
+        return response;
+      }
+    } 
+    catch (error) {
+      return undefined;
     }
-    return "error";
   }
 
-  async LoginByGoogle(token: string): Promise<string | ""> {
-    try {      
+  async LoginByGoogle(token: string): Promise<AuthModel | undefined> {
+    try {
       const data = { token: token };
       const response = await lastValueFrom(this.http.post<AuthModel>(`${this.baseUrl}/user-management/Account/auth/google`, data));
+      if (!response) {
+        console.error("Login by Google failed");
+        return undefined;
+      }
 
-      if (response) {
+      if (response.error === "") {
         this.userInformation = response.userInformation;
         this.accessToken = response.accessToken;
         this.refreshToken = response.refreshToken;
-        this.isLoginSucceed = true;
 
         this.authService.setAccessToken(this.accessToken);
         this.authService.setRefreshToken(this.refreshToken);
         this.authService.setUserInformation(JSON.stringify(this.userInformation));
-        console.log('Account Login Succeed');
-        return this.userId;
+        return response;
       }
-    } catch (error) {
-      console.error('Login error:', error);
+      else {
+        return response
+      }
+    } 
+    catch (error) {
+      return undefined
     }
-    return "error";
   }
 
 

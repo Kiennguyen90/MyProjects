@@ -2,6 +2,7 @@
 using CryptoCore.ViewModels.Respones;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace CryptoInvestment.API.Controllers
@@ -26,6 +27,9 @@ namespace CryptoInvestment.API.Controllers
         {
             try
             {
+                Stopwatch sw1 = new Stopwatch();
+                Stopwatch sw2 = new Stopwatch();
+                sw1.Start();
                 var respone = new GetAllUserRespone();
                 var userClaims = User.Claims;
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -35,7 +39,12 @@ namespace CryptoInvestment.API.Controllers
                     respone.Message = "No Permission";
                     return Ok(respone);
                 }
+                sw1.Stop();
+                sw2.Start();
                 respone = await _groupServices.GetAllUsersByAdminIdAsync(userIdClaim.Value);
+                sw2.Stop();
+                
+                _logger.LogWarning("excute time: sw1:" + sw1.Elapsed.ToString() + "sw2: " + sw2.Elapsed.ToString());
                 return Ok(respone);
             }
             catch (Exception ex)

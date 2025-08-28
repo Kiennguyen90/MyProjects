@@ -18,6 +18,9 @@
             modelBuilder.Entity<UserToken>()
                 .HasIndex(ut => new { ut.UserId, ut.TokenId })
                 .IsUnique();
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
         // DbSets for your entities
         public DbSet<CryptoToken> CryptoTokens { get; set; }

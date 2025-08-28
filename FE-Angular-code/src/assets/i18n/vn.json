@@ -1,0 +1,37 @@
+{
+    "header": {
+        "title": "Chào mừng đến với Ứng dụng của tôi",
+        "logout": "Đăng xuất",
+        "profile": "Hồ sơ",
+        "settings": "Cài đặt",
+        "language": {
+            "vn": "Tiếng Việt",
+            "en": "Tiếng Anh"
+        },
+        "switchLanguage": "Ngôn ngữ"
+    },
+    "home": {
+        "welcomeMessage": "Chào mừng đến với Ứng dụng Mơ Ước của Bạn",
+        "description": "Đây là trang chủ của ứng dụng chúng tôi. Chúc bạn có một trải nghiệm tuyệt vời!"
+    },
+    "login": {
+        "title": "Đang nhập",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "loginButton": "Đăng nhập",
+        "forgotPassword": "Quên mật khẩu?",
+        "register": "Đăng ký",
+        "loginError": "Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập của bạn.",
+        "googleLogin": "Đăng nhập bằng Google"
+    },
+    "register": {
+        "title": "Đăng ký",
+        "username": "Tên đăng nhập",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "confirmPassword": "Xác nhận mật khẩu",
+        "registerButton": "Đăng ký",
+        "registerSuccess": "Đăng ký thành công! Vui lòng đăng nhập.",
+        "registerError": "Đăng ký không thành công. Vui lòng thử lại."
+    }
+}

@@ -279,7 +279,6 @@ namespace CryptoCore.Services.Implements
                     .Where(x => x.UserId == userId);
                 if (tokens == null || !tokens.Any())
                 {
-                    _logger.LogWarning($"No tokens found for user ID {userId}.");
                     return new List<UserToken>();
                 }
                 else

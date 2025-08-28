@@ -1,11 +1,32 @@
 .main-menu {
-    background: linear-gradient(to right, #216c04, rgba(72, 72, 2, 0)); 
+    background: linear-gradient(to right, #216c04, rgba(72, 72, 2, 0));
     display: flex;
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
+
 .white-text {
     color: #fff !important;
+}
+
+#language-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#language-dropdown .dropdown-menu {
+    min-width: 200px;
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    top: 0;
+    right: 100%;
+    list-style: none;
+}
+
+#language-dropdown:hover .dropdown-menu {
+    display: block;
 }

@@ -3,6 +3,8 @@ using CryptoInfrastructure.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
+using System.Security.Claims;
 using System.Text.Json;
 using UserCore.Services.Interfaces;
 using UserCore.ViewModels.Respones;
@@ -18,44 +20,14 @@ namespace UserManagementAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IAplicationServices _aplicationServices;
-        public UserController(UserManager<ApplicationUser> userManager, IMapper mapper, IAplicationServices aplicationServices, ILogger<UserController> logger)
+        private readonly IUserServices _userServices;
+        public UserController(UserManager<ApplicationUser> userManager, IMapper mapper, IAplicationServices aplicationServices, ILogger<UserController> logger, IUserServices userServices)
         {
             _userManager = userManager;
             _mapper = mapper;
             _aplicationServices = aplicationServices;
             _logger = logger;
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Register(string email, string password)
-        {
-            try
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = email,
-                    Email = email
-                };
-                var result = await _userManager.CreateAsync(user, password);
-                if (result.Succeeded)
-                {
-                    // User was successfully created
-                    return Ok("User created successfully");
-                }
-
-                // If we got this far, something failed, redisplay form
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                return BadRequest(ModelState);
-            }
-            catch (Exception e)
-            {
-                return BadRequest("Error creating user: " + e.Message);
-            }
-
+            _userServices = userServices;
         }
 
         [HttpGet("{id}")]
@@ -106,7 +78,8 @@ namespace UserManagementAPI.Controllers
             try
             {
                 var user = await _userManager.FindByEmailAsync(email);
-                if (user != null) {
+                if (user != null)
+                {
                     var serviceTypeId = await _aplicationServices.GetServiceTypeIdByIdAsync(serviceId, "Free");
                     var isRegisterServiced = await _aplicationServices.RegisterServiceAsync(serviceId, user.Id, serviceTypeId);
                     if (!isRegisterServiced)
@@ -127,6 +100,41 @@ namespace UserManagementAPI.Controllers
             {
                 return BadRequest("Error retrieving user: " + e.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("avatar")]
+        [Authorize]
+        public async Task<IActionResult> Upload(IFormFile avatar)
+        {
+            var userClaims = User.Claims;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return BadRequest(Constants.StatusCode.RegisterFailed + "claim user infomation");
+            }
+            var response = await _userServices.AvatarUploadAsync(avatar, userIdClaim.Value);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("avatar")]
+        [Authorize]
+        public async Task<IActionResult> GetAvatarAsync()
+        {
+            var userClaims = User.Claims;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return BadRequest(Constants.StatusCode.RegisterFailed + "claim user infomation");
+            }
+            var avatar = await _userServices.GetAvatarAsync(userIdClaim.Value);
+            if (avatar == null)
+            {
+                return NotFound(Constants.StatusCode.NotFound);
+            }
+            return Ok(File(avatar, "image/jpeg"));
         }
     }
 }

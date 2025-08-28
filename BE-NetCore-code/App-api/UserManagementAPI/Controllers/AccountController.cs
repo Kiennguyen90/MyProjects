@@ -58,7 +58,7 @@ namespace UserManagementAPI.Controllers
 
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest model)
         {
             try
@@ -66,18 +66,6 @@ namespace UserManagementAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     var respone = await _accountServices.LoginAsync(model.Email, model.Password);
-                    if (respone.Error == Constants.StatusCode.UserNotFound)
-                    {
-                        return BadRequest(Constants.StatusCode.UserNotFound);
-                    }
-                    else if (respone.Error == Constants.StatusCode.WrongPassWord)
-                    {
-                        return BadRequest(Constants.StatusCode.WrongPassWord);
-                    }
-                    else if (respone.Error != string.Empty)
-                    {
-                        return BadRequest("Login failed: " + respone.Error);
-                    }
                     return Ok(respone);
                 }
                 return BadRequest(ModelState);
@@ -86,7 +74,6 @@ namespace UserManagementAPI.Controllers
             {
                 return BadRequest("Error logging in: " + ex.Message);
             }
-
         }
 
         [HttpPost]

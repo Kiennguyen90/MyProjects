@@ -8,26 +8,39 @@ import { UserService } from '../../services/usermanagement/be-integration-servic
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule, NgIf, isPlatformBrowser } from '@angular/common';
 
+import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NgIf, RouterLink],
+  imports: [
+    ReactiveFormsModule
+    , CommonModule
+    , NgIf
+    , RouterLink
+    , TranslatePipe
+    , TranslateDirective
+  ],
   templateUrl: './login.component.html',
-  styleUrls: ['../register/register.component.css']  // Corrected property name: styleUrls
+  styleUrls: ['../register/register.component.css']
 })
+
 export class LoginComponent implements OnInit {
   route: ActivatedRoute = inject(ActivatedRoute);
   accountService = inject(AccountService);
   userService = inject(UserService);
   userModel: UserModel | undefined;
-  userId = "";
   isPressLogin: boolean = false;
+  loginError: string = '';
   loginForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
   });
 
-  constructor(private router: Router, private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    private router: Router
+    , private fb: FormBuilder
+    , @Inject(PLATFORM_ID) private platformId: Object) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -51,15 +64,19 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  async handleGoogleCallback(response: any){
+  async handleGoogleCallback(response: any) {
     const token = response.credential;
     const result = await this.accountService.LoginByGoogle(token);
-    this.userId = result;
-      if (this.userId !== "error") {
-        this.router.navigate(['/']);
-      } else {
-        console.error("Login error");
-      }
+    if (!result) {
+      this.loginError = "Login by Google failed";
+      return;
+    }
+    if (result.error === "") {
+      this.loginError = '';
+      this.router.navigate(['/']);
+    } else {
+      this.loginError = result.error;
+    }
   }
 
   private loadGoogleApi(): Promise<void> {
@@ -88,14 +105,20 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.loginForm.value;
     try {
       const response = await this.accountService.Login(email ?? '', password ?? '');
-      this.userId = response;
-      if (this.userId !== "error") {
+      if (!response) {
+        this.loginError = "Login failed";
+        return;
+      }
+      if (response.error === "") {
+        this.loginError = '';
         this.router.navigate(['/']);
-      } else {
-        console.error("Login error");
+      }
+      else {
+        this.loginError = response.error;
+        return;
       }
     } catch (error) {
-      console.error("Submission error:", error);
+      this.loginError = "Login failed due to an error";
     }
   }
 }

@@ -1,6 +1,7 @@
 ﻿namespace CryptoInfrastructure
 {
     using CryptoInfrastructure.Model;
+    using Infrastructure.Model;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@
         public DbSet<Service> Services { get; set; }
         public DbSet<UserRoleService> UserRoleServices { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<UserFile> UserFiles { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<UserService>()
