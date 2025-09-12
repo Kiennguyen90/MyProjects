@@ -13,6 +13,7 @@
     text-align: center;
     font-weight: bold;
     margin: 5px;
+    cursor: pointer !important;
 }
 .common-button:hover{
     background-color: antiquewhite;

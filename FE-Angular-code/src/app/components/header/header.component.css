@@ -11,6 +11,10 @@
     color: #fff !important;
 }
 
+.cursor {
+    cursor:pointer;
+}
+
 #language-dropdown {
     position: relative;
     display: inline-block;

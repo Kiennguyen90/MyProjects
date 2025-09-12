@@ -47,7 +47,7 @@ export class CryptoadminComponent {
 
   async onLoadPage() {
     try {
-      this.isLogin = await this.authService.checkUserLogin();
+      this.isLogin = await this.authService.isAuthentication();
       if (!this.isLogin) {
         this.router.navigate(['/login']);
       }

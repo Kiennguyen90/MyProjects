@@ -28,12 +28,12 @@ export const routes: Routes = [
     },
     {
         path: 'registerservice/:serviceid',
-        loadComponent: () => import('./components/registerservice/registerservice.component').then(c => c.RegisterserviceComponent),
+        loadComponent: () => import('./components/service-register/registerservice.component').then(c => c.RegisterserviceComponent),
         title: 'CryptoAdmin',
     },
     {
         path: 'Usersetting/:email',
-        loadComponent: () => import('./components/usersetting/usersetting.component').then(c => c.UsersettingComponent),
+        loadComponent: () => import('./components/user-profile/user-profile.component').then(c => c.UsersettingComponent),
         title: 'User Setting',
     }
 ];
