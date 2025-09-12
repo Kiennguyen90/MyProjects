@@ -26,8 +26,6 @@ export class HomeComponent {
   userService: UserService = inject(UserService);
   authService = inject(AuthService);
   commonService: CommonService = inject(CommonService);
-  isCryptoService: boolean = false;
-  isShoppingService: boolean = false;
   defaultServices: DefaultServices = inject(DefaultServices);
   DefaultRoles: DefaultRoles = inject(DefaultRoles);
   currentActionUserId: string | null = null;
@@ -37,7 +35,7 @@ export class HomeComponent {
 
   async ngOnInit() {
     await this.onLoadPage();
-    this.isLogin = await this.authService.checkUserLogin();
+    this.isLogin = await this.authService.isAuthentication();
     this.currentActionUserId = this.authService.getCurrentUserId();
     if (this.currentActionUserId === null) {
       return;
@@ -102,12 +100,11 @@ export class HomeComponent {
       var userServices = this.userModel.services as userServiceModel[];
       const serviceIds = userServices.map(s => s.serviceId);
       console.log("serviceIds: ", serviceIds[0]);
-      if (serviceIds.includes(this.defaultServices.crypto.id)) {
-        this.isCryptoService = true;
-      }
-      if (serviceIds.includes(this.defaultServices.shophouse.id)) {
-        this.isShoppingService = true;
-      }
+      this.ListServices?.forEach( service => {
+        if(serviceIds.includes(service.id)){
+          service.isActive = true;
+        }
+      })
     }
   }
 }

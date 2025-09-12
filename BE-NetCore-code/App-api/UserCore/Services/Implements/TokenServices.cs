@@ -137,7 +137,8 @@ namespace UserCore.Services.Implements
             {
                 new Claim(ClaimTypes.Email, user.Email??""),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim("UserNameClaim", user.FullName??"")
+                new Claim("UserNameClaim", user.FullName??""),
+                new Claim("application-access", true.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration[$"{tokenType}:Key"] ?? ""));

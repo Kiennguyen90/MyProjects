@@ -1,5 +1,7 @@
 {
     "header": {
+        "home": "Home",
+        "about": "About",
         "title": "Welcome to My Application",
         "logout": "Logout",
         "profile": "Profile",
@@ -12,7 +14,12 @@
     },
     "home": {
         "welcomeMessage": "Welcome to Your Dream Application",
-        "description": "This is the home page of our application. Enjoy your stay!"
+        "description": "This is the home page of our application. Enjoy your stay!",
+        "serviceList": "All services",
+        "services": {
+            "crypto": "Crypto Investor",
+            "stock": "Stock Investor"
+        }
     },
     "login": {
         "title": "Login",
@@ -33,5 +40,18 @@
         "registerButton": "Register",
         "registerSuccess": "Registration successful! Please log in.",
         "registerError": "Registration failed. Please try again."
+    },
+    "profile": {
+        "title": "My Profile",
+        "description": "Manage your personal information.",
+        "fullName": "Full Name",
+        "email": "Email",
+        "editProfile": "Edit Profile",
+        "changePassword": "Change Password",
+        "uploadAvatar": "Upload Avatar",
+        "saveChanges": "Save Changes",
+        "cancel": "Cancel",
+        "updateSuccess": "Profile updated successfully!",
+        "updateError": "Profile update failed. Please try again."
     }
 }

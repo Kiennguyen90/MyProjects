@@ -7,8 +7,7 @@ import { UserModel } from '../../interfaces/user-model';
 import { UserService } from '../../services/usermanagement/be-integration-services/user.service';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule, NgIf, isPlatformBrowser } from '@angular/common';
-
-import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +18,6 @@ import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
     , NgIf
     , RouterLink
     , TranslatePipe
-    , TranslateDirective
   ],
   templateUrl: './login.component.html',
   styleUrls: ['../register/register.component.css']

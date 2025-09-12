@@ -1,5 +1,7 @@
 {
     "header": {
+        "home": "Trang chủ",
+        "about": "Giới thiệu",
         "title": "Chào mừng đến với Ứng dụng của tôi",
         "logout": "Đăng xuất",
         "profile": "Hồ sơ",
@@ -11,8 +13,13 @@
         "switchLanguage": "Ngôn ngữ"
     },
     "home": {
-        "welcomeMessage": "Chào mừng đến với Ứng dụng Mơ Ước của Bạn",
-        "description": "Đây là trang chủ của ứng dụng chúng tôi. Chúc bạn có một trải nghiệm tuyệt vời!"
+        "welcomeMessage": "Chào mừng đến với Ứng dụng Mơ Ước của Mình",
+        "description": "Đây là trang chủ của ứng dụng chúng tôi. Chúc bạn có một trải nghiệm tuyệt vời!",
+        "serviceList": "Dịch vụ dành cho bạn",
+        "services": {
+            "crypto": "Đầu tư tiền Số",
+            "stock": "Đầu tư chứng khoán"
+        }
     },
     "login": {
         "title": "Đang nhập",
@@ -33,5 +40,18 @@
         "registerButton": "Đăng ký",
         "registerSuccess": "Đăng ký thành công! Vui lòng đăng nhập.",
         "registerError": "Đăng ký không thành công. Vui lòng thử lại."
+    },
+    "profile": {
+        "title": "Hồ sơ của tôi",
+        "description": "Quản lý thông tin cá nhân của bạn.",
+        "fullName": "Họ và tên",
+        "email": "Email",
+        "editProfile": "Chỉnh sửa hồ sơ",
+        "changePassword": "Đổi mật khẩu",
+        "uploadAvatar": "Tải lên ảnh đại diện",
+        "saveChanges": "Lưu thay đổi",
+        "cancel": "Hủy",
+        "updateSuccess": "Cập nhật hồ sơ thành công!",
+        "updateError": "Cập nhật hồ sơ không thành công. Vui lòng thử lại."
     }
 }

@@ -3,11 +3,8 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <img  [src]="logoPath" width="50" height="50" priority id="main-logo" title="logo">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="" class="nav-link px-2 link-secondary white-text">Home</a></li>
-                
-                <li>
-                    <a href="/about" class="nav-link px-2 link-dark white-text">About Me</a>
-                </li>
+                <li><a href="" class="nav-link px-2 link-secondary white-text">{{'header.home' | translate}}</a></li>
+                <li><a href="/about" class="nav-link px-2 link-dark white-text">{{'header.about'| translate}}</a></li>
             </ul>
             <div *ngIf="isLogin" class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,7 +39,7 @@
             </div>
             <div *ngIf="!isLogin" class="dropdown text-end">
                 <button [routerLink]="['/login']" class="common-button">Login</button>
-                <button *ngIf="!isLogin" [routerLink]="['/register']" class="common-button">Register</button>
+                <button [routerLink]="['/register']" class="common-button">Register</button>
             </div>
         </div>
     </div>

@@ -8,7 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { RegisterModel } from '../../../interfaces/register-model';
 import { lastValueFrom } from 'rxjs';
 import { BaseResponseModel } from '../../../interfaces/base-respone-model';
-import e from 'express';
 
 @Injectable({
   providedIn: 'root'

@@ -9,6 +9,6 @@ export class HeaderService {
   constructor(private authService : AuthService) { }
 
   async checkUserLogin(): Promise<boolean> {
-    return await this.authService.checkUserLogin();
+    return await this.authService.isAuthentication();
   }
 }

@@ -8,12 +8,13 @@ import { NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { UserService } from '../../services/usermanagement/be-integration-services/user.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-usersetting',
-  imports: [HeaderComponent, NgIf],
-  templateUrl: './usersetting.component.html',
-  styleUrl: './usersetting.component.css'
+  imports: [HeaderComponent, NgIf, TranslatePipe],
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.css'
 })
 export class UsersettingComponent {
   userInformation: BaseUserInformationModel | undefined;
@@ -28,9 +29,9 @@ export class UsersettingComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.isLogin = await this.authService.checkUserLogin();
+    this.isLogin = await this.authService.isAuthentication();
     this.userInformation = this.accountService.getUserInformation();
-    this.imagePath = await this.userService.getAvatar();
+    this.imagePath = await this.userService.getAvatar(this.userInformation?.userId);
   }
 
   async selectedImg() : Promise<void> {
@@ -45,7 +46,7 @@ export class UsersettingComponent {
           .then((response) => {
             if (response.isSuccess) {
               console.log("User image updated successfully.");
-              this.userService.getAvatar().then((imgUrl) => {
+              this.userService.getAvatar(this.userInformation?.userId).then((imgUrl) => {
                 this.imagePath = imgUrl;
               });
             } else {

@@ -12,8 +12,8 @@
                     <div class="row justify-content-center">
                         <div class="row justify-content-center text-center">
                             <div *ngFor="let type of selectedService?.serviceTypes" class="col-md-6 mb-4 text-center">
-                                <div [ngClass]="{'selected-service': (this.selectedTypeId === type.id)}" class="card-body card-service"
-                                    (click)="onPlanSelected(type.id)">
+                                <div [ngClass]="{'selected-service': (this.selectedTypeId === type.id)}"
+                                    class="card-body card-service" (click)="onPlanSelected(type.id)">
                                     <table class="table table-borderless">
                                         <tr>
                                             <td style="font-weight: 600; width: 50%;"> Service Type:</td>
@@ -41,3 +41,4 @@
             </div>
         </div>
     </div>
+</div>

@@ -34,7 +34,6 @@ export class CommonService {
           })
         ));
       this.ListServices = response;
-      console.log("get ListService succeed");
       return this.ListServices;
     } catch (error) {
       console.error("get ListService failed", error);
